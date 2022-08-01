@@ -1,17 +1,18 @@
 {
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "mkcert": "^1.5.0",
     "openssl": "^2.0.0"
   },
   "scripts": {
     "build": "npx tsc",
-    "start": "node dist/server.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\""
+    "start": "node dist/index.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
   },
-  "name": "server",
+  "name": "index",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^18.6.2",
