@@ -1,4 +1,6 @@
-    <p>
+<body  class="background">
+
+  <p>
     <mat-toolbar class="transparent">
         
         <span class = singleElement>
@@ -14,18 +16,17 @@
         </button>
         </span>
 
-        <span class = singleElement> &nbsp; Witamy w aplikcji obsługi pacjentów - medSystem </span>
+        <span class = singleElement> &nbsp; Witamy w aplikacji obsługi pacjentów - MedSystem </span>
 
 
       <span class="spacer"></span>
 
-      <button class="hover-class" id="patient-button" mat-stroked-button>Pacjent</button>
+      <a [routerLink]="['/login']"><button class="hover-class" id="patient-button" mat-stroked-button>Pacjent</button></a>
 
-      <button class="hover-class" id="doctor-button" mat-stroked-button>Lekarz</button>
+      <a [routerLink]="['/login']"><button class="hover-class" id="doctor-button" mat-stroked-button>Lekarz</button></a>
 
-      <button class="hover-class" id="admin-button" mat-stroked-button>Administrator</button>
-
+      <a [routerLink]="['/login']"><button class="hover-class" id="admin-button" mat-stroked-button>Administrator</button></a>
 
     </mat-toolbar>
   </p>
-  
+</body>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; 
+
 
 @Component({
   selector: 'app-main-top-bar',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainTopBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  
+  onUserButtonClick() {
+    this.router.navigateByUrl('/login');
   }
 
 }
