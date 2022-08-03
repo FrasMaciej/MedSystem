@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { LoginComponent } from './login/login.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
+import { DoctorService } from './services/doctor.service';
 
 
 
@@ -45,7 +46,7 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
       { path: 'adminPage', component: AdminPageComponent },
     ])
   ],
-  providers: [],
+  providers: [DoctorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

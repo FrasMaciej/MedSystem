@@ -1,9 +1,20 @@
 <p>
-    <mat-toolbar color="primary">
-      <button mat-icon-button class="icon">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>Panel Administratora</span>
-      <span class="spacer"></span>
-    </mat-toolbar>
+  <mat-toolbar color="primary">
+    <button mat-icon-button class="icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Panel Administratora</span>
+    <span class="spacer"></span>
+  </mat-toolbar>
 </p>
+
+
+<div id="doctorsString">
+  <h2>Lista lekarzy</h2>
+  <div class="doctors" *ngFor="let doctor of doctors">
+    {{ doctor.name }} {{doctor.surname}}
+  </div>
+</div>
+
+
+
