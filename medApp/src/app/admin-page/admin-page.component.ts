@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Doctor } from '../models/doctor';
 import { DoctorService } from '../services/doctor.service';
 
 @Component({
@@ -7,14 +8,15 @@ import { DoctorService } from '../services/doctor.service';
   styleUrls: ['./admin-page.component.css']
 })
 export class AdminPageComponent implements OnInit {
-  doctors;
+  doctors: any;
   
-
-  constructor(private doctorService: DoctorService) { 
-    this.doctors = this.doctorService.getDoctors();
-  } 
+  constructor(private doctorService: DoctorService) { } 
 
   ngOnInit(): void {
+    this.doctorService.getDoctors().subscribe(data => {
+      console.log(data);
+      this.doctors = data;
+    })
   }
 
 }

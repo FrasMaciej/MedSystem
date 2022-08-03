@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { HttpClient } from '@angular/common/http';
 
@@ -9,22 +9,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DoctorService {
   private doctorsList: Array<Doctor> | any = [];
+  public baseUrl = "http://localhost:8080/api/doctors";
 
-  constructor(private http: HttpClient) { 
-  }
 
-  getDoctorsHttp(){
-    this.http.get('http://localhost:8080/api/doctors')
-    .subscribe((doctors)=>{
-      console.log(doctors);
-      this.doctorsList = JSON.parse(JSON.stringify(doctors));
-    });
-
-  }
+  constructor(private httpClient: HttpClient) {}
 
   getDoctors(){
-    this.getDoctorsHttp();
-    return this.doctorsList;
+    return this.httpClient.get(this.baseUrl);
   }
 
 }
