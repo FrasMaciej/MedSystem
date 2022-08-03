@@ -8,13 +8,27 @@
   </mat-toolbar>
 </p>
 
-
 <div id="doctorsString">
-  <h2>Lista lekarzy</h2>
-  <div class="doctors" *ngFor="let doctor of doctors">
-    {{ doctor.name }} {{doctor.surname}}
-  </div>
+  <h2>Lista lekarzy pobranych z bazy danych:</h2>
 </div>
+<mat-selection-list #doctor [multiple]="false">
+  <mat-list-option *ngFor="let doctor of doctors" [value]="doctor">
+    <div id="doctorsList">
+
+      <button id = "deleteButton" mat-icon-button color="warn">
+        <mat-icon>delete</mat-icon>
+      </button>
+
+      {{ doctor.name }} {{doctor.surname}}
+
+    </div>
+  </mat-list-option>
+</mat-selection-list>
+
+
+
+
+
 
 
 

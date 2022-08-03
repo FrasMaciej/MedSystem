@@ -6,3 +6,8 @@
     margin: 1%;
 }
 
+#doctorsList{
+    display: flex;
+    align-items: center;
+}
+
