@@ -25,4 +25,10 @@ export class DoctorService {
     return this.httpClient.delete(deleteUrl);
   }
 
+  editDoctor(doctor: Doctor){
+    const deleteUrl = this.baseUrl+'/'+doctor._id;
+    console.log("Dziaua");
+    return this.httpClient.put(deleteUrl, doctor);
+  } 
+
 }

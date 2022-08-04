@@ -4,8 +4,9 @@ import { DoctorService } from '../services/doctor.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface DialogData {
-  name: string,
-  surname: string,
+  doctorToChange: Doctor;
+  newName: string;
+  newSurname: string;
 }
 
 @Component({
@@ -23,12 +24,18 @@ export class AdminPageComponent implements OnInit {
   openDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
       width: '500px',
-      height: '500px',
-      data: {name: doctor.name, surname: doctor.surname}
+      height: '300px',
+      autoFocus: false,
+      data: {doctorToChange: doctor, newName: doctor.name, newSurname: doctor.surname}
+      
     });
 
-    dialogRef.afterClosed().subscribe( {
-      
+    dialogRef.afterClosed().subscribe( result => {
+      if(result!=null){
+        this.doctorService.editDoctor(result).subscribe((result)=>{
+          this.ngOnInit();
+        });
+      }
     });
   }
 
@@ -53,11 +60,10 @@ export class AdminPageComponent implements OnInit {
 }
 
 @Component({
-  selector: 'app-doctor-edit-dialog',
+  selector: 'doctor-edit-dialog',
   templateUrl: 'doctor-edit-dialog.html',
   styleUrls: ['doctor-edit-dialog.css']
 })
-
 export class DoctorEditDialog {
 
   constructor(
@@ -69,7 +75,8 @@ export class DoctorEditDialog {
   }
 
   saveClick(): void {
-    console.log(this.data.name);
+    this.data.doctorToChange.name = this.data.newName;
+    this.data.doctorToChange.surname = this.data.newSurname;
   }
 
 }
