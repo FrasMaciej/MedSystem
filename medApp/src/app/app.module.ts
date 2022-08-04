@@ -18,6 +18,8 @@ import { MatListModule } from '@angular/material/list';
 import { LoginComponent } from './login/login.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { DoctorService } from './services/doctor.service';
+import {MatDialogModule} from '@angular/material/dialog';
+
 
 
 @NgModule({
@@ -25,7 +27,7 @@ import { DoctorService } from './services/doctor.service';
     AppComponent,
     MainTopBarComponent,
     LoginComponent,
-    AdminPageComponent
+    AdminPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +36,7 @@ import { DoctorService } from './services/doctor.service';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule,
     MatInputModule,
     MatListModule,
     FormsModule,

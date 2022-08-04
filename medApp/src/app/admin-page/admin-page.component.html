@@ -8,8 +8,9 @@
   </mat-toolbar>
 </p>
 
+<!-- To-do -> Ładniejsze wyświetlanie lekarzy wraz z ładnym skalowaniem oraz oddzieleniem ich na liście -->
 <div id="doctorsString">
-  <h2>Lista lekarzy pobranych z bazy danych:</h2>
+  <h2>Lista lekarzy:</h2>
 </div>
 <mat-selection-list #doctor [multiple]="false">
   <mat-list-option *ngFor="let doctor of doctors" [value]="doctor">
@@ -19,7 +20,7 @@
         <mat-icon>remove_circle</mat-icon>
       </button>
 
-      <button id ="editButton" mat-icon-button color="black">
+      <button id ="editButton" mat-icon-button color="black" (click)="openDialog(doctor)">
         <mat-icon>edit</mat-icon>
       </button>
 
