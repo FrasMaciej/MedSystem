@@ -15,8 +15,12 @@
   <mat-list-option *ngFor="let doctor of doctors" [value]="doctor">
     <div id="doctorsList">
 
-      <button id = "deleteButton" mat-icon-button color="warn">
-        <mat-icon>delete</mat-icon>
+      <button id = "deleteButton" mat-icon-button color="warn" (click)="removeDoctor(doctor)" (click)="onRemove($event)">
+        <mat-icon>remove_circle</mat-icon>
+      </button>
+
+      <button id ="editButton" mat-icon-button color="black">
+        <mat-icon>edit</mat-icon>
       </button>
 
       {{ doctor.name }} {{doctor.surname}}

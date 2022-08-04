@@ -1,5 +1,5 @@
-export interface Doctor {
-    name: string;
-    surname: string;
-    _id: string;
+export class Doctor {
+    name!: string;
+    surname!: string;
+    _id!: string;
 }

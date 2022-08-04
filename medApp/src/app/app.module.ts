@@ -20,7 +20,6 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
 import { DoctorService } from './services/doctor.service';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,

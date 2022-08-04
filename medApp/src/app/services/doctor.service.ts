@@ -4,18 +4,25 @@ import { Doctor } from '../models/doctor';
 import { HttpClient } from '@angular/common/http';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class DoctorService {
   private doctorsList: Array<Doctor> | any = [];
-  public baseUrl = "http://localhost:8080/api/doctors";
+  public baseUrl = 'http://localhost:8080/api/doctors';
 
 
   constructor(private httpClient: HttpClient) {}
 
-  getDoctors(){
-    return this.httpClient.get(this.baseUrl);
+  getDoctors() : Observable<any>{
+    this.doctorsList = this.httpClient.get(this.baseUrl);
+    return this.doctorsList;
+  }
+
+  removeDoctor(doctor: Doctor){
+    const deleteUrl = this.baseUrl+'/'+doctor._id;
+    return this.httpClient.delete(deleteUrl);
   }
 
 }
