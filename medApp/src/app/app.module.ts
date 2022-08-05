@@ -17,7 +17,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AdminPageComponent, DoctorAddDialog, DoctorEditDialog } from './admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
-import { MainTopBarComponent } from './main-top-bar/main-top-bar.component';
+import { MainPageComponent } from './main-page/main-page';
 import { DoctorService } from './services/doctor.service';
 
 
@@ -25,7 +25,7 @@ import { DoctorService } from './services/doctor.service';
 @NgModule({
   declarations: [
     AppComponent,
-    MainTopBarComponent,
+    MainPageComponent,
     LoginComponent,
     AdminPageComponent,
     DoctorEditDialog,
@@ -45,7 +45,7 @@ import { DoctorService } from './services/doctor.service';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot([
-      { path: '', component: MainTopBarComponent },
+      { path: '', component: MainPageComponent },
       { path: 'login', component: LoginComponent },
       { path: 'adminPage', component: AdminPageComponent },
     ])

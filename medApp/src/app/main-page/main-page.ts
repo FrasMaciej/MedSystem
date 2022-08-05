@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-main-top-bar',
-  templateUrl: './main-top-bar.component.html',
-  styleUrls: ['./main-top-bar.component.css']
+  selector: 'app-main-page',
+  templateUrl: './main-page.component.html',
+  styleUrls: ['./main-page.component.css']
 })
-export class MainTopBarComponent implements OnInit {
+export class MainPageComponent implements OnInit {
 
   constructor(private router: Router) { }
 
