@@ -27,11 +27,12 @@ class DoctorActions {
     async saveDoctor(req: any, res: any){
         const name = req.body.name;
         const surname = req.body.surname;
+        const city = req.body.city;
 
         let doctor;
 
         try {
-            doctor = new Doctor({name,surname});
+            doctor = new Doctor({name,surname,city});
             await doctor.save();
         } catch (err: any) {
             return res.status(422).json({message: err.message});
@@ -55,11 +56,13 @@ class DoctorActions {
         const id = req.params.id;
         const name = req.body.name;
         const surname = req.body.surname;
+        const city = req.body.city;
         const specializations = req.body.specializations;
 
         const doctor = await Doctor.findOne({_id: id});
         doctor.name = name;
         doctor.surname = surname;
+        doctor.city = city;
         doctor.specializations = specializations;
         await doctor.save();
 

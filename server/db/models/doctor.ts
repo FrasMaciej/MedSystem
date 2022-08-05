@@ -1,3 +1,5 @@
+import { kStringMaxLength } from "buffer";
+
 const mongoose = require('mongoose');
 
 var VisitSchema = new mongoose.Schema({
@@ -56,6 +58,10 @@ const DoctorSchema = new mongoose.Schema({
     surname: {
         type: String,
         required: true,
+    },
+    city:{
+        type: String,
+        required: true
     },
     specializations: {
         type: [String],

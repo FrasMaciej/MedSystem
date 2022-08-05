@@ -7,6 +7,7 @@ export interface DoctorData {
   doctor: Doctor;
   newName: string;
   newSurname: string;
+  newCity: string;
   newSpecializations: string[];
   newSpec: string;
 }
@@ -45,7 +46,7 @@ export class AdminPageComponent implements OnInit {
       width: '500px',
       height: '300px',
       autoFocus: false,
-      data: {newName: '', newSurname: '', doctor: new Doctor}
+      data: {newName: '', newSurname: '', newCity: '', doctor: new Doctor}
     });
 
     dialogRef.afterClosed().subscribe( result => {
@@ -133,5 +134,6 @@ export class DoctorAddDialog {
     this.data.doctor.name = this.data.newName;
     this.data.doctor.surname = this.data.newSurname;
     this.data.doctor.specializations = this.data.newSpecializations;
+    this.data.doctor.city = this.data.newCity;
   }
 }
