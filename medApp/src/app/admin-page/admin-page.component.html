@@ -5,6 +5,7 @@
     </button>
     <span>Panel Administratora</span>
     <span class="spacer"></span>
+    <button mat-raised-button color="newDoctorButton" (click)="openAddDoctorDialog()">Dodaj lekarza</button>
   </mat-toolbar>
 </p>
 
@@ -20,7 +21,7 @@
         <mat-icon>remove_circle</mat-icon>
       </button>
 
-      <button id ="editButton" mat-icon-button color="black" (click)="openDialog(doctor)">
+      <button id ="editButton" mat-icon-button color="black" (click)="openEditDoctorDialog(doctor)">
         <mat-icon>edit</mat-icon>
       </button>
 

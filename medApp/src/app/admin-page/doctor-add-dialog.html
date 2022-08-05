@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Dodajesz nowego lekarza <br></h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="Imię" [(ngModel)]="data.newName">
+  </mat-form-field>    
+  <br>
+  <mat-form-field>
+    <input matInput placeholder="Nazwisko" [(ngModel)]="data.newSurname">
+  </mat-form-field>    
+</div>
+
+<div mat-dialog-actions align="center">
+  <button mat-button (click)="backClick()">Powrót</button>
+  <button mat-button (click)="saveClick()" [mat-dialog-close]="data.doctorToChange">Zapisz</button>
+</div>
+

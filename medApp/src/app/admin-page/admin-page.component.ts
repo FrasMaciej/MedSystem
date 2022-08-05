@@ -3,7 +3,7 @@ import { Doctor } from '../models/doctor';
 import { DoctorService } from '../services/doctor.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-export interface DialogData {
+export interface EditDoctorData {
   doctorToChange: Doctor;
   newName: string;
   newSurname: string;
@@ -21,7 +21,7 @@ export class AdminPageComponent implements OnInit {
 
   constructor(private doctorService: DoctorService, public dialog: MatDialog) { } 
 
-  openDialog(doctor: Doctor): void {
+  openEditDoctorDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
       width: '500px',
       height: '300px',
@@ -37,6 +37,24 @@ export class AdminPageComponent implements OnInit {
         });
       }
     });
+  }
+
+  openAddDoctorDialog(): void {
+    const dialogRef = this.dialog.open(DoctorAddDialog, {
+      width: '500px',
+      height: '300px',
+      autoFocus: false,
+      data: {newName: '', newSurname: '', doctorToChange: new Doctor}
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      if(result!=null){
+        this.doctorService.addDoctor(result).subscribe((result)=>{
+          this.ngOnInit();
+        });
+      }
+    });
+
   }
 
   ngOnInit(): void {
@@ -68,7 +86,30 @@ export class DoctorEditDialog {
 
   constructor(
     public dialogRef: MatDialogRef<DoctorEditDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: EditDoctorData) {}
+
+  backClick(): void {
+    this.dialogRef.close();
+  }
+
+  saveClick(): void {
+    this.data.doctorToChange.name = this.data.newName;
+    this.data.doctorToChange.surname = this.data.newSurname;
+  }
+
+}
+
+@Component({
+  selector: 'doctor-add-dialog',
+  templateUrl: 'doctor-add-dialog.html',
+  styleUrls: ['doctor-add-dialog.css']
+})
+
+export class DoctorAddDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DoctorAddDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: EditDoctorData) {}
 
   backClick(): void {
     this.dialogRef.close();

@@ -16,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { LoginComponent } from './login/login.component';
-import { AdminPageComponent, DoctorEditDialog } from './admin-page/admin-page.component';
+import { AdminPageComponent, DoctorAddDialog, DoctorEditDialog } from './admin-page/admin-page.component';
 import { DoctorService } from './services/doctor.service';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -28,7 +28,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MainTopBarComponent,
     LoginComponent,
     AdminPageComponent,
-    DoctorEditDialog
+    DoctorEditDialog,
+    DoctorAddDialog
   ],
   imports: [
     BrowserModule,

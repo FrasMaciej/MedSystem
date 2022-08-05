@@ -27,8 +27,12 @@ export class DoctorService {
 
   editDoctor(doctor: Doctor){
     const deleteUrl = this.baseUrl+'/'+doctor._id;
-    console.log("Dziaua");
     return this.httpClient.put(deleteUrl, doctor);
   } 
+
+  addDoctor(doctor: Doctor){
+    const addUrl = this.baseUrl;
+    return this.httpClient.post(addUrl, doctor);
+  }
 
 }

@@ -11,3 +11,12 @@
     align-items: center;
 }
 
+.mat-newDoctorButton {
+    background-color: rgb(21, 190, 41);
+    color: #fff;
+}
+
+.mat-toolbar.mat-primary {
+    background-color: rgb(18, 190, 216);
+}
+
