@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Doctor } from '../models/doctor';
 import { DoctorService } from '../services/doctor.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-export interface EditDoctorData {
-  doctorToChange: Doctor;
+export interface DoctorData {
+  doctor: Doctor;
   newName: string;
   newSurname: string;
 }
@@ -17,16 +17,15 @@ export interface EditDoctorData {
 
 export class AdminPageComponent implements OnInit {
   doctors!: Doctor[];
-  doctor: Doctor = new Doctor();
-
-  constructor(private doctorService: DoctorService, public dialog: MatDialog) { } 
+  constructor(private doctorService: DoctorService, public dialog: MatDialog) {
+  } 
 
   openEditDoctorDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
       width: '500px',
       height: '300px',
       autoFocus: false,
-      data: {doctorToChange: doctor, newName: doctor.name, newSurname: doctor.surname}
+      data: {doctor: doctor, newName: doctor.name, newSurname: doctor.surname}
       
     });
 
@@ -44,7 +43,7 @@ export class AdminPageComponent implements OnInit {
       width: '500px',
       height: '300px',
       autoFocus: false,
-      data: {newName: '', newSurname: '', doctorToChange: new Doctor}
+      data: {newName: '', newSurname: '', doctor: new Doctor}
     });
 
     dialogRef.afterClosed().subscribe( result => {
@@ -54,7 +53,6 @@ export class AdminPageComponent implements OnInit {
         });
       }
     });
-
   }
 
   ngOnInit(): void {
@@ -67,7 +65,6 @@ export class AdminPageComponent implements OnInit {
   removeDoctor(doctor: Doctor){
       this.doctorService.removeDoctor(doctor).subscribe( () => {
         this.ngOnInit();
-        console.log(this.doctorService.getDoctors());
     });
   }
 
@@ -83,20 +80,18 @@ export class AdminPageComponent implements OnInit {
   styleUrls: ['doctor-edit-dialog.css']
 })
 export class DoctorEditDialog {
-
   constructor(
     public dialogRef: MatDialogRef<DoctorEditDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: EditDoctorData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
 
   backClick(): void {
     this.dialogRef.close();
   }
 
   saveClick(): void {
-    this.data.doctorToChange.name = this.data.newName;
-    this.data.doctorToChange.surname = this.data.newSurname;
+    this.data.doctor.name = this.data.newName;
+    this.data.doctor.surname = this.data.newSurname;
   }
-
 }
 
 @Component({
@@ -106,18 +101,16 @@ export class DoctorEditDialog {
 })
 
 export class DoctorAddDialog {
-
   constructor(
     public dialogRef: MatDialogRef<DoctorAddDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: EditDoctorData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
 
   backClick(): void {
     this.dialogRef.close();
   }
 
   saveClick(): void {
-    this.data.doctorToChange.name = this.data.newName;
-    this.data.doctorToChange.surname = this.data.newSurname;
+    this.data.doctor.name = this.data.newName;
+    this.data.doctor.surname = this.data.newSurname;
   }
-
 }

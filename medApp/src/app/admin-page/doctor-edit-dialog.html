@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Edytujesz dane lekarza: <br> {{data.doctorToChange.name}} {{data.doctorToChange.surname}}</h1>
+<h1 mat-dialog-title>Edytujesz dane lekarza: <br> {{data.doctor.name}} {{data.doctor.surname}}</h1>
 <div mat-dialog-content>
   <mat-form-field>
     <input matInput placeholder="Imię" [(ngModel)]="data.newName">
@@ -11,6 +11,6 @@
 
 <div mat-dialog-actions align="center">
   <button mat-button (click)="backClick()">Powrót</button>
-  <button mat-button (click)="saveClick()" [mat-dialog-close]="data.doctorToChange">Zapisz</button>
+  <button mat-button (click)="saveClick()" [mat-dialog-close]="data.doctor">Zapisz</button>
 </div>
 
