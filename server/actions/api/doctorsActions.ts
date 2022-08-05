@@ -39,6 +39,17 @@ class DoctorActions {
 
         res.status(201).json(doctor);
     }
+
+    async addSpecialization(req: any, res: any){
+        const id = req.params.id;
+        const specialization = req.body.specialization;
+
+        const doctor = await Doctor.findOne({_id: id});
+        doctor.specializations.push(specialization);
+        await doctor.save();
+
+        res.status(201).json(doctor);
+    }
     
     async updateDoctor(req: any, res: any){
         const id = req.params.id;

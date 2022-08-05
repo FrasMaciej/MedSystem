@@ -13,6 +13,8 @@ router.get('/doctors', doctorActions.getAllDoctors);
 router.get('/doctors/:id', doctorActions.getDoctor);
 // Zapisywanie nowego lekarza
 router.post('/doctors', doctorActions.saveDoctor);
+// Dodawanie nowej specjalizacji dla lekarza
+router.post('/doctors/addSpecialization/:id', doctorActions.addSpecialization);
 // Edytowanie lekarza
 router.put('/doctors/:id', doctorActions.updateDoctor);
 // Usuwanie lekarza

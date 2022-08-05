@@ -9,6 +9,9 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    specializations: {
+        type: [String],
+    }
 });
 
 const Doctor = mongoose.model('Doctor', DoctorSchema);
