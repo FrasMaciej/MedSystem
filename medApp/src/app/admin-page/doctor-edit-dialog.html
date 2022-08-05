@@ -9,6 +9,30 @@
   </mat-form-field>    
 </div>
 
+<div class="specializations">Specjalizacje</div>
+<mat-selection-list #doctor [multiple]="false" class="custom-scroll-bar"> 
+  <mat-list-option *ngFor="let specialization of data.doctor.specializations">
+    <div id="specializationsList">
+
+      <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSpecialization(specialization)" (click)="onRemove($event)">
+        <mat-icon>remove_circle</mat-icon>
+      </button>
+
+      {{ specialization }}
+
+    </div>
+  </mat-list-option>
+</mat-selection-list>
+
+<div class="addNewSpecialization" align="center">
+  <mat-form-field appearance="fill">
+    <mat-label>Specjalizacja</mat-label>
+    <input matInput [(ngModel)]="data.newSpec">
+  </mat-form-field>
+  &nbsp;
+  <button mat-raised-button color="editDoctorButton" (click)="addNewSpec()">Dodaj specjalizację</button>
+</div>
+
 <div mat-dialog-actions align="center">
   <button mat-button (click)="backClick()">Powrót</button>
   <button mat-button (click)="saveClick()" [mat-dialog-close]="data.doctor">Zapisz</button>

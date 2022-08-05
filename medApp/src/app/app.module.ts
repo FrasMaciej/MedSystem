@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,6 +38,7 @@ import { DoctorService } from './services/doctor.service';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    MatCardModule,
     MatDialogModule,
     MatInputModule,
     MatListModule,

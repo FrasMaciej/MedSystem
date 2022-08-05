@@ -7,6 +7,8 @@ export interface DoctorData {
   doctor: Doctor;
   newName: string;
   newSurname: string;
+  newSpecializations: string[];
+  newSpec: string;
 }
 
 @Component({
@@ -23,9 +25,9 @@ export class AdminPageComponent implements OnInit {
   openEditDoctorDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
       width: '500px',
-      height: '300px',
+      height: '600px',
       autoFocus: false,
-      data: {doctor: doctor, newName: doctor.name, newSurname: doctor.surname}
+      data: {doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newSpecializations: doctor.specializations}
       
     });
 
@@ -92,6 +94,24 @@ export class DoctorEditDialog {
     this.data.doctor.name = this.data.newName;
     this.data.doctor.surname = this.data.newSurname;
   }
+
+  onRemove(e: Event) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+
+  removeSpecialization(specialization: string){
+    const index = this.data.newSpecializations.indexOf(specialization);
+    this.data.newSpecializations.splice(index,1);                              
+  }
+
+  addNewSpec(){
+    if(this.data.newSpec!=''){
+      this.data.newSpecializations.push(this.data.newSpec);
+      this.data.newSpec='';
+    }
+  }
+
 }
 
 @Component({
@@ -112,5 +132,6 @@ export class DoctorAddDialog {
   saveClick(): void {
     this.data.doctor.name = this.data.newName;
     this.data.doctor.surname = this.data.newSurname;
+    this.data.doctor.specializations = this.data.newSpecializations;
   }
 }

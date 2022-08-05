@@ -20,3 +20,9 @@
     background-color: rgb(18, 190, 216);
 }
 
+.custom-scroll-bar{
+    height:25vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+

@@ -1,5 +1,6 @@
 export class Doctor {
+    _id!: string;
     name!: string;
     surname!: string;
-    _id!: string;
+    specializations!: string[];
 }

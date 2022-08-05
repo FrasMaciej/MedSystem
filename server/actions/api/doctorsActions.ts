@@ -55,10 +55,12 @@ class DoctorActions {
         const id = req.params.id;
         const name = req.body.name;
         const surname = req.body.surname;
+        const specializations = req.body.specializations;
 
         const doctor = await Doctor.findOne({_id: id});
         doctor.name = name;
         doctor.surname = surname;
+        doctor.specializations = specializations;
         await doctor.save();
 
         res.status(201).json(doctor);
