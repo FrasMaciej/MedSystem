@@ -25,7 +25,7 @@ export class AdminPageComponent implements OnInit {
   openEditDoctorDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
       width: '500px',
-      height: '600px',
+      height: '550px',
       autoFocus: false,
       data: {doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newSpecializations: doctor.specializations}
       
