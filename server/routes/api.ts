@@ -15,10 +15,13 @@ router.get('/doctors/:id', doctorActions.getDoctor);
 router.post('/doctors', doctorActions.saveDoctor);
 // Dodawanie nowej specjalizacji dla lekarza
 router.post('/doctors/addSpecialization/:id', doctorActions.addSpecialization);
+// Dodawanie slotów w grafiku
+router.post('/doctors/addTerminsSlots/:id', doctorActions.addTerminsSlots);
 // Edytowanie lekarza
 router.put('/doctors/:id', doctorActions.updateDoctor);
 // Usuwanie lekarza
 router.delete('/doctors/:id', doctorActions.deleteDoctor);
+
 
 export {};
 module.exports = router;

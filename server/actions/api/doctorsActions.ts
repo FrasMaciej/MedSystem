@@ -1,9 +1,9 @@
 import { notEqual } from "assert";
+import { Schema } from "mongoose";
 
 const Doctor = require('../../db/models/doctor');
 
 class DoctorActions {
-
 
     async getAllDoctors(req: any, res: any){
         let doc;
@@ -49,9 +49,91 @@ class DoctorActions {
         doctor.specializations.push(specialization);
         await doctor.save();
 
+        
         res.status(201).json(doctor);
     }
     
+    // TO_DO !!!
+    async addTerminsSlots(req: any, res: any){
+        var json;
+        var dateStr;
+        let id = req.params.id;
+        let singleVisitTime = req.body.singleVisitTime;
+
+        // Wyciągnięcie daty startowej z JSON-a
+        json = req.body.scheduleDate;
+        dateStr = JSON.parse(json);
+        let scheduleDate = new Date(dateStr);
+
+        // Wyciągnięcie godziny końcowej z JSON-a
+        json = req.body.finishHour;
+        dateStr = JSON.parse(json);
+        let finishHour = new Date(dateStr);
+
+        // Wyciągnięcie dotychczasowych danych lekarza
+        let doctor = await Doctor.findOne({_id: id});
+
+        // Utworzenie pomocniczego schema dla grafiku
+        const scheduleSchema = new Schema ({
+            scheduleDate: Date,
+            finishHour: Date,
+            singleVisitTime: Number,
+            visits:[{
+                startHour: Date,
+                finishHour: Date,
+                isFree: Boolean,
+                patientInfo:{
+                    name: String,
+                    surname: String
+                },
+                visitNote: String
+                
+            }]
+        })
+        //
+        var index: number = doctor.schedule.push(scheduleSchema)-1;
+        doctor.schedule[index].scheduleDate = scheduleDate;
+        doctor.schedule[index].finishHour = finishHour
+        doctor.schedule[index].singleVisitTime = singleVisitTime;
+        
+        // let visit = {
+        //     startHour: req.body.startingDateHour,
+        //     finishHour: req.body.endingHour,
+        //     isFree: Boolean = false,
+        //     patientInfo: patientInfo,
+        //     visitNote: String
+        // }
+
+        // let newSchedule = {
+        //     scheduleDate: Date = req.body.startingDateHour,
+        //     finishHour: Date = req.body.endingHour,
+        //     singleVisitTime: Number = slotTime,
+        //     visits: [visit]
+        // };
+        
+        // let start: Date = startingDate;
+        // //start.setSeconds(0);
+        // let end: Date = endingHour;
+        // //endingHour.setSeconds(0);
+        // let loop: Date = start;
+
+        // while(loop < end){
+        //     visit.startHour = loop;
+        //     loop.setMinutes(loop.getMinutes() + slotTime)
+        //     visit.finishHour = loop;
+        //     visit.isFree = true;
+        //     visit.patientInfo.name = '';
+        //     visit.patientInfo.surname = '';
+        //     visit.visitNote = '';
+        //     newSchedule.visits.push(visit);
+        // }
+
+        // newSchedulesList.push(newSchedule);
+        // doctor.schedule = newSchedulesList;
+        await doctor.save();
+        res.status(201).json(doctor);
+    }
+
     async updateDoctor(req: any, res: any){
         const id = req.params.id;
         const name = req.body.name;
@@ -72,7 +154,7 @@ class DoctorActions {
     async deleteDoctor(req: any, res: any){
         const id = req.params.id;
         await Doctor.deleteOne({ _id: id });
-
+        
         res.sendStatus(204);
     }
 }
