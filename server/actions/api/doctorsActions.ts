@@ -74,11 +74,23 @@ class DoctorActions {
         let doctor = await Doctor.findOne({_id: id});
 
         // Utworzenie pomocniczego schema dla grafiku
+
+        const visitSchema = new Schema ({
+            startHour: Date,
+            finishHour: Date,
+            isFree: Boolean,
+            patientInfo:{
+                name: String,
+                surname: String
+            },
+            visitNote: String
+        })
+
         const scheduleSchema = new Schema ({
             scheduleDate: Date,
             finishHour: Date,
             singleVisitTime: Number,
-            visits:[{
+            visits: [{
                 startHour: Date,
                 finishHour: Date,
                 isFree: Boolean,
@@ -87,22 +99,18 @@ class DoctorActions {
                     surname: String
                 },
                 visitNote: String
-                
             }]
         })
         //
+
         var index: number = doctor.schedule.push(scheduleSchema)-1;
         doctor.schedule[index].scheduleDate = scheduleDate;
         doctor.schedule[index].finishHour = finishHour
         doctor.schedule[index].singleVisitTime = singleVisitTime;
+        var index2: number = doctor.schedule[index].visits.push(visitSchema)-1;
+        console.log(index2);
+        doctor.schedule[index].visit[index2].visitNote = 'aaa';
         
-        // let visit = {
-        //     startHour: req.body.startingDateHour,
-        //     finishHour: req.body.endingHour,
-        //     isFree: Boolean = false,
-        //     patientInfo: patientInfo,
-        //     visitNote: String
-        // }
 
         // let newSchedule = {
         //     scheduleDate: Date = req.body.startingDateHour,
