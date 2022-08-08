@@ -3,6 +3,11 @@
     <button mat-icon-button class="icon">
       <mat-icon>menu</mat-icon>
     </button>
+    <a [routerLink]="['/']">
+      <button mat-icon-button class="icon">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+    </a>
     <span>Panel Administratora</span>
     <span class="spacer"></span>
     <button mat-raised-button color="newDoctorButton" (click)="openAddDoctorDialog()">Dodaj lekarza</button>

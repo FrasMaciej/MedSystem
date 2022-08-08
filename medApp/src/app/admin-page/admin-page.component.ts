@@ -26,9 +26,9 @@ export class AdminPageComponent implements OnInit {
   openEditDoctorDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
       width: '500px',
-      height: '550px',
+      height: '600px',
       autoFocus: false,
-      data: {doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newSpecializations: doctor.specializations}
+      data: {doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newCity: doctor.city, newSpecializations: doctor.specializations}
       
     });
 
@@ -44,7 +44,7 @@ export class AdminPageComponent implements OnInit {
   openAddDoctorDialog(): void {
     const dialogRef = this.dialog.open(DoctorAddDialog, {
       width: '500px',
-      height: '300px',
+      height: '325px',
       autoFocus: false,
       data: {newName: '', newSurname: '', newCity: '', doctor: new Doctor}
     });
@@ -94,6 +94,8 @@ export class DoctorEditDialog {
   saveClick(): void {
     this.data.doctor.name = this.data.newName;
     this.data.doctor.surname = this.data.newSurname;
+    this.data.doctor.city = this.data.newCity;
+    this.data.doctor.specializations = this.data.newSpecializations;
   }
 
   onRemove(e: Event) {
