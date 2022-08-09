@@ -13,6 +13,24 @@
   </mat-list-option>
 </mat-selection-list>
 
+<div mat-dialog-content align="center">
+  <mat-form-field>
+    <input matInput type="datetime-local" placeholder="Data początkowa" [(ngModel)]="data.newStartDate">
+  </mat-form-field>   
+  <br>
+  <mat-form-field>
+    <input matInput type="datetime-local" placeholder="Data końcowa" (ngModel)="data.newFinishDate">
+  </mat-form-field> 
+  <br>
+  <mat-form-field>
+    <input matInput placeholder="Czas pojedynczej wizyty (w min)" [(ngModel)]="data.newVisitTime">
+  </mat-form-field>   
+</div>
+<br>
+<div class="addNewSchedule" align="center">
+  <button mat-raised-button color="addScheduleButton" (click)="addNewSchedule()">Dodaj grafik</button>
+</div>
+<br>
 <div mat-dialog-actions align="center">
     <button mat-button (click)="backClick()">Powrót</button>
     <button mat-button (click)="saveClick()" [mat-dialog-close]="data.doctor">Zapisz</button>

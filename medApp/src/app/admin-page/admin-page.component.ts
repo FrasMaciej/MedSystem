@@ -12,6 +12,9 @@ export interface DoctorData {
   newSpecializations: string[];
   newSpec: string;
   newSchedule: Schedule[];
+  newVisitTime: number;
+  newStartDate: Date;
+  newFinishDate: Date;
 }
 
 @Component({
@@ -63,9 +66,9 @@ export class AdminPageComponent implements OnInit {
   openSchedulesDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(SchedulesDialog, {
       width: '600px',
-      height: '500px',
+      height: '800px',
       autoFocus: false,
-      data: {doctor: doctor, newSchedule: doctor.schedule}
+      data: {doctor: doctor, newSchedule: doctor.schedule, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0}
     });
 
     dialogRef.afterClosed().subscribe( result => {
@@ -186,6 +189,11 @@ export class SchedulesDialog {
   onRemove(e: Event) {
     e.preventDefault();
     e.stopImmediatePropagation();
+  }
+
+  addNewSchedule(){
+    console.log(this.data.newStartDate);
+    console.log(this.data.newFinishDate);
   }
 
 }
