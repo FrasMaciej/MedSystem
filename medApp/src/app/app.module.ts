@@ -15,10 +15,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AdminPageComponent, DoctorAddDialog, DoctorEditDialog } from './admin-page/admin-page.component';
+import { AdminPageComponent, DoctorAddDialog, DoctorEditDialog, SchedulesDialog } from './admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page';
 import { DoctorService } from './services/doctor.service';
+import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 
 
 
@@ -29,7 +30,9 @@ import { DoctorService } from './services/doctor.service';
     LoginComponent,
     AdminPageComponent,
     DoctorEditDialog,
-    DoctorAddDialog
+    DoctorAddDialog,
+    SchedulesDialog,
+    SchedulePageComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Doctor } from '../models/doctor';
+import { Schedule } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 
 export interface DoctorData {
@@ -10,6 +11,7 @@ export interface DoctorData {
   newCity: string;
   newSpecializations: string[];
   newSpec: string;
+  newSchedule: Schedule[];
 }
 
 @Component({
@@ -28,8 +30,8 @@ export class AdminPageComponent implements OnInit {
       width: '500px',
       height: '600px',
       autoFocus: false,
-      data: {doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newCity: doctor.city, newSpecializations: doctor.specializations}
-      
+      data: {doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newCity: doctor.city,
+         newSpecializations: doctor.specializations, newSchedule: doctor.schedule}
     });
 
     dialogRef.afterClosed().subscribe( result => {
@@ -50,8 +52,25 @@ export class AdminPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      if(result!=null){
+      if(result!==null){
         this.doctorService.addDoctor(result).subscribe((result)=>{
+          this.ngOnInit();
+        });
+      }
+    });
+  }
+
+  openSchedulesDialog(doctor: Doctor): void {
+    const dialogRef = this.dialog.open(SchedulesDialog, {
+      width: '600px',
+      height: '500px',
+      autoFocus: false,
+      data: {doctor: doctor, newSchedule: doctor.schedule}
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      if(result!=null){
+        this.doctorService.editDoctor(result).subscribe((result)=>{
           this.ngOnInit();
         });
       }
@@ -69,6 +88,7 @@ export class AdminPageComponent implements OnInit {
       this.doctorService.removeDoctor(doctor).subscribe( () => {
         this.ngOnInit();
     });
+    
   }
 
   onRemove(e: Event) {
@@ -122,7 +142,6 @@ export class DoctorEditDialog {
   templateUrl: 'doctor-add-dialog.html',
   styleUrls: ['doctor-add-dialog.css']
 })
-
 export class DoctorAddDialog {
   constructor(
     public dialogRef: MatDialogRef<DoctorAddDialog>,
@@ -138,4 +157,35 @@ export class DoctorAddDialog {
     this.data.doctor.specializations = this.data.newSpecializations;
     this.data.doctor.city = this.data.newCity;
   }
+}
+
+
+@Component({
+  selector: 'schedules-dialog',
+  templateUrl: 'schedules-dialog.html',
+  styleUrls: ['schedules-dialog.css']
+})
+export class SchedulesDialog {
+  constructor(
+    public dialogRef: MatDialogRef<SchedulesDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
+
+  backClick(): void {
+    this.dialogRef.close();
+  }
+
+  saveClick(): void {
+    this.data.doctor.schedule = this.data.newSchedule;
+  }
+
+  removeSchedule(schedule: Schedule): void {
+    const index = this.data.newSchedule.indexOf(schedule);
+    this.data.newSchedule.splice(index,1);     
+  }
+
+  onRemove(e: Event) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+
 }

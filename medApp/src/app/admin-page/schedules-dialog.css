@@ -1,0 +1,22 @@
+h1{
+    text-align: center;
+}
+
+.custom-scroll-bar{
+    height:35vh;
+    overflow-x: hidden;
+}
+
+.schedules{
+    text-align: center;
+}
+
+#specializationsList{
+    display: flex;
+    align-items: center;
+}
+
+.mat-editDoctorButton {
+    background-color: rgb(21, 190, 41);
+    color: #fff;
+}

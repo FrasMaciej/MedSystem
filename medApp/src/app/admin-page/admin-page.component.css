@@ -21,7 +21,7 @@
 }
 
 .custom-scroll-bar{
-    height:25vh;
+    height:50vh;
     overflow-y: scroll;
     overflow-x: hidden;
 }

@@ -1,0 +1,19 @@
+<div class="schedules"><h1>Grafiki dzienne - Dr. {{data.doctor.name}} {{data.doctor.surname}}</h1></div>
+<mat-selection-list #doctor [multiple]="false" class="custom-scroll-bar"> 
+  <mat-list-option *ngFor="let singleSchedule of data.doctor.schedule">
+    <div id="schedulesList">
+
+      <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSchedule(singleSchedule)" (click)="onRemove($event)">
+        <mat-icon>remove_circle</mat-icon>
+      </button>
+
+      {{ singleSchedule.scheduleDate | date:'yyyy-MM-dd HH:mm':'+0000'}} -- {{ singleSchedule.finishHour | date:'HH:mm':'+0000'}}
+
+    </div>
+  </mat-list-option>
+</mat-selection-list>
+
+<div mat-dialog-actions align="center">
+    <button mat-button (click)="backClick()">Powrót</button>
+    <button mat-button (click)="saveClick()" [mat-dialog-close]="data.doctor">Zapisz</button>
+</div>
