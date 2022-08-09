@@ -24,17 +24,21 @@ const ScheduleSchema = new mongoose.Schema({
         },
         isFree:{
             type: Boolean,
+            default: true
         },
         patientInfo:{
             name:{
-                type: String
+                type: String,
+                defualt: ''
             },
             surname:{
-                type: String
+                type: String,
+                defualt: ''
             }
         },
         visitNote:{
-            type: String
+            type: String,
+            defualt: ''
         }
     }]
 })

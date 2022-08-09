@@ -75,7 +75,7 @@ class DoctorActions {
 
         // Utworzenie pomocniczego schema dla grafiku
 
-        const visitSchema = new Schema ({
+        var visitSchema = new Schema ({
             startHour: Date,
             finishHour: Date,
             isFree: Boolean,
@@ -103,43 +103,30 @@ class DoctorActions {
         })
         //
 
-        var index: number = doctor.schedule.push(scheduleSchema)-1;
-        doctor.schedule[index].scheduleDate = scheduleDate;
-        doctor.schedule[index].finishHour = finishHour
-        doctor.schedule[index].singleVisitTime = singleVisitTime;
-        var index2: number = doctor.schedule[index].visits.push(visitSchema)-1;
-        console.log(index2);
-        doctor.schedule[index].visit[index2].visitNote = 'aaa';
+        var scheduleIndex: number = doctor.schedule.push(scheduleSchema)-1;
+        doctor.schedule[scheduleIndex].scheduleDate = new Date(scheduleDate);
+        doctor.schedule[scheduleIndex].finishHour = new Date(finishHour)
+        doctor.schedule[scheduleIndex].singleVisitTime = singleVisitTime;
         
+        let start: Date = scheduleDate;
+        start.setSeconds(0);
+        let end: Date = finishHour;
+        finishHour.setSeconds(0);
+        let loop: Date = start;
+        let _loop: Date;
+        var listIndex; 
+        while(loop < end){
+            listIndex = doctor.schedule[scheduleIndex].visits.push(visitSchema)-1;
+            _loop = new Date(loop);
+            doctor.schedule[scheduleIndex].visits[listIndex].startHour = _loop;
+            loop.setMinutes(loop.getMinutes() + singleVisitTime);
+            _loop = new Date(loop);
+            doctor.schedule[scheduleIndex].visits[listIndex].finishHour = _loop;
+        }
 
-        // let newSchedule = {
-        //     scheduleDate: Date = req.body.startingDateHour,
-        //     finishHour: Date = req.body.endingHour,
-        //     singleVisitTime: Number = slotTime,
-        //     visits: [visit]
-        // };
-        
-        // let start: Date = startingDate;
-        // //start.setSeconds(0);
-        // let end: Date = endingHour;
-        // //endingHour.setSeconds(0);
-        // let loop: Date = start;
-
-        // while(loop < end){
-        //     visit.startHour = loop;
-        //     loop.setMinutes(loop.getMinutes() + slotTime)
-        //     visit.finishHour = loop;
-        //     visit.isFree = true;
-        //     visit.patientInfo.name = '';
-        //     visit.patientInfo.surname = '';
-        //     visit.visitNote = '';
-        //     newSchedule.visits.push(visit);
-        // }
-
-        // newSchedulesList.push(newSchedule);
-        // doctor.schedule = newSchedulesList;
         await doctor.save();
         res.status(201).json(doctor);
+
     }
 
     async updateDoctor(req: any, res: any){
