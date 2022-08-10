@@ -7,7 +7,7 @@
         <mat-icon>remove_circle</mat-icon>
       </button>
 
-      {{ singleSchedule.scheduleDate | date:'yyyy-MM-dd HH:mm'}} -- {{ singleSchedule.finishHour | date:'HH:mm'}}
+      {{ singleSchedule.scheduleDate | date:'yyyy-MM-dd HH:mm':'+0000'}} -- {{ singleSchedule.finishHour | date:'HH:mm':'+0000'}}
 
     </div>
   </mat-list-option>
@@ -33,5 +33,4 @@
 <br>
 <div mat-dialog-actions align="center">
     <button mat-button (click)="backClick()">Powrót</button>
-    <button mat-button (click)="saveClick()" [mat-dialog-close]="data.doctor">Zapisz</button>
 </div>

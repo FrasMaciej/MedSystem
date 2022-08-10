@@ -55,7 +55,11 @@ export class AdminPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe( result => {
+      if(result!==null){
+        this.doctorService.addDoctor(result).subscribe((result)=>{
           this.ngOnInit();
+        });
+      }
     });
   }
 
@@ -66,13 +70,9 @@ export class AdminPageComponent implements OnInit {
       autoFocus: false,
       data: {doctor: doctor, newSchedule: doctor.schedule, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0}
     });
-
+    
     dialogRef.afterClosed().subscribe( result => {
-      if(result!=null){
-        this.doctorService.editDoctor(result).subscribe((result)=>{
           this.ngOnInit();
-        });
-      }
     });
   }
 
@@ -182,12 +182,11 @@ export class SchedulesDialog {
   removeSchedule(schedule: Schedule): void {
     const index = this.data.newSchedule.indexOf(schedule);
     this.data.newSchedule.splice(index,1);   
-    this.data.doctor.schedule = this.data.newSchedule;
     
     this.doctorService.editDoctor(this.data.doctor).subscribe( () => {
         
     });
-    
+
   }
 
   onRemove(e: Event) {
@@ -199,9 +198,10 @@ export class SchedulesDialog {
     const schedule = new Schedule(this.data.newStartDate, this.data.newFinishDate, this.data.newVisitTime);
     console.log(this.data.newStartDate);
     this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe( () => {
-
+        
     })
     this.data.newSchedule.push(schedule);
+
   }
 
 }
