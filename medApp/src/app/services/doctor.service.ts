@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { HttpClient } from '@angular/common/http';
+import { Schedule } from '../models/schedule';
 
 
 
@@ -33,6 +34,11 @@ export class DoctorService {
   addDoctor(doctor: Doctor){
     const addUrl = this.baseUrl;
     return this.httpClient.post(addUrl, doctor);
+  }
+
+  addTerminsSlots(schedule: Schedule, doctor: Doctor){
+    const addTerminsUrl = this.baseUrl+'/'+'addTerminsSlots'+'/'+doctor._id;
+    return this.httpClient.post(addTerminsUrl, schedule);
   }
 
 }

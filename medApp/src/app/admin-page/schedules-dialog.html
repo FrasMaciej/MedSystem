@@ -7,7 +7,7 @@
         <mat-icon>remove_circle</mat-icon>
       </button>
 
-      {{ singleSchedule.scheduleDate | date:'yyyy-MM-dd HH:mm':'+0000'}} -- {{ singleSchedule.finishHour | date:'HH:mm':'+0000'}}
+      {{ singleSchedule.scheduleDate | date:'yyyy-MM-dd HH:mm'}} -- {{ singleSchedule.finishHour | date:'HH:mm'}}
 
     </div>
   </mat-list-option>
@@ -19,7 +19,7 @@
   </mat-form-field>   
   <br>
   <mat-form-field>
-    <input matInput type="datetime-local" placeholder="Data końcowa" (ngModel)="data.newFinishDate">
+    <input matInput type="datetime-local" placeholder="Data końcowa" [(ngModel)]="data.newFinishDate">
   </mat-form-field> 
   <br>
   <mat-form-field>

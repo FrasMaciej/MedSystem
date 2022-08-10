@@ -53,22 +53,25 @@ class DoctorActions {
         res.status(201).json(doctor);
     }
     
-    // TO_DO !!!
     async addTerminsSlots(req: any, res: any){
         var json;
         var dateStr;
         let id = req.params.id;
-        let singleVisitTime = req.body.singleVisitTime;
+        let singleVisitTime: number = Number(req.body.singleVisitTime);
+        
 
         // Wyciągnięcie daty startowej z JSON-a
         json = req.body.scheduleDate;
-        dateStr = JSON.parse(json);
-        let scheduleDate = new Date(dateStr);
+        let scheduleDate = new Date(json);
+        scheduleDate = new Date(scheduleDate.setHours(scheduleDate.getHours() - (scheduleDate.getUTCHours() - scheduleDate.getHours())));
 
         // Wyciągnięcie godziny końcowej z JSON-a
         json = req.body.finishHour;
-        dateStr = JSON.parse(json);
-        let finishHour = new Date(dateStr);
+        let finishHour = new Date(json);
+        finishHour = new Date(finishHour.setHours(finishHour.getHours() - (finishHour.getUTCHours() - finishHour.getHours())));
+
+
+        // Naprawienie godziny
 
         // Wyciągnięcie dotychczasowych danych lekarza
         let doctor = await Doctor.findOne({_id: id});
@@ -108,13 +111,15 @@ class DoctorActions {
         doctor.schedule[scheduleIndex].finishHour = new Date(finishHour)
         doctor.schedule[scheduleIndex].singleVisitTime = singleVisitTime;
         
-        let start: Date = scheduleDate;
+        let start: Date = new Date(scheduleDate);
         start.setSeconds(0);
-        let end: Date = finishHour;
+        let end: Date = new Date(finishHour);
         finishHour.setSeconds(0);
-        let loop: Date = start;
+        let loop: Date = new Date(start);
         let _loop: Date;
         var listIndex; 
+
+
         while(loop < end){
             listIndex = doctor.schedule[scheduleIndex].visits.push(visitSchema)-1;
             _loop = new Date(loop);

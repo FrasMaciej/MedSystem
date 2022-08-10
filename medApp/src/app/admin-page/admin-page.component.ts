@@ -55,11 +55,7 @@ export class AdminPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      if(result!==null){
-        this.doctorService.addDoctor(result).subscribe((result)=>{
           this.ngOnInit();
-        });
-      }
     });
   }
 
@@ -171,7 +167,9 @@ export class DoctorAddDialog {
 export class SchedulesDialog {
   constructor(
     public dialogRef: MatDialogRef<SchedulesDialog>,
+    private doctorService: DoctorService,
     @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
+
 
   backClick(): void {
     this.dialogRef.close();
@@ -183,7 +181,13 @@ export class SchedulesDialog {
 
   removeSchedule(schedule: Schedule): void {
     const index = this.data.newSchedule.indexOf(schedule);
-    this.data.newSchedule.splice(index,1);     
+    this.data.newSchedule.splice(index,1);   
+    this.data.doctor.schedule = this.data.newSchedule;
+    
+    this.doctorService.editDoctor(this.data.doctor).subscribe( () => {
+        
+    });
+    
   }
 
   onRemove(e: Event) {
@@ -192,8 +196,12 @@ export class SchedulesDialog {
   }
 
   addNewSchedule(){
+    const schedule = new Schedule(this.data.newStartDate, this.data.newFinishDate, this.data.newVisitTime);
     console.log(this.data.newStartDate);
-    console.log(this.data.newFinishDate);
+    this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe( () => {
+
+    })
+    this.data.newSchedule.push(schedule);
   }
 
 }

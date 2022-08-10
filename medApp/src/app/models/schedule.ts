@@ -14,8 +14,15 @@ class Visit{
 export class Schedule {
     scheduleDate!: Date;
     finishHour!: Date;
-    singleVisitTime!: Date;
+    singleVisitTime!: Number;
     visits!: Visit[];
+
+    constructor(scheduleDate: Date, finishHour: Date, singleVisitTime: Number){
+        this.scheduleDate = new Date(scheduleDate);
+        this.finishHour = new Date(finishHour);
+        this.singleVisitTime = singleVisitTime;
+    }
+
 }
 
 
