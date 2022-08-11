@@ -52,6 +52,8 @@ import { SchedulePageComponent } from './schedule-page/schedule-page.component';
       { path: '', component: MainPageComponent },
       { path: 'login', component: LoginComponent },
       { path: 'adminPage', component: AdminPageComponent },
+      { path: 'schedulePage/:docId/:schId', component: SchedulePageComponent },
+
     ])
   ],
   providers: [DoctorService],

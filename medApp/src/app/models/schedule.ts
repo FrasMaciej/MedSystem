@@ -15,6 +15,7 @@ export class Schedule {
     scheduleDate: Date;
     finishHour: Date;
     singleVisitTime: Number;
+    _id!: any;
     visits!: Visit[];
 
     constructor(scheduleDate: Date, finishHour: Date, singleVisitTime: Number){

@@ -1,7 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
+import { SchedulePageComponent } from '../schedule-page/schedule-page.component';
 import { DoctorService } from '../services/doctor.service';
 
 export interface DoctorData {
@@ -172,6 +173,7 @@ export class SchedulesDialog {
     private doctorService: DoctorService,
     @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
 
+
   backClick(): void {
     this.dialogRef.close();
   }
@@ -205,4 +207,10 @@ export class SchedulesDialog {
     })
     this.data.newSchedule.push(schedule);
   }
+
+  navigateToSchedule(index: number){
+
+  }
+
 }
+
