@@ -8,7 +8,7 @@
           <mat-icon>exit_to_app</mat-icon>
         </button>
       </a>
-      <span>Panel Administratora - obsługa grafiku dr. {{doctor.name}} {{doctor.surname}}</span>
+      Panel Administratora - obsługa grafiku dr.&nbsp;<div *ngIf="doctor?.name">{{doctor.name}}</div> &nbsp; <div *ngIf=doctor?.name>{{doctor.surname}}</div>
       <span class="spacer"></span>
     </mat-toolbar>
   </p>
