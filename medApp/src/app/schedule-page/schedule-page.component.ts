@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Doctor } from '../models/doctor';
+import { Schedule } from '../models/schedule';
+import { Visit } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 
 @Component({
@@ -12,6 +14,7 @@ export class SchedulePageComponent implements OnInit {
   schedule_id: string;
   doctor_id: string;
   doctor!: Doctor;
+  selectedSchedule: any;
 
   constructor(
     private actRoute: ActivatedRoute,
@@ -22,17 +25,26 @@ export class SchedulePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.doctor = {} as Doctor;
+    this.selectedSchedule = {} as Schedule;
     this.getDoctor();
+    this.getSchedule();
   }
 
   getDoctor(): void {
     this.doctorService.getDoctor(this.doctor_id).subscribe((doctor: Doctor) => {
       this.doctor = doctor;
+      this.getSchedule();
     })
   }
 
-  getD(){
-    console.log(this.doctor.schedule);
+  getSchedule(): void{
+    this.selectedSchedule = this.doctor.schedule.find(i => i._id === this.schedule_id);
+    return this.selectedSchedule;
+  }
+
+  openEditVistDialog(visit: Visit){
+
   }
 
 }

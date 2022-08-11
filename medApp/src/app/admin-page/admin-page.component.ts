@@ -75,9 +75,6 @@ export class AdminPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe( () => {
       this.updateDoctors();
     });
-
-    
-
   }
 
   ngOnInit(): void {
@@ -94,7 +91,6 @@ export class AdminPageComponent implements OnInit {
   removeDoctor(doctor: Doctor){
       this.doctorService.removeDoctor(doctor).subscribe( () => {
         this.updateDoctors();
-
     });
   }
 
@@ -211,7 +207,6 @@ export class SchedulesDialog {
     this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
     const schedule = new Schedule(this.data.newStartDate, this.data.newFinishDate, this.data.newVisitTime);
     this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe( () => {
-        
     })
     this.data.newSchedule.push(schedule);
   }

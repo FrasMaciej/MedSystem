@@ -3,7 +3,7 @@ class patient{
     surname!: String;
 }
 
-class Visit{
+export class Visit{
     startHour!: Date;
     finishHour!: Date;
     isFree!: Boolean;

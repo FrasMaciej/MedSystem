@@ -1,6 +1,6 @@
 <p>
     <mat-toolbar color="primary">
-      <button mat-icon-button class="icon" (click)="getD()">
+      <button mat-icon-button class="icon">
         <mat-icon>menu</mat-icon>
       </button>
       <a [routerLink]="['/adminPage']">
@@ -12,3 +12,19 @@
       <span class="spacer"></span>
     </mat-toolbar>
   </p>
+
+  <mat-selection-list #visit [multiple]="false" class="custom-scroll-bar"> 
+    <ng-container *ngIf="selectedSchedule">
+      <mat-list-option *ngFor="let visit of selectedSchedule.visits">
+        <!-- <div id="visitsList">
+    
+          <button id ="editButton" mat-icon-button color="black" (click)="openEditVistDialog(visit)" (click)="ngOnInit()">
+            <mat-icon>edit</mat-icon>
+          </button> -->
+    
+          {{ visit.startHour }} {{visit.finishHour}}, {{visit.isFree}}
+    
+        <!-- </div> -->
+      </mat-list-option>
+    </ng-container>
+  </mat-selection-list>
