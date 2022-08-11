@@ -11,10 +11,8 @@ export class MainPageComponent implements OnInit {
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  
   onUserButtonClick() {
     this.router.navigateByUrl('/login');
   }

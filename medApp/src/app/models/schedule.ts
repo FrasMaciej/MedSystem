@@ -12,9 +12,9 @@ class Visit{
 }
 
 export class Schedule {
-    scheduleDate!: Date;
-    finishHour!: Date;
-    singleVisitTime!: Number;
+    scheduleDate: Date;
+    finishHour: Date;
+    singleVisitTime: Number;
     visits!: Visit[];
 
     constructor(scheduleDate: Date, finishHour: Date, singleVisitTime: Number){

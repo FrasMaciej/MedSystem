@@ -63,15 +63,14 @@ class DoctorActions {
         // Wyciągnięcie daty startowej z JSON-a
         json = req.body.scheduleDate;
         let scheduleDate = new Date(json);
-        scheduleDate = new Date(scheduleDate.setHours(scheduleDate.getHours() - (scheduleDate.getUTCHours() - scheduleDate.getHours())));
 
         // Wyciągnięcie godziny końcowej z JSON-a
         json = req.body.finishHour;
         let finishHour = new Date(json);
-        finishHour = new Date(finishHour.setHours(finishHour.getHours() - (finishHour.getUTCHours() - finishHour.getHours())));
-
 
         // Naprawienie godziny
+        //scheduleDate = new Date(scheduleDate.setHours(scheduleDate.getHours() - (scheduleDate.getUTCHours() - scheduleDate.getHours())));
+        //finishHour = new Date(finishHour.setHours(finishHour.getHours() - (finishHour.getUTCHours() - finishHour.getHours())));
 
         // Wyciągnięcie dotychczasowych danych lekarza
         let doctor = await Doctor.findOne({_id: id});

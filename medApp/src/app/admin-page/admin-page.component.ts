@@ -25,8 +25,7 @@ export interface DoctorData {
 
 export class AdminPageComponent implements OnInit {
   doctors!: Doctor[];
-  constructor(private doctorService: DoctorService, public dialog: MatDialog) {
-  } 
+  constructor(private doctorService: DoctorService, public dialog: MatDialog) {} 
 
   openEditDoctorDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
@@ -40,7 +39,7 @@ export class AdminPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe( result => {
       if(result!=null){
         this.doctorService.editDoctor(result).subscribe((result)=>{
-          this.ngOnInit();
+          this.updateDoctors();
         });
       }
     });
@@ -57,7 +56,7 @@ export class AdminPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe( result => {
       if(result!==null){
         this.doctorService.addDoctor(result).subscribe((result)=>{
-          this.ngOnInit();
+          this.updateDoctors();
         });
       }
     });
@@ -71,12 +70,16 @@ export class AdminPageComponent implements OnInit {
       data: {doctor: doctor, newSchedule: doctor.schedule, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0}
     });
     
-    dialogRef.afterClosed().subscribe( result => {
-          this.ngOnInit();
+    dialogRef.afterClosed().subscribe( () => {
+      this.updateDoctors();
     });
   }
 
   ngOnInit(): void {
+    this.updateDoctors();
+  }
+
+  updateDoctors(): void {
     this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
       this.doctors = doctors;
       this.doctors.sort((a:any,b:any) => (a.surname < b.surname ? -1 : 1));
@@ -85,9 +88,9 @@ export class AdminPageComponent implements OnInit {
 
   removeDoctor(doctor: Doctor){
       this.doctorService.removeDoctor(doctor).subscribe( () => {
-        this.ngOnInit();
+        this.updateDoctors();
+
     });
-    
   }
 
   onRemove(e: Event) {
@@ -133,7 +136,6 @@ export class DoctorEditDialog {
       this.data.newSpec='';
     }
   }
-
 }
 
 @Component({
@@ -170,7 +172,6 @@ export class SchedulesDialog {
     private doctorService: DoctorService,
     @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
 
-
   backClick(): void {
     this.dialogRef.close();
   }
@@ -186,7 +187,6 @@ export class SchedulesDialog {
     this.doctorService.editDoctor(this.data.doctor).subscribe( () => {
         
     });
-
   }
 
   onRemove(e: Event) {
@@ -195,13 +195,14 @@ export class SchedulesDialog {
   }
 
   addNewSchedule(){
+    var startDate: Date = new Date(this.data.newStartDate);
+    var finishDate: Date = new Date(this.data.newFinishDate);
+    this.data.newStartDate = new Date(startDate.setHours(startDate.getHours() - (startDate.getUTCHours() - startDate.getHours())));
+    this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
     const schedule = new Schedule(this.data.newStartDate, this.data.newFinishDate, this.data.newVisitTime);
-    console.log(this.data.newStartDate);
     this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe( () => {
         
     })
     this.data.newSchedule.push(schedule);
-
   }
-
 }
