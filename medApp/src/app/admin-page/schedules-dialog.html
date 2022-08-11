@@ -1,6 +1,6 @@
 <div class="schedules"><h1>Grafiki dzienne - Dr. {{data.doctor.name}} {{data.doctor.surname}}</h1></div>
 <mat-selection-list #doctor [multiple]="false" class="custom-scroll-bar"> 
-    <mat-list-option *ngFor="let singleSchedule of data.doctor.schedule; let i = index" >
+    <mat-list-option *ngFor="let singleSchedule of data.doctor.schedule; let i = index" (click)="closeDialogRef()">
         <a [routerLink]="['schedulePage/', data.doctor._id, singleSchedule._id]">
 
         <div id="schedulesList">

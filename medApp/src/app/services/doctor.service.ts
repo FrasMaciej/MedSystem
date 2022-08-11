@@ -10,11 +10,16 @@ import { Schedule } from '../models/schedule';
   providedIn: 'root'
 })
 export class DoctorService {
-  private doctorsList: Array<Doctor> | any = [];
+  private doctorsList: Doctor[] | any = [];
   public baseUrl = 'http://localhost:8080/api/doctors';
 
 
   constructor(private httpClient: HttpClient) {}
+
+  getDoctor(id: string) : Observable<any>{
+    const getSelectedDoctorUrl = this.baseUrl+'/'+id;
+    return this.httpClient.get(getSelectedDoctorUrl);
+  }
 
   getDoctors() : Observable<any>{
     this.doctorsList = this.httpClient.get(this.baseUrl);

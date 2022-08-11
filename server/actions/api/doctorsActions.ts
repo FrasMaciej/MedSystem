@@ -20,8 +20,14 @@ class DoctorActions {
     //pobieranie lekarza
     async getDoctor(req: any, res: any){
         const id = req.params.id;
-        const doctor = await Doctor.findOne({ _id: id });
-        res.status(200).json(doctor);
+        let doc;
+        try {
+            doc = await Doctor.findOne({ _id: id });
+        } catch (err: any) {
+            return res.status(500).json({message: err.message});
+        }
+        console.log(doc);
+        res.status(200).json(doc);
     }
 
     async saveDoctor(req: any, res: any){

@@ -1,3 +1,4 @@
+import { DIALOG_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular/cdk/dialog';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Doctor } from '../models/doctor';
@@ -74,6 +75,9 @@ export class AdminPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe( () => {
       this.updateDoctors();
     });
+
+    
+
   }
 
   ngOnInit(): void {
@@ -187,13 +191,17 @@ export class SchedulesDialog {
     this.data.newSchedule.splice(index,1);   
     
     this.doctorService.editDoctor(this.data.doctor).subscribe( () => {
-        
+
     });
   }
 
   onRemove(e: Event) {
     e.preventDefault();
     e.stopImmediatePropagation();
+  }
+
+  closeDialogRef(){
+    this.dialogRef.close();
   }
 
   addNewSchedule(){
@@ -208,9 +216,6 @@ export class SchedulesDialog {
     this.data.newSchedule.push(schedule);
   }
 
-  navigateToSchedule(index: number){
-
-  }
 
 }
 

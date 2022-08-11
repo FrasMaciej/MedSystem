@@ -1,2 +1,14 @@
-<p>schedule-page works!</p>
-{{doctor_id}}/{{schedule_id}}
+<p>
+    <mat-toolbar color="primary">
+      <button mat-icon-button class="icon" (click)="getD()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <a [routerLink]="['/adminPage']">
+        <button mat-icon-button class="icon">
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
+      </a>
+      <span>Panel Administratora - obsługa grafiku dr. {{doctor.name}} {{doctor.surname}}</span>
+      <span class="spacer"></span>
+    </mat-toolbar>
+  </p>
