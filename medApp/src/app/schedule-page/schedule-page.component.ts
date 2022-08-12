@@ -1,9 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { Visit } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
+
+export interface ScheduleData{
+
+}
 
 @Component({
   selector: 'app-schedule-page',
@@ -45,5 +50,30 @@ export class SchedulePageComponent implements OnInit {
   openEditVistDialog(visit: Visit){
 
   }
+
+}
+
+@Component({
+  selector: 'edit-visit-dialog',
+  templateUrl: 'edit-visit-dialog.html',
+  styleUrls: ['edit-visit-dialog.css']
+})
+export class EditVisitDialog{
+  constructor(
+    public dialogRef: MatDialogRef<EditVisitDialog>,
+    private doctorService: DoctorService,
+    @Inject(MAT_DIALOG_DATA) public data: ScheduleData) {}
+
+    backClick(): void {
+      this.dialogRef.close();
+    }
+  
+    saveClick(): void {
+      //this .. visit .. = newVist ...
+    }
+
+    closeDialogRef(){
+      this.dialogRef.close();
+    }
 
 }

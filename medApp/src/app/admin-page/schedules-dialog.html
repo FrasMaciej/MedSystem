@@ -6,7 +6,7 @@
         <div id="schedulesList">
           <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSchedule(singleSchedule)" (click)="onRemove($event)">
             <mat-icon>remove_circle</mat-icon>
-          </button>{{singleSchedule.scheduleDate | date:'yyyy-MM-dd HH:mm':'+0000'}} -- {{ singleSchedule.finishHour | date:'HH:mm':'+0000'}}
+          </button>{{singleSchedule.scheduleDate | date:'yyyy-MM-dd HH:mm':'+0000'}} – {{ singleSchedule.finishHour | date:'HH:mm':'+0000'}}
         </div>
         </a>
     </mat-list-option>

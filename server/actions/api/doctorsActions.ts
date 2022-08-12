@@ -2,6 +2,8 @@ import { notEqual } from "assert";
 import { Schema } from "mongoose";
 
 const Doctor = require('../../db/models/doctor');
+const Schedule = require('../../db/models/doctor');
+
 
 class DoctorActions {
 
@@ -147,6 +149,7 @@ class DoctorActions {
         const specializations = req.body.specializations;
         const schedules = req.body.schedule;
 
+
         const doctor = await Doctor.findOne({_id: id});
         doctor.name = name;
         doctor.surname = surname;
@@ -163,6 +166,57 @@ class DoctorActions {
         await Doctor.deleteOne({ _id: id });
         
         res.sendStatus(204);
+    }
+
+    async editVisit(req: any, res: any){
+        const doctorId = req.params.doctorId;
+        const scheduleId = req.params.scheduleId;
+        const visitId = req.params.visitId;
+        const newNote = req.body.newNote;
+        const isFree = req.body.isFree;
+        const newName = req.body.newName;
+        const newSurname = req.body.newSurname;
+
+        let scheduleIndex: number = 0;
+        let visitIndex: number = 0;
+        let doctor;
+        
+        try {
+            doctor = await Doctor.findOne({ _id: doctorId });
+        } catch (err: any) {
+            return res.status(500).json({message: err.message});
+        }
+        
+
+        for(let i=0; i<doctor.schedule.length; i++){
+            if(doctor.schedule[i]._id = scheduleId){
+                scheduleIndex = i;
+                break;
+            }
+            else continue
+        }
+
+        for(let i=0; i<doctor.schedule[scheduleIndex].visits.length; i++){
+            if(doctor.schedule[scheduleIndex].visits[i]._id = visitId){
+                scheduleIndex = i;
+                break;
+            }
+            else continue
+        }
+
+        doctor.schedule[scheduleIndex].visits[visitIndex].isFree = isFree;
+        doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = newNote;
+        doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = newName;
+        doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = newSurname;
+
+        if(doctor.schedule[scheduleIndex].visits[visitIndex].isFree=true){
+            doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = '';
+            doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = null
+            doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = null
+        }
+
+        await doctor.save();
+        res.status(201).json(doctor);
     }
 }
 

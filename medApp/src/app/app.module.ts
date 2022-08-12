@@ -19,7 +19,7 @@ import { AdminPageComponent, DoctorAddDialog, DoctorEditDialog, SchedulesDialog 
 import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page';
 import { DoctorService } from './services/doctor.service';
-import { SchedulePageComponent } from './schedule-page/schedule-page.component';
+import { SchedulePageComponent, EditVisitDialog } from './schedule-page/schedule-page.component';
 
 
 
@@ -32,7 +32,8 @@ import { SchedulePageComponent } from './schedule-page/schedule-page.component';
     DoctorEditDialog,
     DoctorAddDialog,
     SchedulesDialog,
-    SchedulePageComponent
+    SchedulePageComponent,
+    EditVisitDialog
   ],
   imports: [
     BrowserModule,
@@ -53,7 +54,6 @@ import { SchedulePageComponent } from './schedule-page/schedule-page.component';
       { path: 'login', component: LoginComponent },
       { path: 'adminPage', component: AdminPageComponent },
       { path: 'schedulePage/:docId/:schId', component: SchedulePageComponent },
-
     ])
   ],
   providers: [DoctorService],

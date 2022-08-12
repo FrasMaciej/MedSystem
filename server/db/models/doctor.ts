@@ -1,5 +1,3 @@
-import { kStringMaxLength } from "buffer";
-
 const mongoose = require('mongoose');
 
 const ScheduleSchema = new mongoose.Schema({
