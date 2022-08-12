@@ -1,13 +1,23 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { DoctorEditDialog } from '../admin-page/admin-page.component';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { Visit } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 
 export interface ScheduleData{
+  schedule_id: string;
+  doctor_id: string;
 
+  visit: Visit;
+
+  newName: String;
+  newSurname: String;
+  newVisitNote: String;
+  newIsFree: Boolean;
+  
 }
 
 @Component({
@@ -24,9 +34,21 @@ export class SchedulePageComponent implements OnInit {
   constructor(
     private actRoute: ActivatedRoute,
     private doctorService: DoctorService,
+    public dialog: MatDialog
     ) { 
     this.schedule_id = this.actRoute.snapshot.params['schId'];
     this.doctor_id = this.actRoute.snapshot.params['docId'];
+  }
+
+  openEditVisitDialog(visit: Visit): void {
+    const dialogRef = this.dialog.open(EditVisitDialog, {
+      width: '500px',
+      height: '600px',
+      autoFocus: false,
+      data: {schedule_id: this.schedule_id, doctor_id: this.doctor_id,
+        newVisit: visit, newName: visit.patientInfo.name || '', newSurname: visit.patientInfo.surname || '', 
+        newVisitNote: visit.visitNote, newIsFree: visit.isFree}
+    });
   }
 
   ngOnInit(): void {
@@ -69,7 +91,10 @@ export class EditVisitDialog{
     }
   
     saveClick(): void {
-      //this .. visit .. = newVist ...
+      this.data.visit.isFree = this.data.newIsFree;
+      this.data.visit.patientInfo.name = this.data.newName;
+      this.data.visit.patientInfo.surname = this.data.newSurname;
+      this.data.visit.visitNote = this.data.newVisitNote;
     }
 
     closeDialogRef(){

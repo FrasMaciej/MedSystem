@@ -208,8 +208,8 @@ class DoctorActions {
         doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = newNote;
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = newName;
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = newSurname;
-
-        if(doctor.schedule[scheduleIndex].visits[visitIndex].isFree=true){
+    
+        if(doctor.schedule[scheduleIndex].visits[visitIndex].isFree===true){
             doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = '';
             doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = null
             doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = null

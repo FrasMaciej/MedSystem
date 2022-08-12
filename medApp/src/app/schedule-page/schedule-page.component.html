@@ -19,10 +19,10 @@
       <mat-list-option *ngFor="let visit of selectedSchedule.visits">
         <div id="visitsList">
     
-          <button id ="editButton" mat-icon-button color="black">
+          <button id ="editButton" mat-icon-button color="black" (click)="openEditVisitDialog(visit)">
             <mat-icon>edit</mat-icon>
           </button>
-    
+          
           {{ visit.startHour | date:'HH:mm':'+0000'}} – {{visit.finishHour | date:'HH:mm':'+0000'}}, {{visit.isFree}}
     
         </div>

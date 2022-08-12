@@ -27,11 +27,11 @@ const ScheduleSchema = new mongoose.Schema({
         patientInfo:{
             name:{
                 type: String,
-                defualt: ''
+                defualt: null
             },
             surname:{
                 type: String,
-                defualt: ''
+                defualt: null
             }
         },
         visitNote:{
