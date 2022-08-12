@@ -73,7 +73,8 @@ class DoctorActions {
         // Wyciągnięcie godziny końcowej z JSON-a
         json = req.body.finishHour;
         let finishHour = new Date(json);
-        // Naprawienie godziny
+        
+        // Naprawienie godziny - zrobione jednak przed wysłaniem (zostawione na wszelki wypadek)
         //scheduleDate = new Date(scheduleDate.setHours(scheduleDate.getHours() - (scheduleDate.getUTCHours() - scheduleDate.getHours())));
         //finishHour = new Date(finishHour.setHours(finishHour.getHours() - (finishHour.getUTCHours() - finishHour.getHours())));
 

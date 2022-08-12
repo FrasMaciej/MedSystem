@@ -28,7 +28,6 @@ export class SchedulePageComponent implements OnInit {
     this.doctor = {} as Doctor;
     this.selectedSchedule = {} as Schedule;
     this.getDoctor();
-    this.getSchedule();
   }
 
   getDoctor(): void {
@@ -38,7 +37,7 @@ export class SchedulePageComponent implements OnInit {
     })
   }
 
-  getSchedule(): void{
+  getSchedule(): Schedule{
     this.selectedSchedule = this.doctor.schedule.find(i => i._id === this.schedule_id);
     return this.selectedSchedule;
   }

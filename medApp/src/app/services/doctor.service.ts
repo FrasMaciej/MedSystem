@@ -41,7 +41,7 @@ export class DoctorService {
     return this.httpClient.post(addUrl, doctor);
   }
 
-  addTerminsSlots(schedule: Schedule, doctor: Doctor){
+  addTerminsSlots(schedule: Schedule, doctor: Doctor) : Observable<any>{
     const addTerminsUrl = this.baseUrl+'/'+'addTerminsSlots'+'/'+doctor._id;
     return this.httpClient.post(addTerminsUrl, schedule);
   }

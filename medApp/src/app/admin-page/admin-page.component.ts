@@ -206,11 +206,13 @@ export class SchedulesDialog {
     this.data.newStartDate = new Date(startDate.setHours(startDate.getHours() - (startDate.getUTCHours() - startDate.getHours())));
     this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
     const schedule = new Schedule(this.data.newStartDate, this.data.newFinishDate, this.data.newVisitTime);
-    this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe( () => {
+    this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe( (doctor: Doctor) => {
+      this.data.doctor = doctor;
     })
     this.data.newSchedule.push(schedule);
   }
 
+  
 
 }
 
