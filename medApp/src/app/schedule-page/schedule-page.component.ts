@@ -43,21 +43,32 @@ export class SchedulePageComponent implements OnInit {
   openEditVisitDialog(visit: Visit): void {
     const dialogRef = this.dialog.open(EditVisitDialog, {
       width: '500px',
-      height: '600px',
+      height: '450px',
       autoFocus: false,
       data: {schedule_id: this.schedule_id, doctor_id: this.doctor_id,
-        newVisit: visit, newName: visit.patientInfo.name || '', newSurname: visit.patientInfo.surname || '', 
-        newVisitNote: visit.visitNote, newIsFree: visit.isFree}
+        visit: visit, newName: '', newSurname: '', 
+        newVisitNote: '', newIsFree: false}
     });
+
+
+    // To-do ------------------------------------------------
+    dialogRef.afterClosed().subscribe( result => {
+      if(result!==null){
+        this.doctorService.editVisit(result.visit, result.doctor_id, result.schedule_id, result.visit._id).subscribe(() => {
+          //this.updateDoctor();
+        })
+      }
+    });
+
   }
 
   ngOnInit(): void {
     this.doctor = {} as Doctor;
     this.selectedSchedule = {} as Schedule;
-    this.getDoctor();
+    this.updateDoctor();
   }
 
-  getDoctor(): void {
+  updateDoctor(): void {
     this.doctorService.getDoctor(this.doctor_id).subscribe((doctor: Doctor) => {
       this.doctor = doctor;
       this.getSchedule();

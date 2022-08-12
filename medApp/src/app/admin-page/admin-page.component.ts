@@ -39,7 +39,7 @@ export class AdminPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      if(result!=null){
+      if(result!==null){
         this.doctorService.editDoctor(result).subscribe((result)=>{
           this.updateDoctors();
         });

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { HttpClient } from '@angular/common/http';
-import { Schedule } from '../models/schedule';
+import { Schedule, Visit } from '../models/schedule';
 
 
 
@@ -44,6 +44,11 @@ export class DoctorService {
   addTerminsSlots(schedule: Schedule, doctor: Doctor) : Observable<any>{
     const addTerminsUrl = this.baseUrl+'/'+'addTerminsSlots'+'/'+doctor._id;
     return this.httpClient.post(addTerminsUrl, schedule);
+  }
+
+  editVisit(visit: Visit, doctorId: String, scheduleId: String, visitId: String){
+    const editVisitUrl = this.baseUrl+'/'+'editVisit'+'/'+doctorId+'/'+scheduleId+'/'+visitId;
+    return this.httpClient.put(editVisitUrl, visit)
   }
 
 }

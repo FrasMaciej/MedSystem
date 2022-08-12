@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { MatCardModule } from '@angular/material/card';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,6 +39,7 @@ import { SchedulePageComponent, EditVisitDialog } from './schedule-page/schedule
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatRadioModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatIconModule,
