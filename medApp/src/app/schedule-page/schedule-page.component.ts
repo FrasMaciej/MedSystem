@@ -6,9 +6,16 @@ import { Schedule } from '../models/schedule';
 import { Visit } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 
-export interface ScheduleData{
+export interface ScheduleData {
 
 }
+
+/*   
+  -Praca z rxjs na poczatku jest trudna
+  pamietaj zeby zawsze zrobic unsubscibe na zrodle gdy komponent jest odladowywany 
+  - staraj sie unikac any, dobrze gdy wszystko jest otypowane
+  - jeden komponent per plik
+  */
 
 @Component({
   selector: 'app-schedule-page',
@@ -24,7 +31,7 @@ export class SchedulePageComponent implements OnInit {
   constructor(
     private actRoute: ActivatedRoute,
     private doctorService: DoctorService,
-    ) { 
+  ) {
     this.schedule_id = this.actRoute.snapshot.params['schId'];
     this.doctor_id = this.actRoute.snapshot.params['docId'];
   }
@@ -35,6 +42,8 @@ export class SchedulePageComponent implements OnInit {
     this.getDoctor();
   }
 
+
+
   getDoctor(): void {
     this.doctorService.getDoctor(this.doctor_id).subscribe((doctor: Doctor) => {
       this.doctor = doctor;
@@ -42,12 +51,12 @@ export class SchedulePageComponent implements OnInit {
     })
   }
 
-  getSchedule(): Schedule{
+  getSchedule(): Schedule {
     this.selectedSchedule = this.doctor.schedule.find(i => i._id === this.schedule_id);
     return this.selectedSchedule;
   }
 
-  openEditVistDialog(visit: Visit){
+  openEditVistDialog(visit: Visit) {
 
   }
 
@@ -58,22 +67,22 @@ export class SchedulePageComponent implements OnInit {
   templateUrl: 'edit-visit-dialog.html',
   styleUrls: ['edit-visit-dialog.css']
 })
-export class EditVisitDialog{
+export class EditVisitDialog {
   constructor(
     public dialogRef: MatDialogRef<EditVisitDialog>,
     private doctorService: DoctorService,
-    @Inject(MAT_DIALOG_DATA) public data: ScheduleData) {}
+    @Inject(MAT_DIALOG_DATA) public data: ScheduleData) { }
 
-    backClick(): void {
-      this.dialogRef.close();
-    }
-  
-    saveClick(): void {
-      //this .. visit .. = newVist ...
-    }
+  backClick(): void {
+    this.dialogRef.close();
+  }
 
-    closeDialogRef(){
-      this.dialogRef.close();
-    }
+  saveClick(): void {
+    //this .. visit .. = newVist ...
+  }
+
+  closeDialogRef() {
+    this.dialogRef.close();
+  }
 
 }

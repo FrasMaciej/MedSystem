@@ -4,35 +4,55 @@ import { Schema } from "mongoose";
 const Doctor = require('../../db/models/doctor');
 const Schedule = require('../../db/models/doctor');
 
+/* 
+    Straj sie uzywac TS i typow unikaj any, to sie zwroci 
 
+
+*/
 class DoctorActions {
 
-    async getAllDoctors(req: any, res: any){
-        let doc;
+    async getAllDoctors(req: any, res: any) {
         try {
-            doc = await Doctor.find({});
+            const doc = await Doctor.find({});
+            ;
         } catch (err: any) {
-            return res.status(500).json({message: err.message});
+            return res.status(500).json({ message: err.message });
         }
 
-        console.log(doc);
-        res.status(200).json(doc);
+        // lub 
+
+        Doctor.find({})
+            .then(doc => res.status(200).json(doc))
+            .catch(err => res.status(500).json({ message: err.message }))
+
+
+        // ZAMIAST 
+
+        // let doc;
+        // try {
+        //     doc = await Doctor.find({});
+        // } catch (err: any) {
+        //     return res.status(500).json({message: err.message});
+        // }
+
+        // console.log(doc);
+        // res.status(200).json(doc);
     }
 
     //pobieranie lekarza
-    async getDoctor(req: any, res: any){
+    async getDoctor(req: any, res: any) {
         const id = req.params.id;
         let doc;
         try {
             doc = await Doctor.findOne({ _id: id });
         } catch (err: any) {
-            return res.status(500).json({message: err.message});
+            return res.status(500).json({ message: err.message });
         }
         console.log(doc);
         res.status(200).json(doc);
     }
 
-    async saveDoctor(req: any, res: any){
+    async saveDoctor(req: any, res: any) {
         const name = req.body.name;
         const surname = req.body.surname;
         const city = req.body.city;
@@ -40,33 +60,41 @@ class DoctorActions {
         let doctor;
 
         try {
-            doctor = new Doctor({name,surname,city});
+            doctor = new Doctor({ name, surname, city });
             await doctor.save();
         } catch (err: any) {
-            return res.status(422).json({message: err.message});
+            return res.status(422).json({ message: err.message });
         }
 
         res.status(201).json(doctor);
     }
 
-    async addSpecialization(req: any, res: any){
+
+    // tutaj czemu bez try catch
+    async addSpecialization(req: any, res: any) {
         const id = req.params.id;
         const specialization = req.body.specialization;
 
-        const doctor = await Doctor.findOne({_id: id});
+        const doctor = await Doctor.findOne({ _id: id });
         doctor.specializations.push(specialization);
         await doctor.save();
 
-        
+
         res.status(201).json(doctor);
     }
-    
-    async addTerminsSlots(req: any, res: any){
+
+
+    // tutaj niezle odjechales 
+    // w JS sa trzy najwazniejsze metody filter,map,reduce tak naprawde wszystko mozna za pomoc a ich nich zrobic
+    // nigdy czegos takiego nie widzialem zeby tworzyc zmienne ze schema i je mapowac 
+    // lepiej utworz sobie obiekt zgodny z jakims typem interface 
+    // sprobuj to przepisac nie uzywajac petli 
+    async addTerminsSlots(req: any, res: any) {
         var json;
         var dateStr;
         let id = req.params.id;
         let singleVisitTime: number = Number(req.body.singleVisitTime);
-        
+
 
         // Wyciągnięcie daty startowej z JSON-a
         json = req.body.scheduleDate;
@@ -75,28 +103,28 @@ class DoctorActions {
         // Wyciągnięcie godziny końcowej z JSON-a
         json = req.body.finishHour;
         let finishHour = new Date(json);
-        
+
         // Naprawienie godziny - zrobione jednak przed wysłaniem (zostawione na wszelki wypadek)
         //scheduleDate = new Date(scheduleDate.setHours(scheduleDate.getHours() - (scheduleDate.getUTCHours() - scheduleDate.getHours())));
         //finishHour = new Date(finishHour.setHours(finishHour.getHours() - (finishHour.getUTCHours() - finishHour.getHours())));
 
         // Wyciągnięcie dotychczasowych danych lekarza
-        let doctor = await Doctor.findOne({_id: id});
+        let doctor = await Doctor.findOne({ _id: id });
 
         // Utworzenie pomocniczego schema dla grafiku
 
-        var visitSchema = new Schema ({
+        var visitSchema = new Schema({
             startHour: Date,
             finishHour: Date,
             isFree: Boolean,
-            patientInfo:{
+            patientInfo: {
                 name: String,
                 surname: String
             },
             visitNote: String
         })
 
-        const scheduleSchema = new Schema ({
+        const scheduleSchema = new Schema({
             scheduleDate: Date,
             finishHour: Date,
             singleVisitTime: Number,
@@ -104,7 +132,7 @@ class DoctorActions {
                 startHour: Date,
                 finishHour: Date,
                 isFree: Boolean,
-                patientInfo:{
+                patientInfo: {
                     name: String,
                     surname: String
                 },
@@ -113,22 +141,22 @@ class DoctorActions {
         })
         //
 
-        var scheduleIndex: number = doctor.schedule.push(scheduleSchema)-1;
+        var scheduleIndex: number = doctor.schedule.push(scheduleSchema) - 1;
         doctor.schedule[scheduleIndex].scheduleDate = new Date(scheduleDate);
         doctor.schedule[scheduleIndex].finishHour = new Date(finishHour)
         doctor.schedule[scheduleIndex].singleVisitTime = singleVisitTime;
-        
+
         let start: Date = new Date(scheduleDate);
         start.setSeconds(0);
         let end: Date = new Date(finishHour);
         finishHour.setSeconds(0);
         let loop: Date = new Date(start);
         let _loop: Date;
-        var listIndex; 
+        var listIndex;
 
 
-        while(loop < end){
-            listIndex = doctor.schedule[scheduleIndex].visits.push(visitSchema)-1;
+        while (loop < end) {
+            listIndex = doctor.schedule[scheduleIndex].visits.push(visitSchema) - 1;
             _loop = new Date(loop);
             doctor.schedule[scheduleIndex].visits[listIndex].startHour = _loop;
             loop.setMinutes(loop.getMinutes() + singleVisitTime);
@@ -141,7 +169,10 @@ class DoctorActions {
 
     }
 
-    async updateDoctor(req: any, res: any){
+
+    // tutaj lepiej dekonstrukcje zrobic obiektu
+
+    async updateDoctor(req: any, res: any) {
         const id = req.params.id;
         const name = req.body.name;
         const surname = req.body.surname;
@@ -150,7 +181,7 @@ class DoctorActions {
         const schedules = req.body.schedule;
 
 
-        const doctor = await Doctor.findOne({_id: id});
+        const doctor = await Doctor.findOne({ _id: id });
         doctor.name = name;
         doctor.surname = surname;
         doctor.city = city;
@@ -161,14 +192,16 @@ class DoctorActions {
         res.status(201).json(doctor);
     }
 
-    async deleteDoctor(req: any, res: any){
+    async deleteDoctor(req: any, res: any) {
         const id = req.params.id;
         await Doctor.deleteOne({ _id: id });
-        
+
         res.sendStatus(204);
     }
 
-    async editVisit(req: any, res: any){
+
+    // tutaj podobnie odlot, sprobuj to przepisac nie uzywajac petli 
+    async editVisit(req: any, res: any) {
         const doctorId = req.params.doctorId;
         const scheduleId = req.params.scheduleId;
         const visitId = req.params.visitId;
@@ -180,24 +213,24 @@ class DoctorActions {
         let scheduleIndex: number = 0;
         let visitIndex: number = 0;
         let doctor;
-        
+
         try {
             doctor = await Doctor.findOne({ _id: doctorId });
         } catch (err: any) {
-            return res.status(500).json({message: err.message});
+            return res.status(500).json({ message: err.message });
         }
-        
 
-        for(let i=0; i<doctor.schedule.length; i++){
-            if(doctor.schedule[i]._id = scheduleId){
+
+        for (let i = 0; i < doctor.schedule.length; i++) {
+            if (doctor.schedule[i]._id = scheduleId) {
                 scheduleIndex = i;
                 break;
             }
             else continue
         }
 
-        for(let i=0; i<doctor.schedule[scheduleIndex].visits.length; i++){
-            if(doctor.schedule[scheduleIndex].visits[i]._id = visitId){
+        for (let i = 0; i < doctor.schedule[scheduleIndex].visits.length; i++) {
+            if (doctor.schedule[scheduleIndex].visits[i]._id = visitId) {
                 scheduleIndex = i;
                 break;
             }
@@ -209,7 +242,7 @@ class DoctorActions {
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = newName;
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = newSurname;
 
-        if(doctor.schedule[scheduleIndex].visits[visitIndex].isFree=true){
+        if (doctor.schedule[scheduleIndex].visits[visitIndex].isFree = true) {
             doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = '';
             doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = null
             doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = null

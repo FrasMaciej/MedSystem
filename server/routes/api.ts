@@ -4,6 +4,14 @@ const router = express.Router();
 const helloApi = require('../actions/api/helloApi');
 const doctorActions = require('../actions/api/doctorsActions');
 
+/* 
+
+    Node obecnie wspiera moduly ecmascript, o wiele wygodniej i czytelneij sie tak pisze
+    tutaj jest malo czytelnie, jak najade na jakaś metoda i bede chcial przejsc do jej implemtnacji to sie nie da 
+    bo z tym systemem plikow nie ma intelisense 
+    
+*/
+
 //Test Api
 router.get('/', helloApi.rootPath);
 
@@ -25,5 +33,5 @@ router.delete('/doctors/:id', doctorActions.deleteDoctor);
 router.put('/doctors/editVisit/:doctorId/:scheduleId/:visitId', doctorActions.editVisit);
 
 
-export {};
+export { };
 module.exports = router;

@@ -6,6 +6,17 @@ import { Schedule } from '../models/schedule';
 import { SchedulePageComponent } from '../schedule-page/schedule-page.component';
 import { DoctorService } from '../services/doctor.service';
 
+
+/* 
+
+
+  Zakazane, nie wolno robic subscibe zagniezdzone, latwo prowadzi do bledow i do niepoprawnego dzialania 
+  zastanow sie czy wgl potrzebujessz wszedzie strumienie, jezeli czekasz tylko na jedna wartosc a nie na strumien to warto to 
+  pozamieniac na Promise i na tym operowac
+  kiedys byla metoda w rxjs toPromise dzis jest depracated 
+  dzis widze ze jest cos takiego lastValueFrom - ja bym tak robil 
+  nie wsadzaj wielu komponentow do jednego pliku, 
+*/
 export interface DoctorData {
   doctor: Doctor;
   newName: string;
@@ -27,20 +38,22 @@ export interface DoctorData {
 
 export class AdminPageComponent implements OnInit {
   doctors!: Doctor[];
-  constructor(private doctorService: DoctorService, public dialog: MatDialog) {} 
+  constructor(private doctorService: DoctorService, public dialog: MatDialog) { }
 
   openEditDoctorDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
       width: '500px',
       height: '600px',
       autoFocus: false,
-      data: {doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newCity: doctor.city,
-         newSpecializations: doctor.specializations, newSchedule: doctor.schedule}
+      data: {
+        doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newCity: doctor.city,
+        newSpecializations: doctor.specializations, newSchedule: doctor.schedule
+      }
     });
 
-    dialogRef.afterClosed().subscribe( result => {
-      if(result!=null){
-        this.doctorService.editDoctor(result).subscribe((result)=>{
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.doctorService.editDoctor(result).subscribe((result) => {
           this.updateDoctors();
         });
       }
@@ -52,12 +65,12 @@ export class AdminPageComponent implements OnInit {
       width: '500px',
       height: '325px',
       autoFocus: false,
-      data: {newName: '', newSurname: '', newCity: '', doctor: new Doctor}
+      data: { newName: '', newSurname: '', newCity: '', doctor: new Doctor }
     });
 
-    dialogRef.afterClosed().subscribe( result => {
-      if(result!==null){
-        this.doctorService.addDoctor(result).subscribe((result)=>{
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== null) {
+        this.doctorService.addDoctor(result).subscribe((result) => {
           this.updateDoctors();
         });
       }
@@ -69,10 +82,10 @@ export class AdminPageComponent implements OnInit {
       width: '600px',
       height: '800px',
       autoFocus: false,
-      data: {doctor: doctor, newSchedule: doctor.schedule, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0}
+      data: { doctor: doctor, newSchedule: doctor.schedule, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0 }
     });
-    
-    dialogRef.afterClosed().subscribe( () => {
+
+    dialogRef.afterClosed().subscribe(() => {
       this.updateDoctors();
     });
   }
@@ -84,13 +97,13 @@ export class AdminPageComponent implements OnInit {
   updateDoctors(): void {
     this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
       this.doctors = doctors;
-      this.doctors.sort((a:any,b:any) => (a.surname < b.surname ? -1 : 1));
+      this.doctors.sort((a: any, b: any) => (a.surname < b.surname ? -1 : 1));
     })
   }
 
-  removeDoctor(doctor: Doctor){
-      this.doctorService.removeDoctor(doctor).subscribe( () => {
-        this.updateDoctors();
+  removeDoctor(doctor: Doctor) {
+    this.doctorService.removeDoctor(doctor).subscribe(() => {
+      this.updateDoctors();
     });
   }
 
@@ -108,7 +121,7 @@ export class AdminPageComponent implements OnInit {
 export class DoctorEditDialog {
   constructor(
     public dialogRef: MatDialogRef<DoctorEditDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
   backClick(): void {
     this.dialogRef.close();
@@ -126,15 +139,15 @@ export class DoctorEditDialog {
     e.stopImmediatePropagation();
   }
 
-  removeSpecialization(specialization: string){
+  removeSpecialization(specialization: string) {
     const index = this.data.newSpecializations.indexOf(specialization);
-    this.data.newSpecializations.splice(index,1);                              
+    this.data.newSpecializations.splice(index, 1);
   }
 
-  addNewSpec(){
-    if(this.data.newSpec!=''){
+  addNewSpec() {
+    if (this.data.newSpec != '') {
       this.data.newSpecializations.push(this.data.newSpec);
-      this.data.newSpec='';
+      this.data.newSpec = '';
     }
   }
 }
@@ -147,7 +160,7 @@ export class DoctorEditDialog {
 export class DoctorAddDialog {
   constructor(
     public dialogRef: MatDialogRef<DoctorAddDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
   backClick(): void {
     this.dialogRef.close();
@@ -171,7 +184,7 @@ export class SchedulesDialog {
   constructor(
     public dialogRef: MatDialogRef<SchedulesDialog>,
     private doctorService: DoctorService,
-    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
 
   backClick(): void {
@@ -184,9 +197,9 @@ export class SchedulesDialog {
 
   removeSchedule(schedule: Schedule): void {
     const index = this.data.newSchedule.indexOf(schedule);
-    this.data.newSchedule.splice(index,1);   
-    
-    this.doctorService.editDoctor(this.data.doctor).subscribe( () => {
+    this.data.newSchedule.splice(index, 1);
+
+    this.doctorService.editDoctor(this.data.doctor).subscribe(() => {
 
     });
   }
@@ -196,23 +209,23 @@ export class SchedulesDialog {
     e.stopImmediatePropagation();
   }
 
-  closeDialogRef(){
+  closeDialogRef() {
     this.dialogRef.close();
   }
 
-  addNewSchedule(){
+  addNewSchedule() {
     var startDate: Date = new Date(this.data.newStartDate);
     var finishDate: Date = new Date(this.data.newFinishDate);
     this.data.newStartDate = new Date(startDate.setHours(startDate.getHours() - (startDate.getUTCHours() - startDate.getHours())));
     this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
     const schedule = new Schedule(this.data.newStartDate, this.data.newFinishDate, this.data.newVisitTime);
-    this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe( (doctor: Doctor) => {
+    this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe((doctor: Doctor) => {
       this.data.doctor = doctor;
     })
     this.data.newSchedule.push(schedule);
   }
 
-  
+
 
 }
 
