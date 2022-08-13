@@ -172,24 +172,22 @@ class DoctorActions {
         const doctorId = req.params.doctorId;
         const scheduleId = req.params.scheduleId;
         const visitId = req.params.visitId;
-        const newNote = req.body.newNote;
+        const visitNote = req.body.visitNote;
         const isFree = req.body.isFree;
-        const newName = req.body.newName;
-        const newSurname = req.body.newSurname;
-
+        const name = req.body.patientInfo.name;
+        const surname = req.body.patientInfo.surname;
         let scheduleIndex: number = 0;
         let visitIndex: number = 0;
         let doctor;
-        
+
         try {
             doctor = await Doctor.findOne({ _id: doctorId });
         } catch (err: any) {
             return res.status(500).json({message: err.message});
         }
         
-
         for(let i=0; i<doctor.schedule.length; i++){
-            if(doctor.schedule[i]._id = scheduleId){
+            if(doctor.schedule[i]._id.toString() === scheduleId){
                 scheduleIndex = i;
                 break;
             }
@@ -197,24 +195,24 @@ class DoctorActions {
         }
 
         for(let i=0; i<doctor.schedule[scheduleIndex].visits.length; i++){
-            if(doctor.schedule[scheduleIndex].visits[i]._id = visitId){
-                scheduleIndex = i;
+            if(doctor.schedule[scheduleIndex].visits[i]._id.toString() === visitId){
+                visitIndex = i;
                 break;
             }
             else continue
         }
 
         doctor.schedule[scheduleIndex].visits[visitIndex].isFree = isFree;
-        doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = newNote;
-        doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = newName;
-        doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = newSurname;
+        doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = visitNote;
+        doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = name;
+        doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = surname;
     
         if(doctor.schedule[scheduleIndex].visits[visitIndex].isFree===true){
             doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = '';
             doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = null
             doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = null
         }
-
+        
         await doctor.save();
         res.status(201).json(doctor);
     }

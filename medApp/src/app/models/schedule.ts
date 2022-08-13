@@ -1,4 +1,4 @@
-class patient{
+export class Patient{
     name!: String;
     surname!: String;
 }
@@ -7,7 +7,7 @@ export class Visit{
     startHour!: Date;
     finishHour!: Date;
     isFree!: Boolean;
-    patientInfo!: patient;
+    patientInfo!: Patient;
     visitNote!: String;
 }
 

@@ -14,7 +14,7 @@
     </mat-toolbar>
   </p>
 
-  <mat-selection-list #visit [multiple]="false" class="custom-scroll-bar"> 
+  <mat-selection-list #schedule [multiple]="false" class="custom-scroll-bar"> 
     <ng-container *ngIf="selectedSchedule">
       <mat-list-option *ngFor="let visit of selectedSchedule.visits">
         <div id="visitsList">

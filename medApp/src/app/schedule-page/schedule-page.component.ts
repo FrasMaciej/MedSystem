@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { ActivatedRoute } from '@angular/router';
 import { DoctorEditDialog } from '../admin-page/admin-page.component';
 import { Doctor } from '../models/doctor';
-import { Schedule } from '../models/schedule';
+import { Patient, Schedule } from '../models/schedule';
 import { Visit } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 
@@ -103,6 +103,7 @@ export class EditVisitDialog{
   
     saveClick(): void {
       this.data.visit.isFree = this.data.newIsFree;
+      this.data.visit.patientInfo = new Patient();
       this.data.visit.patientInfo.name = this.data.newName;
       this.data.visit.patientInfo.surname = this.data.newSurname;
       this.data.visit.visitNote = this.data.newVisitNote;
