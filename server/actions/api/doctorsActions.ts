@@ -31,7 +31,7 @@ class DoctorActions {
         console.log(doc);
         res.status(200).json(doc);
     }
-
+    // branch
     async saveDoctor(req: any, res: any){
         const name = req.body.name;
         const surname = req.body.surname;
