@@ -1,18 +1,16 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { DoctorEditDialog } from '../admin-page/admin-page.component';
 import { Doctor } from '../models/doctor';
 import { Patient, Schedule } from '../models/schedule';
 import { Visit } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
+import { EditVisitDialog } from './edit-visit-dialog.component';
 
 export interface ScheduleData{
   schedule_id: string;
   doctor_id: string;
-
   visit: Visit;
-
   newName: String;
   newSurname: String;
   newVisitNote: String;
@@ -22,8 +20,45 @@ export interface ScheduleData{
 
 @Component({
   selector: 'app-schedule-page',
-  templateUrl: './schedule-page.component.html',
-  styleUrls: ['./schedule-page.component.css']
+  template: `
+  <p>
+    <mat-toolbar color="primary">
+      <button mat-icon-button class="icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <a [routerLink]="['/adminPage']">
+        <button mat-icon-button class="icon">
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
+      </a>
+      Panel Administratora - obsługa grafiku dr.&nbsp;<div *ngIf="doctor?.name">{{doctor.name}}</div> &nbsp; <div *ngIf=doctor?.name>{{doctor.surname}}</div> 
+      &nbsp; <div *ngIf="selectedSchedule?.scheduleDate">[{{selectedSchedule?.scheduleDate | date:'yyyy-MM-dd':'+0000'}}]</div>
+      <span class="spacer"></span>
+    </mat-toolbar>
+  </p>
+  <mat-selection-list #schedule [multiple]="false" class="custom-scroll-bar"> 
+    <ng-container *ngIf="selectedSchedule">
+      <mat-list-option *ngFor="let visit of selectedSchedule.visits">
+        <div id="visitsList">
+    
+          <button id ="editButton" mat-icon-button color="black" (click)="openEditVisitDialog(visit)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          
+          {{ visit.startHour | date:'HH:mm':'+0000'}} – {{visit.finishHour | date:'HH:mm':'+0000'}}, {{visit.isFree}}
+    
+        </div>
+      </mat-list-option>
+    </ng-container>
+  </mat-selection-list>
+  `,
+  styles: [`
+    .custom-scroll-bar{
+      height:50vh;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+  `]
 })
 export class SchedulePageComponent implements OnInit {
   schedule_id: string;
@@ -50,8 +85,6 @@ export class SchedulePageComponent implements OnInit {
         newVisitNote: '', newIsFree: false}
     });
 
-
-    // To-do ------------------------------------------------
     dialogRef.afterClosed().subscribe( result => {
       if(result!==null){
         this.doctorService.editVisit(result.visit, result.doctor_id, result.schedule_id, result.visit._id).subscribe(() => {
@@ -86,31 +119,4 @@ export class SchedulePageComponent implements OnInit {
 
 }
 
-@Component({
-  selector: 'edit-visit-dialog',
-  templateUrl: 'edit-visit-dialog.html',
-  styleUrls: ['edit-visit-dialog.css']
-})
-export class EditVisitDialog{
-  constructor(
-    public dialogRef: MatDialogRef<EditVisitDialog>,
-    private doctorService: DoctorService,
-    @Inject(MAT_DIALOG_DATA) public data: ScheduleData) {}
 
-    backClick(): void {
-      this.dialogRef.close();
-    }
-  
-    saveClick(): void {
-      this.data.visit.isFree = this.data.newIsFree;
-      this.data.visit.patientInfo = new Patient();
-      this.data.visit.patientInfo.name = this.data.newName;
-      this.data.visit.patientInfo.surname = this.data.newSurname;
-      this.data.visit.visitNote = this.data.newVisitNote;
-    }
-
-    closeDialogRef(){
-      this.dialogRef.close();
-    }
-
-}

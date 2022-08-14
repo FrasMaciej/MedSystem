@@ -5,6 +5,9 @@ import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { SchedulePageComponent } from '../schedule-page/schedule-page.component';
 import { DoctorService } from '../services/doctor.service';
+import { DoctorAddDialog } from './doctor-add-dialog.component';
+import { DoctorEditDialog } from './doctor-edit-dialog.component';
+import { SchedulesDialog } from './schedules-dialog.component';
 
 export interface DoctorData {
   doctor: Doctor;
@@ -21,8 +24,74 @@ export interface DoctorData {
 
 @Component({
   selector: 'app-admin-page',
-  templateUrl: './admin-page.component.html',
-  styleUrls: ['./admin-page.component.css']
+  template: `
+    <p>
+      <mat-toolbar color="primary">
+        <button mat-icon-button class="icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <a [routerLink]="['/']">
+          <button mat-icon-button class="icon">
+            <mat-icon>exit_to_app</mat-icon>
+          </button>
+        </a>
+        <span>Panel Administratora</span>
+        <span class="spacer"></span>
+        <button mat-raised-button color="newDoctorButton" (click)="openAddDoctorDialog()">Dodaj lekarza</button>
+      </mat-toolbar>
+    </p>
+    <!-- To-do -> Ładniejsze wyświetlanie lekarzy wraz z ładnym skalowaniem oraz oddzieleniem ich na liście -->
+    <div id="doctorsString">
+      <h2>Lista lekarzy:</h2>
+    </div>
+    <mat-selection-list #doctor [multiple]="false" class="custom-scroll-bar"> 
+      <mat-list-option *ngFor="let doctor of doctors" [value]="doctor">
+        <div id="doctorsList">
+          <button id = "deleteButton" mat-icon-button color="warn" (click)="removeDoctor(doctor)" (click)="onRemove($event)">
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+          <button id ="editButton" mat-icon-button color="black" (click)="openEditDoctorDialog(doctor)" (click)="updateDoctors()">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button id ="editSchedule" mat-icon-button color="black" (click)="openSchedulesDialog(doctor)" (click)="updateDoctors()">
+            <mat-icon>schedule</mat-icon>
+          </button>
+
+          {{ doctor.name }} {{doctor.surname}}, {{doctor.city}} : [{{doctor.specializations}}]
+
+        </div>
+      </mat-list-option>
+    </mat-selection-list>
+  `,
+  styles: [`
+    .spacer {
+      flex: 1 1 auto;
+    }
+
+    #doctorsString{
+      margin: 1%;
+    }
+
+    #doctorsList{
+      display: flex;
+      align-items: center;
+    }
+
+    .mat-newDoctorButton {
+      background-color: rgb(21, 190, 41);
+      color: #fff;
+    }
+
+    .mat-toolbar.mat-primary {
+      background-color: rgb(18, 190, 216);
+    }
+
+    .custom-scroll-bar{
+      height:50vh;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+  `]
 })
 
 export class AdminPageComponent implements OnInit {
@@ -100,119 +169,10 @@ export class AdminPageComponent implements OnInit {
   }
 }
 
-@Component({
-  selector: 'doctor-edit-dialog',
-  templateUrl: 'doctor-edit-dialog.html',
-  styleUrls: ['doctor-edit-dialog.css']
-})
-export class DoctorEditDialog {
-  constructor(
-    public dialogRef: MatDialogRef<DoctorEditDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
-
-  backClick(): void {
-    this.dialogRef.close();
-  }
-
-  saveClick(): void {
-    this.data.doctor.name = this.data.newName;
-    this.data.doctor.surname = this.data.newSurname;
-    this.data.doctor.city = this.data.newCity;
-    this.data.doctor.specializations = this.data.newSpecializations;
-  }
-
-  onRemove(e: Event) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
-
-  removeSpecialization(specialization: string){
-    const index = this.data.newSpecializations.indexOf(specialization);
-    this.data.newSpecializations.splice(index,1);                              
-  }
-
-  addNewSpec(){
-    if(this.data.newSpec!=''){
-      this.data.newSpecializations.push(this.data.newSpec);
-      this.data.newSpec='';
-    }
-  }
-}
-
-@Component({
-  selector: 'doctor-add-dialog',
-  templateUrl: 'doctor-add-dialog.html',
-  styleUrls: ['doctor-add-dialog.css']
-})
-export class DoctorAddDialog {
-  constructor(
-    public dialogRef: MatDialogRef<DoctorAddDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
-
-  backClick(): void {
-    this.dialogRef.close();
-  }
-
-  saveClick(): void {
-    this.data.doctor.name = this.data.newName;
-    this.data.doctor.surname = this.data.newSurname;
-    this.data.doctor.specializations = this.data.newSpecializations;
-    this.data.doctor.city = this.data.newCity;
-  }
-}
 
 
-@Component({
-  selector: 'schedules-dialog',
-  templateUrl: 'schedules-dialog.html',
-  styleUrls: ['schedules-dialog.css']
-})
-export class SchedulesDialog {
-  constructor(
-    public dialogRef: MatDialogRef<SchedulesDialog>,
-    private doctorService: DoctorService,
-    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
 
 
-  backClick(): void {
-    this.dialogRef.close();
-  }
 
-  saveClick(): void {
-    this.data.doctor.schedule = this.data.newSchedule;
-  }
 
-  removeSchedule(schedule: Schedule): void {
-    const index = this.data.newSchedule.indexOf(schedule);
-    this.data.newSchedule.splice(index,1);   
-    
-    this.doctorService.editDoctor(this.data.doctor).subscribe( () => {
-
-    });
-  }
-
-  onRemove(e: Event) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
-
-  closeDialogRef(){
-    this.dialogRef.close();
-  }
-
-  addNewSchedule(){
-    var startDate: Date = new Date(this.data.newStartDate);
-    var finishDate: Date = new Date(this.data.newFinishDate);
-    this.data.newStartDate = new Date(startDate.setHours(startDate.getHours() - (startDate.getUTCHours() - startDate.getHours())));
-    this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
-    const schedule = new Schedule(this.data.newStartDate, this.data.newFinishDate, this.data.newVisitTime);
-    this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe( (doctor: Doctor) => {
-      this.data.doctor = doctor;
-    })
-    this.data.newSchedule.push(schedule);
-  }
-
-  
-
-}
 

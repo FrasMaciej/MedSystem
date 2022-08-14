@@ -16,13 +16,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AdminPageComponent, DoctorAddDialog, DoctorEditDialog, SchedulesDialog } from './admin-page/admin-page.component';
+import { AdminPageComponent} from './admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page';
 import { DoctorService } from './services/doctor.service';
-import { SchedulePageComponent, EditVisitDialog } from './schedule-page/schedule-page.component';
-
-
+import { SchedulePageComponent} from './schedule-page/schedule-page.component';
+import { EditVisitDialog } from './schedule-page/edit-visit-dialog.component';
+import { SchedulesDialog } from './admin-page/schedules-dialog.component';
+import { DoctorAddDialog } from './admin-page/doctor-add-dialog.component';
+import { DoctorEditDialog } from './admin-page/doctor-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,9 +34,9 @@ import { SchedulePageComponent, EditVisitDialog } from './schedule-page/schedule
     AdminPageComponent,
     DoctorEditDialog,
     DoctorAddDialog,
+    EditVisitDialog,
     SchedulesDialog,
     SchedulePageComponent,
-    EditVisitDialog
   ],
   imports: [
     BrowserModule,
