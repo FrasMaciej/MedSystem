@@ -1,5 +1,7 @@
+import { Request, Response } from 'express';
+
 module.exports = {
-    rootPath: function(req: any, res: any) {
+    rootPath: function(req: Request, res: Response) {
         res.send('Api zostało uruchomione :)');
     }
 }

@@ -1,174 +1,127 @@
-import { notEqual } from "assert";
-import { Schema } from "mongoose";
+import { Visit, Schedule } from './interfaces';
+import { Request, Response } from 'express';
+
 
 const Doctor = require('../../db/models/doctor');
-const Schedule = require('../../db/models/doctor');
 
 
 class DoctorActions {
 
-    async getAllDoctors(req: any, res: any){
-        let doc;
+    async getAllDoctors(req: Request, res: Response) {
         try {
-            doc = await Doctor.find({});
+            const doc = await Doctor.find({});
+            return res.status(200).json(doc);
         } catch (err: any) {
-            return res.status(500).json({message: err.message});
+            return res.status(500).json({ message: err.message });
         }
-
-        console.log(doc);
-        res.status(200).json(doc);
     }
 
-    //pobieranie lekarza
-    async getDoctor(req: any, res: any){
+    async getDoctor(req: Request, res: Response) {
         const id = req.params.id;
-        let doc;
         try {
-            doc = await Doctor.findOne({ _id: id });
+            const doc = await Doctor.findOne({ _id: id });
+            res.status(200).json(doc)
         } catch (err: any) {
             return res.status(500).json({message: err.message});
         }
-        console.log(doc);
-        res.status(200).json(doc);
     }
     
-    async saveDoctor(req: any, res: any){
+    async saveDoctor(req: Request, res: Response) {
         const name = req.body.name;
         const surname = req.body.surname;
         const city = req.body.city;
-
-        let doctor;
-
         try {
-            doctor = new Doctor({name,surname,city});
+            const doctor = new Doctor({ name, surname, city });
             await doctor.save();
+            res.status(201).json(doctor);
         } catch (err: any) {
             return res.status(422).json({message: err.message});
         }
-
-        res.status(201).json(doctor);
     }
 
-    async addSpecialization(req: any, res: any){
+    async addSpecialization(req: Request, res: Response) {
         const id = req.params.id;
         const specialization = req.body.specialization;
-
-        const doctor = await Doctor.findOne({_id: id});
-        doctor.specializations.push(specialization);
-        await doctor.save();
-
-        
-        res.status(201).json(doctor);
+        try {
+            const doctor = await Doctor.findOne({_id: id});
+            doctor.specializations.push(specialization);
+            await doctor.save();
+            res.status(201).json(doctor);
+        } catch (err: any) {
+            return res.status(422).json({message: err.message});
+        }
     }
     
-    async addTerminsSlots(req: any, res: any){
-        var json;
-        var dateStr;
-        let id = req.params.id;
-        let singleVisitTime: number = Number(req.body.singleVisitTime);
+    async addTerminsSlots(req: Request, res: Response) {
+        const id = req.params.id;
+        const singleVisitTime: number = Number(req.body.singleVisitTime);
         
+        const scheduleDate: Date = new Date(req.body.scheduleDate);
+        const finishHour: Date = new Date(req.body.finishHour);
 
-        // Wyciągnięcie daty startowej z JSON-a
-        json = req.body.scheduleDate;
-        let scheduleDate = new Date(json);
+        try {
+            const doctor = await Doctor.findOne({_id: id});
+            const schedule: Schedule = {
+                scheduleDate: new Date(scheduleDate),
+                finishHour: new Date(finishHour),
+                singleVisitTime: singleVisitTime,
+                visits: []
+            };
 
-        // Wyciągnięcie godziny końcowej z JSON-a
-        json = req.body.finishHour;
-        let finishHour = new Date(json);
-        
-        // Naprawienie godziny - zrobione jednak przed wysłaniem (zostawione na wszelki wypadek)
-        //scheduleDate = new Date(scheduleDate.setHours(scheduleDate.getHours() - (scheduleDate.getUTCHours() - scheduleDate.getHours())));
-        //finishHour = new Date(finishHour.setHours(finishHour.getHours() - (finishHour.getUTCHours() - finishHour.getHours())));
+            const scheduleIndex: number = doctor.schedule.push(schedule)-1;
+            const timeDif: number = doctor.schedule[scheduleIndex].finishHour-doctor.schedule[scheduleIndex].scheduleDate;
+            
+            let loop: Date = new Date(scheduleDate);
+            let end: Date = new Date(finishHour);
 
-        // Wyciągnięcie dotychczasowych danych lekarza
-        let doctor = await Doctor.findOne({_id: id});
-
-        // Utworzenie pomocniczego schema dla grafiku
-
-        var visitSchema = new Schema ({
-            startHour: Date,
-            finishHour: Date,
-            isFree: Boolean,
-            patientInfo:{
-                name: String,
-                surname: String
-            },
-            visitNote: String
-        })
-
-        const scheduleSchema = new Schema ({
-            scheduleDate: Date,
-            finishHour: Date,
-            singleVisitTime: Number,
-            visits: [{
-                startHour: Date,
-                finishHour: Date,
-                isFree: Boolean,
-                patientInfo:{
-                    name: String,
-                    surname: String
-                },
-                visitNote: String
-            }]
-        })
-        //
-
-        var scheduleIndex: number = doctor.schedule.push(scheduleSchema)-1;
-        doctor.schedule[scheduleIndex].scheduleDate = new Date(scheduleDate);
-        doctor.schedule[scheduleIndex].finishHour = new Date(finishHour)
-        doctor.schedule[scheduleIndex].singleVisitTime = singleVisitTime;
-        
-        let start: Date = new Date(scheduleDate);
-        start.setSeconds(0);
-        let end: Date = new Date(finishHour);
-        finishHour.setSeconds(0);
-        let loop: Date = new Date(start);
-        let _loop: Date;
-        var listIndex; 
-
-
-        while(loop < end){
-            listIndex = doctor.schedule[scheduleIndex].visits.push(visitSchema)-1;
-            _loop = new Date(loop);
-            doctor.schedule[scheduleIndex].visits[listIndex].startHour = _loop;
-            loop.setMinutes(loop.getMinutes() + singleVisitTime);
-            _loop = new Date(loop);
-            doctor.schedule[scheduleIndex].visits[listIndex].finishHour = _loop;
+            while(loop < end){
+                const visit: Visit = {
+                    startHour: new Date(loop),
+                    finishHour: new Date(loop.setMinutes(loop.getMinutes() + singleVisitTime)),
+                    isFree: true,
+                    patientInfo: {
+                        name: '',
+                        surname: ''
+                    },
+                    visitNote: ''
+                };
+                doctor.schedule[scheduleIndex].visits.push(visit);
+            }    
+            
+            await doctor.save();
+            res.status(201).json(doctor);
+        } catch (err: any) {
+            return res.status(422).json({message: err.message});
         }
-
-        await doctor.save();
-        res.status(201).json(doctor);
-
     }
 
-    async updateDoctor(req: any, res: any){
+    async updateDoctor(req: Request, res: Response) {
         const id = req.params.id;
-        const name = req.body.name;
-        const surname = req.body.surname;
-        const city = req.body.city;
-        const specializations = req.body.specializations;
-        const schedules = req.body.schedule;
-
-
-        const doctor = await Doctor.findOne({_id: id});
-        doctor.name = name;
-        doctor.surname = surname;
-        doctor.city = city;
-        doctor.specializations = specializations;
-        doctor.schedule = schedules;
-        await doctor.save();
-
-        res.status(201).json(doctor);
+        try {
+            const doctor = await Doctor.findOne({_id: id});
+            doctor.name = req.body.name;
+            doctor.surname = req.body.surname;
+            doctor.city = req.body.city;
+            doctor.specializations = req.body.specializations;
+            doctor.schedule = req.body.schedule;
+            await doctor.save();
+            res.status(201).json(doctor);
+        } catch (err: any) {
+            return res.status(422).json({message: err.message});
+        }
     }
 
-    async deleteDoctor(req: any, res: any){
+    async deleteDoctor(req: Request, res: Response) {
         const id = req.params.id;
-        await Doctor.deleteOne({ _id: id });
-        
-        res.sendStatus(204);
+        try {
+            await Doctor.deleteOne({ _id: id });
+            res.sendStatus(204);
+        } catch (err: any) {
+            res.sendStatus(404).json({message: err.message});
+        }
     }
 
-    async editVisit(req: any, res: any){
+    async editVisit(req: Request, res: Response) {
         const doctorId = req.params.doctorId;
         const scheduleId = req.params.scheduleId;
         const visitId = req.params.visitId;
