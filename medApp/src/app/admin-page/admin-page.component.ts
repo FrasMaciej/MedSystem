@@ -1,9 +1,7 @@
-import { DIALOG_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular/cdk/dialog';
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog} from '@angular/material/dialog';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
-import { SchedulePageComponent } from '../schedule-page/schedule-page.component';
 import { DoctorService } from '../services/doctor.service';
 import { DoctorAddDialog } from './doctor-add-dialog.component';
 import { DoctorEditDialog } from './doctor-edit-dialog.component';
