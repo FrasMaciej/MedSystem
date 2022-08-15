@@ -1,29 +1,20 @@
-export class Patient{
-    name!: String;
-    surname!: String;
+export interface Patient{
+    name: String;
+    surname: String;
 }
 
-export class Visit{
-    startHour!: Date;
-    finishHour!: Date;
-    isFree!: Boolean;
-    patientInfo!: Patient;
-    visitNote!: String;
+export interface Visit{
+    startHour: Date;
+    finishHour: Date;
+    isFree: Boolean;
+    patientInfo: Patient;
+    visitNote: String;
 }
 
-export class Schedule {
+export interface Schedule {
     scheduleDate: Date;
     finishHour: Date;
     singleVisitTime: Number;
-    _id!: any;
-    visits!: Visit[];
-
-    constructor(scheduleDate: Date, finishHour: Date, singleVisitTime: Number){
-        this.scheduleDate = new Date(scheduleDate);
-        this.finishHour = new Date(finishHour);
-        this.singleVisitTime = singleVisitTime;
-    }
-
+    _id: string;
+    visits: Visit[];
 }
-
-

@@ -74,7 +74,7 @@ import { DoctorData } from "./admin-page.component";
 export class DoctorEditDialog {
   constructor(
     public dialogRef: MatDialogRef<DoctorEditDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
   backClick(): void {
     this.dialogRef.close();
@@ -92,15 +92,15 @@ export class DoctorEditDialog {
     e.stopImmediatePropagation();
   }
 
-  removeSpecialization(specialization: string){
+  removeSpecialization(specialization: string) {
     const index = this.data.newSpecializations.indexOf(specialization);
-    this.data.newSpecializations.splice(index,1);                              
+    this.data.newSpecializations.splice(index, 1);                              
   }
 
-  addNewSpec(){
-    if(this.data.newSpec!=''){
+  addNewSpec() {
+    if (this.data.newSpec !== ''){
       this.data.newSpecializations.push(this.data.newSpec);
-      this.data.newSpec='';
+      this.data.newSpec = '';
     }
   }
 }

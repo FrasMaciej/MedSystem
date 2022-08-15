@@ -75,7 +75,7 @@ import { DoctorData } from "./admin-page.component";
     constructor(
       public dialogRef: MatDialogRef<SchedulesDialog>,
       private doctorService: DoctorService,
-      @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
+      @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
   
   
     backClick(): void {
@@ -88,9 +88,9 @@ import { DoctorData } from "./admin-page.component";
   
     removeSchedule(schedule: Schedule): void {
       const index = this.data.newSchedule.indexOf(schedule);
-      this.data.newSchedule.splice(index,1);   
+      this.data.newSchedule.splice(index, 1);   
       
-      this.doctorService.editDoctor(this.data.doctor).subscribe( () => {
+      this.doctorService.editDoctor(this.data.doctor).subscribe(() => {
   
       });
     }
@@ -100,19 +100,23 @@ import { DoctorData } from "./admin-page.component";
       e.stopImmediatePropagation();
     }
   
-    closeDialogRef(){
+    closeDialogRef() {
       this.dialogRef.close();
     }
   
-    addNewSchedule(){
+    addNewSchedule() {
       var startDate: Date = new Date(this.data.newStartDate);
       var finishDate: Date = new Date(this.data.newFinishDate);
       this.data.newStartDate = new Date(startDate.setHours(startDate.getHours() - (startDate.getUTCHours() - startDate.getHours())));
       this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
-      const schedule = new Schedule(this.data.newStartDate, this.data.newFinishDate, this.data.newVisitTime);
-      this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe( (doctor: Doctor) => {
+      const schedule: Schedule = {
+          scheduleDate: this.data.newStartDate, finishHour: this.data.newFinishDate, 
+          singleVisitTime: this.data.newVisitTime, _id: '', visits: []
+      };
+      this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe((doctor: Doctor) => {
         this.data.doctor = doctor;
       })
       this.data.newSchedule.push(schedule);
     }
   }
+  

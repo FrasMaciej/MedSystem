@@ -29,7 +29,7 @@ import { ScheduleData } from "./schedule-page.component";
     </mat-radio-group>
     <div mat-dialog-actions align="center">
       <button mat-button (click)="backClick()">Powrót</button>
-      <button mat-button (click)="saveClick()" [mat-dialog-close]="data">Dodaj</button>
+      <button mat-button (click)="saveClick()" [mat-dialog-close]="data">Zapisz</button>
     </div>
   `,
   styles: [`
@@ -48,25 +48,23 @@ import { ScheduleData } from "./schedule-page.component";
     }
   `]
 })
-export class EditVisitDialog{
+export class EditVisitDialog {
   constructor(
     public dialogRef: MatDialogRef<EditVisitDialog>,
     private doctorService: DoctorService,
-    @Inject(MAT_DIALOG_DATA) public data: ScheduleData) {}
+    @Inject(MAT_DIALOG_DATA) public data: ScheduleData) { }
 
-  backClick(): void {
+  backClick() {
     this.dialogRef.close();
   }
 
-  saveClick(): void {
+  saveClick() {
     this.data.visit.isFree = this.data.newIsFree;
-    this.data.visit.patientInfo = new Patient();
-    this.data.visit.patientInfo.name = this.data.newName;
-    this.data.visit.patientInfo.surname = this.data.newSurname;
     this.data.visit.visitNote = this.data.newVisitNote;
+    this.data.visit.patientInfo = {name: this.data.newName, surname: this.data.newSurname}
   }
 
-  closeDialogRef(){
+  closeDialogRef() {
     this.dialogRef.close();
   }
 }

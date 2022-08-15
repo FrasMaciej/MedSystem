@@ -33,7 +33,7 @@ import { DoctorData } from "./admin-page.component";
 export class DoctorAddDialog {
   constructor(
     public dialogRef: MatDialogRef<DoctorAddDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DoctorData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
   backClick(): void {
     this.dialogRef.close();

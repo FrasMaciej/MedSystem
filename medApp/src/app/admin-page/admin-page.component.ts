@@ -93,21 +93,23 @@ export interface DoctorData {
 })
 
 export class AdminPageComponent implements OnInit {
-  doctors!: Doctor[];
-  constructor(private doctorService: DoctorService, public dialog: MatDialog) {} 
+  doctors: Doctor[] = [];
+  constructor(private doctorService: DoctorService, public dialog: MatDialog) { } 
 
   openEditDoctorDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
       width: '500px',
       height: '600px',
       autoFocus: false,
-      data: {doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newCity: doctor.city,
-         newSpecializations: doctor.specializations, newSchedule: doctor.schedule}
+      data: {
+        doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newCity: doctor.city,
+        newSpecializations: doctor.specializations, newSchedule: doctor.schedule
+      }
     });
 
-    dialogRef.afterClosed().subscribe( result => {
-      if(result!==null){
-        this.doctorService.editDoctor(result).subscribe((result)=>{
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== null) {
+        this.doctorService.editDoctor(result).subscribe((result) => {
           this.updateDoctors();
         });
       }
@@ -119,10 +121,10 @@ export class AdminPageComponent implements OnInit {
       width: '500px',
       height: '325px',
       autoFocus: false,
-      data: {newName: '', newSurname: '', newCity: '', doctor: new Doctor}
+      data: { newName: '', newSurname: '', newCity: '', doctor: { } }
     });
 
-    dialogRef.afterClosed().subscribe( result => {
+    dialogRef.afterClosed().subscribe(result => {
       if(result!==null){
         this.doctorService.addDoctor(result).subscribe((result)=>{
           this.updateDoctors();
@@ -151,13 +153,13 @@ export class AdminPageComponent implements OnInit {
   updateDoctors(): void {
     this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
       this.doctors = doctors;
-      this.doctors.sort((a:any,b:any) => (a.surname < b.surname ? -1 : 1));
+      this.doctors.sort((a: Doctor, b: Doctor) => (a.surname < b.surname ? -1 : 1));
     })
   }
 
-  removeDoctor(doctor: Doctor){
-      this.doctorService.removeDoctor(doctor).subscribe( () => {
-        this.updateDoctors();
+  removeDoctor(doctor: Doctor) {
+    this.doctorService.removeDoctor(doctor).subscribe(() => {
+      this.updateDoctors();
     });
   }
 

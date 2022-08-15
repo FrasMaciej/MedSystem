@@ -7,7 +7,7 @@ import { Visit } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { EditVisitDialog } from './edit-visit-dialog.component';
 
-export interface ScheduleData{
+export interface ScheduleData {
   schedule_id: string;
   doctor_id: string;
   visit: Visit;
@@ -15,7 +15,6 @@ export interface ScheduleData{
   newSurname: String;
   newVisitNote: String;
   newIsFree: Boolean;
-  
 }
 
 @Component({
@@ -63,16 +62,17 @@ export interface ScheduleData{
 export class SchedulePageComponent implements OnInit {
   schedule_id: string;
   doctor_id: string;
-  doctor!: Doctor;
+  doctor: Doctor;
   selectedSchedule: any;
 
   constructor(
     private actRoute: ActivatedRoute,
     private doctorService: DoctorService,
     public dialog: MatDialog
-    ) { 
+  ) { 
     this.schedule_id = this.actRoute.snapshot.params['schId'];
     this.doctor_id = this.actRoute.snapshot.params['docId'];
+    this.doctor = {_id: '', name: '', surname: '', city: '', specializations: [], schedule: []}
   }
 
   openEditVisitDialog(visit: Visit): void {
@@ -88,7 +88,7 @@ export class SchedulePageComponent implements OnInit {
     dialogRef.afterClosed().subscribe( result => {
       if(result!==null){
         this.doctorService.editVisit(result.visit, result.doctor_id, result.schedule_id, result.visit._id).subscribe(() => {
-          //this.updateDoctor();
+          this.updateDoctor();
         })
       }
     });
@@ -108,15 +108,13 @@ export class SchedulePageComponent implements OnInit {
     })
   }
 
-  getSchedule(): Schedule{
+  getSchedule(): Schedule {
     this.selectedSchedule = this.doctor.schedule.find(i => i._id === this.schedule_id);
     return this.selectedSchedule;
   }
 
-  openEditVistDialog(visit: Visit){
-
+  openEditVistDialog(visit: Visit) {
+ 
   }
 
 }
-
-
