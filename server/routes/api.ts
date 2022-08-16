@@ -9,6 +9,10 @@ router.get('/', helloApi.rootPath);
 
 // Pobieranie wszystkich lekarzy
 router.get('/doctors', doctorActions.getAllDoctors);
+// Wyciągnięcie wszystkich specjalizacji wśród lekarzy
+router.get('/doctors/specs', doctorActions.getSpecs);
+// Wyciągnięcie wszystkich lokalizacji lekarzy
+router.get('/doctors/cities', doctorActions.getCities);
 // Pobieranie konkretnego lekarza
 router.get('/doctors/:id', doctorActions.getDoctor);
 // Zapisywanie nowego lekarza
@@ -23,7 +27,6 @@ router.put('/doctors/:id', doctorActions.updateDoctor);
 router.delete('/doctors/:id', doctorActions.deleteDoctor);
 // Edytowanie Danych wybranej wizyty
 router.put('/doctors/editVisit/:doctorId/:scheduleId/:visitId', doctorActions.editVisit);
-
 
 export {};
 module.exports = router;

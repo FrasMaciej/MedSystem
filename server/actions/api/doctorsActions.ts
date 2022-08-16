@@ -9,8 +9,8 @@ class DoctorActions {
 
     async getAllDoctors(req: Request, res: Response) {
         try {
-            const doc = await Doctor.find({});
-            return res.status(200).json(doc);
+            const doctors = await Doctor.find({});
+            return res.status(200).json(doctors);
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
@@ -68,9 +68,7 @@ class DoctorActions {
                 visits: [],
             };
 
-            const scheduleIndex: number = doctor.schedule.push(schedule)-1;
-            const timeDif: number = doctor.schedule[scheduleIndex].finishHour-doctor.schedule[scheduleIndex].scheduleDate;
-            
+            const scheduleIndex: number = doctor.schedule.push(schedule)-1;            
             let loop: Date = new Date(scheduleDate);
             let end: Date = new Date(finishHour);
 
@@ -170,6 +168,32 @@ class DoctorActions {
         await doctor.save();
         res.status(201).json(doctor);
     }
+
+    async getSpecs(req: Request, res: Response) {
+        try {
+            const doctors: DoctorI[] = await Doctor.find({});
+            let specs = new Set();
+            doctors.map(doc => doc.specializations
+                   .map(spec => specs.add(spec)));
+            return res.status(200).json(Array.from(specs));
+        } catch (err: any) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    async getCities(req: Request, res: Response) {
+        try {
+            const doctors: DoctorI[] = await Doctor.find({});
+            let cities = new Set();
+            doctors.map(doc => cities.add(doc.city));
+            return res.status(200).json(Array.from(cities));
+        } catch (err: any) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
 }
 
 module.exports = new DoctorActions()
+
+

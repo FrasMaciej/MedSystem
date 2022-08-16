@@ -28,17 +28,17 @@ import { Router } from '@angular/router';
     </div>
   `,
   styles: [`
-    .logging-form{
+    .logging-form {
         margin-top: 10%;
     }
 
-    p{
+    p {
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    #homeButton{
+    #homeButton {
         display: flex;
         justify-content: center;
         margin: auto;
