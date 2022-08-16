@@ -20,9 +20,9 @@ import { Router } from '@angular/router';
           </span>
           <span class = singleElement> &nbsp; Witamy w MedSystem - aplikacji obsługi pacjentów </span>
           <span class="spacer"></span>
-          <a [routerLink]="['/login']"><button class="hover-class" id="patient-button" mat-stroked-button>Pacjent</button></a>
-          <a [routerLink]="['/login']"><button class="hover-class" id="doctor-button" mat-stroked-button>Lekarz</button></a>
-          <a [routerLink]="['/login']"><button class="hover-class" id="admin-button" mat-stroked-button>Administrator</button></a>
+          <a [routerLink]="['/login/patient']"><button class="hover-class" id="patient-button" mat-stroked-button>Pacjent</button></a>
+          <a [routerLink]="['/login/doctor']"><button class="hover-class" id="doctor-button" mat-stroked-button>Lekarz</button></a>
+          <a [routerLink]="['/login/admin']"><button class="hover-class" id="admin-button" mat-stroked-button>Administrator</button></a>
         </mat-toolbar>
       </p>
     </body>

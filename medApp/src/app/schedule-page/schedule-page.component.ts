@@ -43,19 +43,32 @@ export interface ScheduleData {
           <button id ="editButton" mat-icon-button color="black" (click)="openEditVisitDialog(visit)">
             <mat-icon>edit</mat-icon>
           </button>
+
+          {{ visit.startHour | date:'HH:mm':'+0000'}} – {{visit.finishHour | date:'HH:mm':'+0000'}}          
+          <span id="freeVisit" *ngIf="visit.isFree">[Wolne]</span> <span id="occupiedVisit" *ngIf="!visit.isFree">[Zajęte]</span>
+          <span *ngIf="visit.patientInfo.name"> [{{visit.patientInfo.name}} </span>
+          <span *ngIf="visit.patientInfo.surname"> {{visit.patientInfo.surname}}] </span>
+          <span *ngIf="visit.visitNote"> [{{visit.visitNote}}] </span>
+
           
-          {{ visit.startHour | date:'HH:mm':'+0000'}} – {{visit.finishHour | date:'HH:mm':'+0000'}}, {{visit.isFree}}
-    
         </div>
       </mat-list-option>
     </ng-container>
   </mat-selection-list>
   `,
   styles: [`
-    .custom-scroll-bar{
+    .custom-scroll-bar {
       height:50vh;
       overflow-y: scroll;
       overflow-x: hidden;
+    }
+
+    #freeVisit {
+      color: green;
+    }
+
+    #occupiedVisit {
+      color: red;
     }
   `]
 })

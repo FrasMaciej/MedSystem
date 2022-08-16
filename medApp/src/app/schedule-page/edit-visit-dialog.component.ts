@@ -33,7 +33,7 @@ import { ScheduleData } from "./schedule-page.component";
     </div>
   `,
   styles: [`
-    h1{
+    h1 {
       text-align: center;
     }
     .radio-group {

@@ -1,5 +1,4 @@
 export interface Visit {
-    _id: String,
     startHour: Date,
     finishHour: Date,
     isFree: Boolean,
@@ -11,7 +10,6 @@ export interface Visit {
 }
 
 export interface Schedule {
-    _id: String,
     scheduleDate: Date,
     finishHour: Date,
     singleVisitTime: Number,
@@ -19,8 +17,6 @@ export interface Schedule {
 }
 
 export interface DoctorI {
-    save()
-    _id: String,
     name: String,
     surname: String,
     city: String,

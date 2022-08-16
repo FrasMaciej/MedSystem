@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,9 +23,7 @@ import { Component, OnInit } from '@angular/core';
           </mat-form-field>
         </p>
         <p>
-          <a [routerLink]="['/adminPage']">
-            <button mat-raised-button>Zaloguj się</button>
-          </a>
+        <button mat-raised-button (click)="navigate()">Zaloguj się</button>
         </p>
     </div>
   `,
@@ -48,6 +47,20 @@ import { Component, OnInit } from '@angular/core';
   `]
 })
 export class LoginComponent implements OnInit {
-  constructor() {}
+  route: String = '';
+  constructor(private router: Router) {
+    if(this.router.url === '/login/admin')
+      this.route = '/adminPage'
+    else if(this.router.url === '/login/doctor')
+      this.route = '/doctorPage'
+    else if(this.router.url === '/login/patient')
+      this.route = '/patientPage'
+  }
+
+  navigate(){
+    console.log(this.route)
+    this.router.navigate([this.route]);
+  }
+
   ngOnInit() {}
 }
