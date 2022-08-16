@@ -1,4 +1,4 @@
-import { Visit, Schedule } from './interfaces';
+import { Visit, Schedule, DoctorI } from './interfaces';
 import { Request, Response } from 'express';
 
 
@@ -65,7 +65,7 @@ class DoctorActions {
                 scheduleDate: new Date(scheduleDate),
                 finishHour: new Date(finishHour),
                 singleVisitTime: singleVisitTime,
-                visits: []
+                visits: [],
             };
 
             const scheduleIndex: number = doctor.schedule.push(schedule)-1;
@@ -83,7 +83,7 @@ class DoctorActions {
                         name: '',
                         surname: ''
                     },
-                    visitNote: ''
+                    visitNote: '',
                 };
                 doctor.schedule[scheduleIndex].visits.push(visit);
             }    
@@ -121,6 +121,7 @@ class DoctorActions {
         }
     }
 
+    //To-do -> uprościć!
     async editVisit(req: Request, res: Response) {
         const doctorId = req.params.doctorId;
         const scheduleId = req.params.scheduleId;
