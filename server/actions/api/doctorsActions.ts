@@ -1,4 +1,4 @@
-import { Visit, Schedule, DoctorI } from './interfaces';
+import { Visit, Schedule, DoctorI, VisitInfo } from './interfaces';
 import { Request, Response } from 'express';
 
 
@@ -187,6 +187,21 @@ class DoctorActions {
             let cities = new Set();
             doctors.map(doc => cities.add(doc.city));
             return res.status(200).json(Array.from(cities));
+        } catch (err: any) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    async getVisits(req: Request, res: Response) {
+        try {
+            const doctors: DoctorI[] = await Doctor.find({});
+            const specialization: String = req.body.specialization;
+            const cities = Array.from(req.body.cities);
+            const startDate: Date = new Date(req.body.startDate);
+            const endDate: Date = new Date(req.body.endDate);
+            let matchingVisits: VisitInfo[] = []; 
+
+            res.sendStatus(204);
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }

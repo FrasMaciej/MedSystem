@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Doctor } from '../models/doctor';
 import { DoctorService } from '../services/doctor.service';
 
@@ -8,7 +8,7 @@ import { DoctorService } from '../services/doctor.service';
   template: `
     <p>
       <mat-toolbar color="primary">
-        <button mat-icon-button class="icon">
+        <button mat-icon-button class="icon" (click)="click()">
           <mat-icon>menu</mat-icon>
         </button>
         <a [routerLink]="['/']">
@@ -19,39 +19,121 @@ import { DoctorService } from '../services/doctor.service';
         <span>Panel Pacjenta</span>
       </mat-toolbar>
     </p>
-    <mat-form-field appearance="fill">
-      <mat-label>Toppings</mat-label>
-      <mat-select [formControl]="toppings" multiple>
-        <mat-select-trigger>
-          {{toppings.value?.[0] || ''}}
-          <span *ngIf="(toppings.value?.length || 0) > 1" class="example-additional-selection">
-            (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
-          </span>
-        </mat-select-trigger>
-        <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    
+    <div class="PatientSearchForm" >
+      <div class="formElem">
+        <mat-form-field appearance="fill">
+          <mat-label>Miasta</mat-label>
+          <mat-select [formControl]="selectedCities" multiple>
+            <mat-select-trigger>
+              {{selectedCities.value?.[0] || ''}}
+              <span *ngIf="(selectedCities.value?.length || 0) > 1" class="additional-selection">
+                (+{{(selectedCities.value?.length || 0) - 1}} {{selectedCities.value?.length === 2 ? 'other' : 'others'}})
+              </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let city of citiesList" [value]="city">{{city}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="formElem">
+        <mat-form-field appearance="fill">
+          <mat-label>Specjalizacja</mat-label>
+          <mat-select [(value)]="selectedSpec">
+            <mat-option></mat-option>
+            <mat-option [value]="option" *ngFor="let option of specsList">{{ option }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="formElem">
+        <mat-form-field appearance="fill">
+          <mat-label>Przedział czasowy</mat-label>
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Start date">
+            <input matEndDate formControlName="end" placeholder="End date">
+          </mat-date-range-input>
+          <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+
+          <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+          <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+        </mat-form-field>
+      </div>
+
+
+      <div class="formElem">
+        <button mat-raised-button color="searchButton" >Wyszukaj</button>
+      </div>
+    </div>
   `,
   styles: [`
     .mat-toolbar.mat-primary {
       background-color: rgb(71, 106, 141);
     }
+
+    .additional-selection {
+      opacity: 0.75;
+      font-size: 0.75em;
+    }
+
+    .PatientSearchForm {
+      display:flex;
+      flex-direction: row;
+      justify-content: center;
+      border-bottom: 2px solid grey;
+      border-bottom-color: #22788a;
+
+    }
+
+    .formElem {
+      margin: 5px;
+    }
+
+    .mat-searchButton {
+      background-color: rgb(170, 62, 198);
+      width: 120px;
+      height: 52px;
+      color: #fff;
+      
+    }
+
   `]
 })
+
 export class PatientPageComponent implements OnInit {
-  //doctorsList: Doctor[] = [];
-  cities = new FormControl('');
-  specializations = new FormControl('');
+  citiesList: String[] = [];
+  specsList: String[] = [];
+  selectedCities = new FormControl('');
+  selectedSpec: String = this.specsList[0];
+  range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null)
+  })
+
   constructor(private doctorService: DoctorService) { }
 
   ngOnInit(): void {
-    //this.updateDoctors();
+    this.updateMenuData();
   }
 
-  // updateDoctors(): void {
-  //   this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
-  //     this.doctorsList = doctors;
-  //   })
-  // }
+  updateMenuData(): void {
+    this.doctorService.getCities().subscribe((cities: String[]) => {
+      this.citiesList = cities;
+    })
+    this.doctorService.getSpecs().subscribe((specs: String[]) => {
+      this.specsList = specs;
+    })
+  }
 
+  click(){
+    console.log(this.range.value.start);
+    console.log(this.range.value.end);
+  }
+
+  selectSpec(event: Event) {
+    this.selectedSpec = (event.target as HTMLSelectElement).value;
+  }
+  
 }

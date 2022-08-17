@@ -17,6 +17,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { AdminPageComponent} from './admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page';
@@ -27,6 +29,7 @@ import { SchedulesDialog } from './admin-page/schedules-dialog.component';
 import { DoctorAddDialog } from './admin-page/doctor-add-dialog.component';
 import { DoctorEditDialog } from './admin-page/doctor-edit-dialog.component';
 import { PatientPageComponent } from './patient-page/patient-page.component';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +42,8 @@ import { PatientPageComponent } from './patient-page/patient-page.component';
     BrowserModule, AppRoutingModule, MatRadioModule, BrowserAnimationsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatCardModule,
     MatDialogModule, MatInputModule, MatListModule, FormsModule,
-    MatSelectModule, ReactiveFormsModule, HttpClientModule, 
+    MatSelectModule, ReactiveFormsModule, HttpClientModule, MatDatepickerModule, 
+    MatNativeDateModule,
     RouterModule.forRoot([
       { path: '', component: MainPageComponent },
       { path: 'login/admin', component: LoginComponent },

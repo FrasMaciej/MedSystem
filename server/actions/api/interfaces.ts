@@ -23,3 +23,13 @@ export interface DoctorI {
     specializations: String[]
     schedule: Schedule[]
 }
+
+export interface VisitInfo {
+    doctorId: String,
+    scheduleId: String,
+    visit: Visit,
+    docSpecialization: String,
+    docName: String,
+    docSurname: String,
+    docCity: String
+}
