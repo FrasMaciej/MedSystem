@@ -199,7 +199,36 @@ class DoctorActions {
             const cities = Array.from(req.body.cities);
             const startDate: Date = new Date(req.body.startDate);
             const endDate: Date = new Date(req.body.endDate);
+            let matchingSchedules: Schedule[] = [];  
             let matchingVisits: VisitInfo[] = []; 
+            let datesArray: Date[] = [];
+            let loop = new Date(startDate);
+
+            while(loop <= endDate) {
+                datesArray.push(new Date(loop));
+                loop.setDate(loop.getDate()+1);
+            }
+            
+            let matchingDoctors: DoctorI[] = doctors.filter(doc => (doc.specializations.indexOf(specialization) > -1 && cities.indexOf(doc.city) > -1));
+            matchingDoctors.map(doc => doc.schedule
+                        .map(sch => {
+                            for(let date of datesArray) {
+                                if((date.getDate() === sch.scheduleDate.getDate()) && (date.getMonth() === sch.scheduleDate.getMonth()) && (date.getFullYear === sch.scheduleDate.getFullYear)) {
+                                    matchingSchedules.push(sch);
+                                }
+
+                                for(let sch of matchingSchedules){
+                                    sch.visits.filter(visit => { if(visit.isFree) { matchingVisits.push() } })
+                                }
+
+                            }
+                        }
+                        ));
+
+            console.log(matchingSchedules);
+
+            //               .filter(sch => sch.scheduleDate))
+            //forEach ...                                                                                     
 
             res.sendStatus(204);
         } catch (err: any) {
