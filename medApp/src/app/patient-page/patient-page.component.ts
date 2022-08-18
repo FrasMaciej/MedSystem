@@ -176,7 +176,7 @@ export class PatientPageComponent implements OnInit {
   openVisitSignDialog(visitInfo: VisitInfo): void {
     const dialogRef = this.dialog.open(VisitSignComponent, {
       width: '500px',
-      height: '450px',
+      height: '400px',
       autoFocus: false,
       data: {
         visitInfo: visitInfo, note: '',
@@ -186,9 +186,9 @@ export class PatientPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe( result => {
       if(result!==null){
-        this.doctorService.editVisit(result.visitInfo.visit, result.doctor_id, result.schedule_id, result.visit._id).subscribe(() => {
+        this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id).subscribe(() => {
+          this.getFilteredVisits();
         })
-        this.getFilteredVisits();
       }
     });
     
@@ -216,7 +216,7 @@ export class PatientPageComponent implements OnInit {
   }
 
   getFilteredVisits() {
-    if(this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end ){
+    if(this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end){
       const cities: String[] = this.selectedCities.value;
       this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((visitInfo: VisitInfo[]) => {
         this.selectedVisits = visitInfo;

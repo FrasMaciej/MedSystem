@@ -4,6 +4,7 @@ export interface Patient{
 }
 
 export interface Visit{
+    _id: String;
     startHour: Date;
     finishHour: Date;
     isFree: Boolean;
@@ -12,10 +13,10 @@ export interface Visit{
 }
 
 export interface Schedule {
+    _id: string;
     scheduleDate: Date;
     finishHour: Date;
     singleVisitTime: Number;
-    _id: string;
     visits: Visit[];
 }
 
