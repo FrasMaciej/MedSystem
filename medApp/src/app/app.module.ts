@@ -19,6 +19,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatTableModule } from '@angular/material/table';
+
+
 import { AdminPageComponent} from './admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page';
@@ -43,7 +46,7 @@ import { PatientPageComponent } from './patient-page/patient-page.component';
     MatToolbarModule, MatIconModule, MatButtonModule, MatCardModule,
     MatDialogModule, MatInputModule, MatListModule, FormsModule,
     MatSelectModule, ReactiveFormsModule, HttpClientModule, MatDatepickerModule, 
-    MatNativeDateModule,
+    MatNativeDateModule, MatTableModule,
     RouterModule.forRoot([
       { path: '', component: MainPageComponent },
       { path: 'login/admin', component: LoginComponent },

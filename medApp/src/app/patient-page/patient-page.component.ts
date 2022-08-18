@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Doctor } from '../models/doctor';
+import { VisitInfo } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 
 @Component({
@@ -64,9 +65,38 @@ import { DoctorService } from '../services/doctor.service';
 
 
       <div class="formElem">
-        <button mat-raised-button color="searchButton" >Wyszukaj</button>
+        <button mat-raised-button color="searchButton" (click)="getFilteredVisits()">Wyszukaj</button>
       </div>
     </div>
+
+  <table mat-table [dataSource]="selectedVisits" class="mat-elevation-z8">
+    <!-- Position Column -->
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef> Miasto </th>
+      <td mat-cell *matCellDef="let element"> {{element.docCity}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Imię i nazwisko lekarza</th>
+      <td mat-cell *matCellDef="let element"> {{element.docName}} {{element.docSurname}}</td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="spec">
+      <th mat-header-cell *matHeaderCellDef> Specjalizacja </th>
+      <td mat-cell *matCellDef="let element"> {{element.docSpecialization}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="visitDate">
+      <th mat-header-cell *matHeaderCellDef> Data wizyty </th>
+      <td mat-cell *matCellDef="let element"> {{element.visit.startHour | date:'yyyy-MM-dd HH:mm':'+0000' }} — {{element.visit.finishHour | date:'HH:mm':'+0000' }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
   `,
   styles: [`
     .mat-toolbar.mat-primary {
@@ -99,18 +129,30 @@ import { DoctorService } from '../services/doctor.service';
       
     }
 
+    .custom-scroll-bar{
+      height:60vh;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+
+    table {
+      width: 100%;
+    }
+
   `]
 })
 
 export class PatientPageComponent implements OnInit {
   citiesList: String[] = [];
   specsList: String[] = [];
-  selectedCities = new FormControl('');
+  selectedCities = new FormControl(this.citiesList);
   selectedSpec: String = this.specsList[0];
   range = new FormGroup({
-    start: new FormControl<Date | null>(null),
-    end: new FormControl<Date | null>(null)
+    start: new FormControl<Date>(new Date()),
+    end: new FormControl<Date>(new Date())
   })
+  selectedVisits: VisitInfo[] = [];
+  displayedColumns: String[] = ['city', 'name', 'spec', 'visitDate']
 
   constructor(private doctorService: DoctorService) { }
 
@@ -128,12 +170,20 @@ export class PatientPageComponent implements OnInit {
   }
 
   click(){
-    console.log(this.range.value.start);
-    console.log(this.range.value.end);
+    console.log(this.selectedVisits);
   }
 
   selectSpec(event: Event) {
     this.selectedSpec = (event.target as HTMLSelectElement).value;
+  }
+
+  getFilteredVisits() {
+    if(this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end ){
+      const cities: String[] = this.selectedCities.value;
+      this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((visitInfo: VisitInfo[]) => {
+        this.selectedVisits = visitInfo;
+      })
+    }
   }
   
 }

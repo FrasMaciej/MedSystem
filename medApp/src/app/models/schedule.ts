@@ -18,3 +18,13 @@ export interface Schedule {
     _id: string;
     visits: Visit[];
 }
+
+export interface VisitInfo {
+    doctorId: String,
+    scheduleId: String,
+    visit: Visit,
+    docSpecialization: String,
+    docName: String,
+    docSurname: String,
+    docCity: String
+}

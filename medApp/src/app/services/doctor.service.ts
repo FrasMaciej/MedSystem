@@ -68,7 +68,7 @@ export class DoctorService {
       startDate: startDate,
       endDate: endDate
     }
-    const getVisitsUrl = this.baseUrl+'/'+'visits';
+    const getVisitsUrl = this.baseUrl+'/'+'filteredVisits';
     return this.httpClient.post(getVisitsUrl, visitReq);
   }
 
