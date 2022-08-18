@@ -14,7 +14,7 @@ router.get('/doctors/specs', doctorActions.getSpecs);
 // Wyciągnięcie wszystkich lokalizacji lekarzy
 router.get('/doctors/cities', doctorActions.getCities);
 // Wyciągnięcie wizyt przy określonych kryteriach
-router.get('/doctors/visits', doctorActions.getVisits);
+router.post('/doctors/filteredVisits', doctorActions.getFilteredVisits);
 // Pobieranie konkretnego lekarza
 router.get('/doctors/:id', doctorActions.getDoctor);
 // Zapisywanie nowego lekarza

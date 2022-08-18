@@ -61,9 +61,15 @@ export class DoctorService {
     return this.httpClient.get(getSpecsUrl);
   }
 
-  getVisits() : Observable<any> {
+  getFilteredVisits(specialization: String, cities: String[], startDate: Date, endDate: Date) : Observable<any> {
+    const visitReq = {
+      specialization: specialization,
+      cities: cities,
+      startDate: startDate,
+      endDate: endDate
+    }
     const getVisitsUrl = this.baseUrl+'/'+'visits';
-    return this.httpClient.get(getVisitsUrl);
+    return this.httpClient.post(getVisitsUrl, visitReq);
   }
 
 }

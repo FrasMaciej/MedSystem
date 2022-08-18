@@ -10,6 +10,7 @@ export interface Visit {
 }
 
 export interface Schedule {
+    _id: String,
     scheduleDate: Date,
     finishHour: Date,
     singleVisitTime: Number,
@@ -17,6 +18,7 @@ export interface Schedule {
 }
 
 export interface DoctorI {
+    _id: String,
     name: String,
     surname: String,
     city: String,

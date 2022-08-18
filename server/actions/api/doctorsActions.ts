@@ -66,6 +66,7 @@ class DoctorActions {
                 finishHour: new Date(finishHour),
                 singleVisitTime: singleVisitTime,
                 visits: [],
+                _id: id
             };
 
             const scheduleIndex: number = doctor.schedule.push(schedule)-1;            
@@ -192,14 +193,13 @@ class DoctorActions {
         }
     }
 
-    async getVisits(req: Request, res: Response) {
+    async getFilteredVisits(req: Request, res: Response) {
         try {
             const doctors: DoctorI[] = await Doctor.find({});
             const specialization: String = req.body.specialization;
             const cities = Array.from(req.body.cities);
             const startDate: Date = new Date(req.body.startDate);
             const endDate: Date = new Date(req.body.endDate);
-            let matchingSchedules: Schedule[] = [];  
             let matchingVisits: VisitInfo[] = []; 
             let datesArray: Date[] = [];
             let loop = new Date(startDate);
@@ -214,23 +214,26 @@ class DoctorActions {
                         .map(sch => {
                             for(let date of datesArray) {
                                 if((date.getDate() === sch.scheduleDate.getDate()) && (date.getMonth() === sch.scheduleDate.getMonth()) && (date.getFullYear === sch.scheduleDate.getFullYear)) {
-                                    matchingSchedules.push(sch);
+                                    sch.visits.filter(visit => { 
+                                        if(visit.isFree) { 
+                                            let visitInfo: VisitInfo = {
+                                                doctorId: doc._id,
+                                                scheduleId: sch._id,
+                                                visit: visit,
+                                                docSpecialization: specialization,
+                                                docName: doc.name,
+                                                docSurname: doc.surname,
+                                                docCity: doc.city
+                                            }
+                                            matchingVisits.push(visitInfo); 
+                                        } })
                                 }
-
-                                for(let sch of matchingSchedules){
-                                    sch.visits.filter(visit => { if(visit.isFree) { matchingVisits.push() } })
-                                }
-
                             }
                         }
                         ));
 
-            console.log(matchingSchedules);
-
-            //               .filter(sch => sch.scheduleDate))
-            //forEach ...                                                                                     
-
-            res.sendStatus(204);
+            matchingVisits.sort((a: VisitInfo, b: VisitInfo) => (a.visit.startHour < b.visit.finishHour ? -1 : 1));
+            res.status(201).json(matchingVisits);
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
