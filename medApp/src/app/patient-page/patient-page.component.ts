@@ -111,8 +111,7 @@ export interface VisitData {
     </table>
 
     <mat-paginator [pageSizeOptions]="[10, 20]"
-                 showFirstLastButtons 
-                 >
+                 showFirstLastButtons >
     </mat-paginator>
   </div>
 
@@ -133,7 +132,6 @@ export interface VisitData {
       justify-content: center;
       border-bottom: 2px solid grey;
       border-bottom-color: #22788a;
-
     }
 
     .formElem {
@@ -148,7 +146,7 @@ export interface VisitData {
       
     }
 
-    .custom-scroll-bar{
+    .custom-scroll-bar {
       height:60vh;
       overflow-y: scroll;
       overflow-x: hidden;

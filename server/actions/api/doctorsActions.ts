@@ -133,12 +133,14 @@ class DoctorActions {
         let visitIndex: number = 0;
         let doctor;
 
+
         try {
             doctor = await Doctor.findOne({ _id: doctorId });
         } catch (err: any) {
             return res.status(500).json({message: err.message});
         }
-        
+
+
         for(let i=0; i<doctor.schedule.length; i++){
             if(doctor.schedule[i]._id.toString() === scheduleId){
                 scheduleIndex = i;
@@ -159,7 +161,9 @@ class DoctorActions {
         doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = visitNote;
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = name;
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = surname;
-    
+        
+        //Object.assign(doctor.schedule[scheduleIndex].visits[visitIndex], {isFree: isFree, visitNote: visitNote, name: name, surname: surname})
+
         if(doctor.schedule[scheduleIndex].visits[visitIndex].isFree===true){
             doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = '';
             doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = null
@@ -211,22 +215,22 @@ class DoctorActions {
             
             let matchingDoctors: DoctorI[] = doctors.filter(doc => (doc.specializations.indexOf(specialization) > -1 && cities.indexOf(doc.city) > -1));
             matchingDoctors.map(doc => doc.schedule
-                        .map(sch => {
+                            .map(sch => {
                             for(let date of datesArray) {
                                 if((date.getDate() === sch.scheduleDate.getDate()) && (date.getMonth() === sch.scheduleDate.getMonth()) && (date.getFullYear === sch.scheduleDate.getFullYear)) {
                                     sch.visits.filter(visit => { 
-                                        if(visit.isFree) { 
-                                            let visitInfo: VisitInfo = {
-                                                doctorId: doc._id,
-                                                scheduleId: sch._id,
-                                                visit: visit,
-                                                docSpecialization: specialization,
-                                                docName: doc.name,
-                                                docSurname: doc.surname,
-                                                docCity: doc.city
-                                            }
-                                            matchingVisits.push(visitInfo); 
-                                        } })
+                                    if(visit.isFree) { 
+                                        let visitInfo: VisitInfo = {
+                                            doctorId: doc._id,
+                                            scheduleId: sch._id,
+                                            visit: visit,
+                                            docSpecialization: specialization,
+                                            docName: doc.name,
+                                            docSurname: doc.surname,
+                                            docCity: doc.city
+                                        }
+                                        matchingVisits.push(visitInfo); 
+                                    } })
                                 }
                             }
                         }
