@@ -76,7 +76,8 @@ export class SchedulePageComponent implements OnInit {
   doctor_id: string;
   doctor: Doctor;
   selectedSchedule: any;
-
+  pageOfItems: Array<any> = [];
+  
   constructor(
     private actRoute: ActivatedRoute,
     private doctorService: DoctorService,
@@ -125,8 +126,8 @@ export class SchedulePageComponent implements OnInit {
     return this.selectedSchedule;
   }
 
-  openEditVistDialog(visit: Visit) {
- 
+  onChangePage(pageOfItems: Array<any>) {
+    this.pageOfItems = pageOfItems;
   }
 
 }

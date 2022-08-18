@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Doctor } from '../models/doctor';
 import { Visit, VisitInfo } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
@@ -78,38 +80,41 @@ export interface VisitData {
       </div>
     </div>
 
-  <table mat-table [dataSource]="selectedVisits" class="mat-elevation-z8">
-    <!-- Position Column -->
-    <ng-container matColumnDef="city">
-      <th mat-header-cell *matHeaderCellDef> Miasto </th>
-      <td mat-cell *matCellDef="let element"> {{element.docCity}}</td>
-    </ng-container>
+  <div class="visitsList">
+    <table mat-table [dataSource]="selectedVisits" class="mat-elevation-z8">
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef> Miasto </th>
+        <td mat-cell *matCellDef="let element"> {{element.docCity}}</td>
+      </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Imię i nazwisko lekarza</th>
-      <td mat-cell *matCellDef="let element"> {{element.docName}} {{element.docSurname}}</td>
-    </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Imię i nazwisko lekarza</th>
+        <td mat-cell *matCellDef="let element"> {{element.docName}} {{element.docSurname}}</td>
+      </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="spec">
-      <th mat-header-cell *matHeaderCellDef> Specjalizacja </th>
-      <td mat-cell *matCellDef="let element"> {{element.docSpecialization}} </td>
-    </ng-container>
+      <ng-container matColumnDef="spec">
+        <th mat-header-cell *matHeaderCellDef> Specjalizacja </th>
+        <td mat-cell *matCellDef="let element"> {{element.docSpecialization}} </td>
+      </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="visitDate">
-      <th mat-header-cell *matHeaderCellDef> Data wizyty </th>
-      <td mat-cell *matCellDef="let element"> {{element.visit.startHour | date:'yyyy-MM-dd HH:mm':'+0000' }} — {{element.visit.finishHour | date:'HH:mm':'+0000' }}
-        <button id ="editButton" mat-icon-button color="black" (click)="openVisitSignDialog(element)">
-            <mat-icon>assignment icon</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="visitDate">
+        <th mat-header-cell *matHeaderCellDef> Data wizyty </th>
+        <td mat-cell *matCellDef="let element"> {{element.visit.startHour | date:'yyyy-MM-dd HH:mm':'+0000' }} — {{element.visit.finishHour | date:'HH:mm':'+0000' }}
+          <button id ="editButton" mat-icon-button color="black" (click)="openVisitSignDialog(element)">
+              <mat-icon>assignment icon</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 20]"
+                 showFirstLastButtons 
+                 >
+    </mat-paginator>
+  </div>
 
   `,
   styles: [`
@@ -165,8 +170,15 @@ export class PatientPageComponent implements OnInit {
     start: new FormControl<Date>(new Date()),
     end: new FormControl<Date>(new Date())
   })
-  selectedVisits: VisitInfo[] = [];
+  selectedVisits = new MatTableDataSource<VisitInfo>();
   displayedColumns: String[] = ['city', 'name', 'spec', 'visitDate']
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+
+  ngAfterViewInit() {
+    this.selectedVisits.paginator = this.paginator;
+  }
 
   constructor(
     private doctorService: DoctorService,
@@ -219,7 +231,7 @@ export class PatientPageComponent implements OnInit {
     if(this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end){
       const cities: String[] = this.selectedCities.value;
       this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((visitInfo: VisitInfo[]) => {
-        this.selectedVisits = visitInfo;
+        this.selectedVisits.data = visitInfo;
       })
     }
   }

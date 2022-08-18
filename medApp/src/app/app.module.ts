@@ -20,6 +20,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 import { AdminPageComponent} from './admin-page/admin-page.component';
@@ -48,7 +49,7 @@ import { VisitSignComponent } from './patient-page/visit-sign.component';
     MatToolbarModule, MatIconModule, MatButtonModule, MatCardModule,
     MatDialogModule, MatInputModule, MatListModule, FormsModule,
     MatSelectModule, ReactiveFormsModule, HttpClientModule, MatDatepickerModule, 
-    MatNativeDateModule, MatTableModule,
+    MatNativeDateModule, MatTableModule, MatPaginatorModule,
     RouterModule.forRoot([
       { path: '', component: MainPageComponent },
       { path: 'login/admin', component: LoginComponent },
