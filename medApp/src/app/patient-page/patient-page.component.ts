@@ -1,8 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Doctor } from '../models/doctor';
-import { VisitInfo } from '../models/schedule';
+import { Visit, VisitInfo } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
+import { VisitSignComponent } from './visit-sign.component';
+
+export interface VisitData {
+  visitInfo: VisitInfo;
+  note: String;
+  name: String;
+  surname: String;
+}
 
 @Component({
   selector: 'app-patient-page',
@@ -91,8 +100,13 @@ import { DoctorService } from '../services/doctor.service';
     <!-- Symbol Column -->
     <ng-container matColumnDef="visitDate">
       <th mat-header-cell *matHeaderCellDef> Data wizyty </th>
-      <td mat-cell *matCellDef="let element"> {{element.visit.startHour | date:'yyyy-MM-dd HH:mm':'+0000' }} — {{element.visit.finishHour | date:'HH:mm':'+0000' }}</td>
+      <td mat-cell *matCellDef="let element"> {{element.visit.startHour | date:'yyyy-MM-dd HH:mm':'+0000' }} — {{element.visit.finishHour | date:'HH:mm':'+0000' }}
+        <button id ="editButton" mat-icon-button color="black" (click)="openVisitSignDialog(element)">
+            <mat-icon>assignment icon</mat-icon>
+        </button>
+      </td>
     </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
@@ -154,7 +168,31 @@ export class PatientPageComponent implements OnInit {
   selectedVisits: VisitInfo[] = [];
   displayedColumns: String[] = ['city', 'name', 'spec', 'visitDate']
 
-  constructor(private doctorService: DoctorService) { }
+  constructor(
+    private doctorService: DoctorService,
+    public dialog: MatDialog,
+    ) { }
+
+  openVisitSignDialog(visitInfo: VisitInfo): void {
+    const dialogRef = this.dialog.open(VisitSignComponent, {
+      width: '500px',
+      height: '450px',
+      autoFocus: false,
+      data: {
+        visitInfo: visitInfo, note: '',
+        name: '', surname: ''
+      }
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      if(result!==null){
+        this.doctorService.editVisit(result.visitInfo.visit, result.doctor_id, result.schedule_id, result.visit._id).subscribe(() => {
+        })
+        this.getFilteredVisits();
+      }
+    });
+    
+  }
 
   ngOnInit(): void {
     this.updateMenuData();

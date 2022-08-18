@@ -64,7 +64,4 @@ export class EditVisitDialog {
     this.data.visit.patientInfo = {name: this.data.newName, surname: this.data.newSurname}
   }
 
-  closeDialogRef() {
-    this.dialogRef.close();
-  }
 }

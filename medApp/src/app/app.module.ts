@@ -32,6 +32,7 @@ import { SchedulesDialog } from './admin-page/schedules-dialog.component';
 import { DoctorAddDialog } from './admin-page/doctor-add-dialog.component';
 import { DoctorEditDialog } from './admin-page/doctor-edit-dialog.component';
 import { PatientPageComponent } from './patient-page/patient-page.component';
+import { VisitSignComponent } from './patient-page/visit-sign.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { PatientPageComponent } from './patient-page/patient-page.component';
     DoctorEditDialog, DoctorAddDialog, EditVisitDialog, SchedulesDialog,
     SchedulePageComponent,
     PatientPageComponent,
+    VisitSignComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, MatRadioModule, BrowserAnimationsModule,

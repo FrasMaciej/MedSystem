@@ -30,7 +30,7 @@ export interface ScheduleData {
           <mat-icon>exit_to_app</mat-icon>
         </button>
       </a>
-      Panel Administratora - obsługa grafiku dr.&nbsp;<div *ngIf="doctor?.name">{{doctor.name}}</div> &nbsp; <div *ngIf=doctor?.name>{{doctor.surname}}</div> 
+      Panel Administratora - obsługa grafiku dr.&nbsp;<div *ngIf="doctor?.name">{{doctor.name}}</div> &nbsp; <div *ngIf="doctor?.name">{{doctor.surname}}</div> 
       &nbsp; <div *ngIf="selectedSchedule?.scheduleDate">[{{selectedSchedule?.scheduleDate | date:'yyyy-MM-dd':'+0000'}}]</div>
       <span class="spacer"></span>
     </mat-toolbar>
@@ -39,7 +39,7 @@ export interface ScheduleData {
     <ng-container *ngIf="selectedSchedule">
       <mat-list-option *ngFor="let visit of selectedSchedule.visits">
         <div id="visitsList">
-    
+
           <button id ="editButton" mat-icon-button color="black" (click)="openEditVisitDialog(visit)">
             <mat-icon>edit</mat-icon>
           </button>
@@ -49,7 +49,6 @@ export interface ScheduleData {
           <span *ngIf="visit.patientInfo.name"> [{{visit.patientInfo.name}} </span>
           <span *ngIf="visit.patientInfo.surname"> {{visit.patientInfo.surname}}] </span>
           <span *ngIf="visit.visitNote"> [{{visit.visitNote}}] </span>
-
           
         </div>
       </mat-list-option>
