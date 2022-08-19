@@ -46,6 +46,10 @@ import { Router } from '@angular/router';
       flex: auto;
     }
 
+    .hover-class:hover {
+      background-color: rgb(40, 123, 134);
+      color: white;
+    }
   `]
 })
 export class MainPageComponent implements OnInit {
