@@ -1,5 +1,7 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Doctor } from '../models/doctor';
 import { Patient, Schedule } from '../models/schedule';
@@ -31,29 +33,59 @@ export interface ScheduleData {
         </button>
       </a>
       Panel Administratora - obsługa grafiku dr.&nbsp;<div *ngIf="doctor?.name">{{doctor.name}}</div> &nbsp; <div *ngIf="doctor?.name">{{doctor.surname}}</div> 
-      &nbsp; <div *ngIf="selectedSchedule?.scheduleDate">[{{selectedSchedule?.scheduleDate | date:'yyyy-MM-dd':'+0000'}}]</div>
+      &nbsp; <div *ngIf="scheduleToDisplay?.scheduleDate">[{{scheduleToDisplay?.scheduleDate | date:'yyyy-MM-dd':'+0000'}}]</div>
       <span class="spacer"></span>
     </mat-toolbar>
   </p>
-  <mat-selection-list #schedule [multiple]="false" class="custom-scroll-bar"> 
-    <ng-container *ngIf="selectedSchedule">
-      <mat-list-option *ngFor="let visit of selectedSchedule.visits">
-        <div id="visitsList">
+  
+  <div class="visitsList">
+    <table mat-table [dataSource]="visitsList" class="mat-elevation-z8">
+      <ng-container matColumnDef="time">
+        <th mat-header-cell *matHeaderCellDef> Godzina </th>
+        <td mat-cell *matCellDef="let element"> 
+          {{ element.startHour | date:'HH:mm':'+0000'}} – {{element.finishHour | date:'HH:mm':'+0000'}}
+        </td>
+      </ng-container>
 
-          <button id ="editButton" mat-icon-button color="black" (click)="openEditVisitDialog(visit)">
+      <ng-container matColumnDef="isFree">
+        <th mat-header-cell *matHeaderCellDef> Dostępność</th>
+        <td mat-cell *matCellDef="let element">
+          <span id="freeVisit" *ngIf="element.isFree">Wolne</span> <span id="occupiedVisit" *ngIf="!element.isFree">Zajęte</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="patientName">
+        <th mat-header-cell *matHeaderCellDef> Imię i nazwisko pacjenta </th>
+        <td mat-cell *matCellDef="let element"> 
+          <span *ngIf="element.patientInfo.name && element.patientInfo.surname"> {{element.patientInfo.name}} {{element.patientInfo.surname}}</span> 
+        </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="note">
+        <th mat-header-cell *matHeaderCellDef> Notatka do wizyty </th>
+        <td mat-cell *matCellDef="let element"> {{element.visitNote}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="buttons">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element"> 
+          <button id ="editButton" mat-icon-button color="black" (click)="openEditVisitDialog(element)">
             <mat-icon>edit</mat-icon>
           </button>
+        </td>
+      </ng-container>
 
-          {{ visit.startHour | date:'HH:mm':'+0000'}} – {{visit.finishHour | date:'HH:mm':'+0000'}}          
-          <span id="freeVisit" *ngIf="visit.isFree">[Wolne]</span> <span id="occupiedVisit" *ngIf="!visit.isFree">[Zajęte]</span>
-          <span *ngIf="visit.patientInfo.name"> [{{visit.patientInfo.name}} </span>
-          <span *ngIf="visit.patientInfo.surname"> {{visit.patientInfo.surname}}] </span>
-          <span *ngIf="visit.visitNote"> [{{visit.visitNote}}] </span>
-          
-        </div>
-      </mat-list-option>
-    </ng-container>
-  </mat-selection-list>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons >
+    </mat-paginator>
+  </div>
+
+  
   `,
   styles: [`
     .custom-scroll-bar {
@@ -69,14 +101,34 @@ export interface ScheduleData {
     #occupiedVisit {
       color: red;
     }
+
+    .mat-toolbar.mat-primary {
+      background-color: rgb(143, 68, 2);
+    }
+
+    table {
+      width: 100%;
+    }
+
+    .mat-column-buttons {
+      text-align: right;
+    }
+
   `]
 })
 export class SchedulePageComponent implements OnInit {
   schedule_id: string;
   doctor_id: string;
   doctor: Doctor;
-  selectedSchedule: any;
-  pageOfItems: Array<any> = [];
+  scheduleToDisplay: any;
+  visitsList= new MatTableDataSource<Visit>();
+  displayedColumns: String[] = ['time', 'isFree', 'patientName', 'note', 'buttons']
+
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  ngAfterViewInit() {
+    this.visitsList.paginator = this.paginator;
+  }
   
   constructor(
     private actRoute: ActivatedRoute,
@@ -110,7 +162,8 @@ export class SchedulePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.doctor = {} as Doctor;
-    this.selectedSchedule = {} as Schedule;
+    this.scheduleToDisplay = {} as Schedule;
+    this.visitsList.data = this.scheduleToDisplay.visits;
     this.updateDoctor();
   }
 
@@ -122,12 +175,9 @@ export class SchedulePageComponent implements OnInit {
   }
 
   getSchedule(): Schedule {
-    this.selectedSchedule = this.doctor.schedule.find(i => i._id === this.schedule_id);
-    return this.selectedSchedule;
-  }
-
-  onChangePage(pageOfItems: Array<any>) {
-    this.pageOfItems = pageOfItems;
+    this.scheduleToDisplay = this.doctor.schedule.find(i => i._id === this.schedule_id);
+    this.visitsList.data = this.scheduleToDisplay.visits;
+    return this.scheduleToDisplay;
   }
 
 }

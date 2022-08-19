@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
@@ -38,28 +40,53 @@ export interface DoctorData {
         <button mat-raised-button color="newDoctorButton" (click)="openAddDoctorDialog()">Dodaj lekarza</button>
       </mat-toolbar>
     </p>
-    <!-- To-do -> Ładniejsze wyświetlanie lekarzy wraz z ładnym skalowaniem oraz oddzieleniem ich na liście -->
-    <div id="doctorsString">
-      <h2>Lista lekarzy:</h2>
-    </div>
-    <mat-selection-list #doctor [multiple]="false" class="custom-scroll-bar"> 
-      <mat-list-option *ngFor="let doctor of doctors" [value]="doctor">
-        <div id="doctorsList">
-          <button id = "deleteButton" mat-icon-button color="warn" (click)="removeDoctor(doctor)" (click)="onRemove($event)">
-            <mat-icon>remove_circle</mat-icon>
-          </button>
-          <button id ="editButton" mat-icon-button color="black" (click)="openEditDoctorDialog(doctor)" (click)="updateDoctors()">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button id ="editSchedule" mat-icon-button color="black" (click)="openSchedulesDialog(doctor)" (click)="updateDoctors()">
-            <mat-icon>schedule</mat-icon>
-          </button>
 
-          {{ doctor.name }} {{doctor.surname}}, {{doctor.city}} : [{{doctor.specializations}}]
+    <div class="doctorsList">
+    <table mat-table [dataSource]="doctors" class="mat-elevation-z8">
 
-        </div>
-      </mat-list-option>
-    </mat-selection-list>
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef> Miasto </th>
+        <td mat-cell *matCellDef="let element"> {{element.city}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Imię i nazwisko lekarza </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} {{element.surname}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="specs">
+        <th mat-header-cell *matHeaderCellDef> Specjalizacje </th>
+        <td mat-cell *matCellDef="let element"> 
+          <span *ngFor="let spec of element.specializations">
+            {{spec}}, 
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="buttons" id="buttons">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element"> 
+        <button id = "deleteButton" mat-icon-button color="warn" (click)="removeDoctor(element)" (click)="onRemove($event)">
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+        <button id ="editButton" mat-icon-button color="black" (click)="openEditDoctorDialog(element)" (click)="updateDoctors()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button id ="editSchedule" mat-icon-button color="black" (click)="openSchedulesDialog(element)" (click)="updateDoctors()">
+          <mat-icon>schedule</mat-icon>
+         </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons >
+    </mat-paginator>
+  </div>
+    
   `,
   styles: [`
     .spacer {
@@ -76,12 +103,17 @@ export interface DoctorData {
     }
 
     .mat-newDoctorButton {
-      background-color: rgb(21, 190, 41);
-      color: #fff;
+      background-color: rgb(255, 255, 255);
+      color: black;
     }
 
+    .mat-newDoctorButton:hover {
+      background-color: rgb(72, 0, 0);
+      color: white;
+    }
+    
     .mat-toolbar.mat-primary {
-      background-color: rgb(18, 190, 216);
+      background-color: rgb(143, 68, 2);
     }
 
     .custom-scroll-bar{
@@ -89,11 +121,28 @@ export interface DoctorData {
       overflow-y: scroll;
       overflow-x: hidden;
     }
+
+    table {
+      width: 100%;
+    }
+
+    .mat-column-buttons {
+      text-align: right;
+    }
+
   `]
 })
 
 export class AdminPageComponent implements OnInit {
-  doctors: Doctor[] = [];
+  doctors = new MatTableDataSource<Doctor>();
+  displayedColumns: String[] = ['city', 'name', 'specs', 'buttons']
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.doctors.paginator = this.paginator;
+  }
+
   constructor(private doctorService: DoctorService, public dialog: MatDialog) { } 
 
   openEditDoctorDialog(doctor: Doctor): void {
@@ -136,7 +185,7 @@ export class AdminPageComponent implements OnInit {
   openSchedulesDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(SchedulesDialog, {
       width: '600px',
-      height: '800px',
+      height: '700px',
       autoFocus: false,
       data: {doctor: doctor, newSchedule: doctor.schedule, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0}
     });
@@ -152,8 +201,7 @@ export class AdminPageComponent implements OnInit {
 
   updateDoctors(): void {
     this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
-      this.doctors = doctors;
-      this.doctors.sort((a: Doctor, b: Doctor) => (a.surname < b.surname ? -1 : 1));
+      this.doctors.data = doctors;
     })
   }
 

@@ -69,6 +69,8 @@ import { DoctorData } from "./admin-page.component";
         .content-wrapper .mat-selection-list-underline {
             display: none;
         }
+
+
     `]
   })
   export class SchedulesDialog {

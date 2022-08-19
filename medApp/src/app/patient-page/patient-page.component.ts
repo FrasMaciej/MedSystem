@@ -99,7 +99,12 @@ export interface VisitData {
 
       <ng-container matColumnDef="visitDate">
         <th mat-header-cell *matHeaderCellDef> Data wizyty </th>
-        <td mat-cell *matCellDef="let element"> {{element.visit.startHour | date:'yyyy-MM-dd HH:mm':'+0000' }} — {{element.visit.finishHour | date:'HH:mm':'+0000' }}
+        <td mat-cell *matCellDef="let element"> {{element.visit.startHour | date:'yyyy-MM-dd HH:mm':'+0000' }} — {{element.visit.finishHour | date:'HH:mm':'+0000' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="buttons">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">
           <button id ="editButton" mat-icon-button color="black" (click)="openVisitSignDialog(element)">
               <mat-icon>assignment icon</mat-icon>
           </button>
@@ -156,6 +161,10 @@ export interface VisitData {
       width: 100%;
     }
 
+    .mat-column-buttons {
+      text-align: right;
+    }
+    
   `]
 })
 
@@ -169,11 +178,9 @@ export class PatientPageComponent implements OnInit {
     end: new FormControl<Date>(new Date())
   })
   selectedVisits = new MatTableDataSource<VisitInfo>();
-  displayedColumns: String[] = ['city', 'name', 'spec', 'visitDate']
+  displayedColumns: String[] = ['city', 'name', 'spec', 'visitDate', 'buttons']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-
   ngAfterViewInit() {
     this.selectedVisits.paginator = this.paginator;
   }

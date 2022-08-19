@@ -10,6 +10,7 @@ class DoctorActions {
     async getAllDoctors(req: Request, res: Response) {
         try {
             const doctors = await Doctor.find({});
+            doctors.sort((a: DoctorI, b: DoctorI) => (a.surname < b.surname ? -1 : 1));
             return res.status(200).json(doctors);
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
@@ -162,8 +163,6 @@ class DoctorActions {
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = name;
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = surname;
         
-        //Object.assign(doctor.schedule[scheduleIndex].visits[visitIndex], {isFree: isFree, visitNote: visitNote, name: name, surname: surname})
-
         if(doctor.schedule[scheduleIndex].visits[visitIndex].isFree===true){
             doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = '';
             doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = null
