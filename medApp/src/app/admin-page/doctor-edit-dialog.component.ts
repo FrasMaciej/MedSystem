@@ -33,12 +33,15 @@ import { DoctorData } from "./admin-page.component";
         </mat-selection-list>
 
         <div class="addNewSpecialization" align="center">
+          <div class = "specFormElem">
             <mat-form-field appearance="fill">
                 <mat-label>Specjalizacja</mat-label>
                 <input matInput [(ngModel)]="data.newSpec">
             </mat-form-field>
-            &nbsp;
+          </div>
+          <div class = "specFormElem">
             <button mat-raised-button color="editDoctorButton" (click)="addNewSpec()">Dodaj specjalizację</button>
+          </div>
         </div>
 
         <div mat-dialog-actions align="center">
@@ -48,27 +51,46 @@ import { DoctorData } from "./admin-page.component";
     `,
     styles: [`
         h1{
-            text-align: center;
+          text-align: center;
         }
 
         .custom-scroll-bar{
-            height:15vh;
-            overflow-x: hidden;
+          height:15vh;
+          overflow-x: hidden;
+        }
+
+        .addNewSpecialization {
+          text: center;
         }
 
         .specializations{
-            text-align: center;
+          text-align: center;
         }
 
         #specializationsList{
-            display: flex;
-            align-items: center;
+          display: flex;
+          align-items: center;
         }
 
         .mat-editDoctorButton {
-            background-color: rgb(21, 190, 41);
-            color: #fff;
+          background-color: rgb(21, 190, 41);
+          height: 52px;
+          color: #fff;
         }
+        
+        .addNewSpecialization {
+          margin-top: 15px;
+          display:flex;
+          flex-direction: row;
+          justify-content: center;
+          border-bottom: 1px solid grey;
+          border-bottom-color: #C45506;
+        }
+
+        .specFormElem {
+          margin: 5px;
+        }
+
     `]
   })
 export class DoctorEditDialog {

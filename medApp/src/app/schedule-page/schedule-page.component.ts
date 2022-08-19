@@ -114,6 +114,7 @@ export interface ScheduleData {
       text-align: right;
     }
 
+
   `]
 })
 export class SchedulePageComponent implements OnInit {

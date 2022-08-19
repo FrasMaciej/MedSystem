@@ -61,11 +61,6 @@ import { DoctorData } from "./admin-page.component";
             align-items: center;
         }
 
-        .mat-editScheduleButton {
-            background-color: rgb(21, 190, 41);
-            color: #fff;
-        }
-
         .content-wrapper .mat-selection-list-underline {
             display: none;
         }

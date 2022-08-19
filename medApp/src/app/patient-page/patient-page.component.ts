@@ -148,7 +148,6 @@ export interface VisitData {
       width: 120px;
       height: 52px;
       color: #fff;
-      
     }
 
     .custom-scroll-bar {
