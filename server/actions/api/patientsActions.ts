@@ -3,8 +3,8 @@ import { Request, Response } from 'express';
 
 
 class PatientActions {
-    async login(req: Request, res: Response) {
-        
+    login(req: Request, res: Response) {
+        res.redirect('/api/doctors');
     }
 }
 

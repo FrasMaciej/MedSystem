@@ -1,5 +1,4 @@
 const express = require('express');
-const app = express();
 const cors = require("cors");
 const {port} = require('./config');
 const apiRouter = require('./routes/api');
@@ -9,6 +8,8 @@ const passport = require('passport');
 const connectEnsureLogin = require('connect-ensure-login'); 
 
 const Patient = require('./db/models/patient'); 
+
+const app = express();
 
 app.use(cors());
 app.use(express.json());
@@ -20,9 +21,6 @@ require('./db/mongoose');
 // Content-type: application/json
 app.use(bodyParser.json());
 
-// routes
-app.use('/api', apiRouter);
-
 // session
 app.use(session({
     secret: 'r8q,+&1LM3)CD*zAGpx1xm{NeQhc;#',
@@ -32,6 +30,7 @@ app.use(session({
 }));
 
 // passport
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(Patient.createStrategy());
@@ -44,3 +43,5 @@ app.listen(port, function() {
     console.log("Backend Application listening at http://localhost:" + port)
 });
 
+// routes
+app.use('/api', apiRouter);

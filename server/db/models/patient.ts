@@ -7,6 +7,5 @@ const PatientSchema = new mongoose.Schema({
 });
 
 PatientSchema.plugin(passportLocalMongoose);
-
 module.exports = mongoose.model('patients', PatientSchema, 'patients');
 
