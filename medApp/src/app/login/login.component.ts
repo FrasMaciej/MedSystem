@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,22 +10,29 @@ import { Router } from '@angular/router';
         <button id="homeButton" mat-fab color="primary" [routerLink]="['/']">
           <mat-icon>home</mat-icon>
         </button>
-        <p>
-          <mat-form-field appearance="outline">
-            <mat-label>Login</mat-label>
-            <input matInput placeholder="Wpisz login">
-          </mat-form-field>
-        </p>
-        <p>
-          <mat-form-field appearance="outline">
-            <mat-label>Hasło</mat-label>
-            <input matInput placeholder="Wpisz hasło">
-            <mat-hint>Podaj silne hasło (min 8 znaków)</mat-hint>
-          </mat-form-field>
-        </p>
-        <p>
-        <button mat-raised-button (click)="navigate()">Zaloguj się</button>
-        </p>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <p>
+            <mat-form-field appearance="outline">
+              <mat-label>Login</mat-label>
+              <input type="text" matInput placeholder="Wpisz login" formControlName="username">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline">
+              <mat-label>Hasło</mat-label>
+              <input type="password" matInput placeholder="Wpisz hasło" formControlName="password">
+              <mat-hint>Podaj silne hasło (min 8 znaków)</mat-hint>
+            </mat-form-field>
+          </p>
+
+          <p *ngIf="error" class="error">
+            {{ error }}
+          </p>
+
+          <p>
+            <button type="submit" mat-raised-button (click)="navigate()">Zaloguj się</button>
+          </p>
+        </form>
     </div>
   `,
   styles: [`
@@ -48,6 +56,12 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   route: String = '';
+
+  form: FormGroup = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl(''),
+  });
+
   constructor(private router: Router) {
     if(this.router.url === '/login/admin')
       this.route = '/adminPage'
@@ -62,5 +76,13 @@ export class LoginComponent implements OnInit {
     this.router.navigate([this.route]);
   }
 
-  ngOnInit() {}
+  submit() {
+
+  }
+
+  @Input() error!: string | null;
+  @Output() submitEM = new EventEmitter();
+
+  ngOnInit() {} 
+  
 }
