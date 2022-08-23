@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { PatientService } from '../services/patient.service';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,7 @@ import { Router } from '@angular/router';
           </p>
 
           <p>
-            <button type="submit" mat-raised-button (click)="navigate()">Zaloguj się</button>
+            <button type="submit" mat-raised-button (click)="submit()">Zaloguj się</button>
           </p>
         </form>
     </div>
@@ -62,7 +63,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private patientService: PatientService) {
     if(this.router.url === '/login/admin')
       this.route = '/adminPage'
     else if(this.router.url === '/login/doctor')
@@ -77,7 +78,13 @@ export class LoginComponent implements OnInit {
   }
 
   submit() {
-
+    if(this.router.url === '/login/patient') {
+        this.patientService.login(this.form.get('username')?.value , this.form.get('password')?.value).subscribe(() => {
+          this.router.navigate([this.route]);
+        })
+    }
+    else if(this.router.url === '/login/admin')
+      this.router.navigate([this.route]);
   }
 
   @Input() error!: string | null;

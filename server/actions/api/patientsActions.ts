@@ -20,7 +20,7 @@ class PatientActions {
             if(err) {console.log(err); res.redirect("/api")}
             else {
                 console.log(patient);
-                passport.authenticate("local")(req, res, () => res.redirect("/"));
+                passport.authenticate("local")(req, res, () => res.redirect("/api"));
             }
         });
     }
