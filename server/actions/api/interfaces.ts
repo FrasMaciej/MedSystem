@@ -35,3 +35,9 @@ export interface VisitInfo {
     docSurname: String,
     docCity: String
 }
+
+export interface Patient {
+    username: String,
+    name: String,
+    surname: String
+}
