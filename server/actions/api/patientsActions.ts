@@ -1,8 +1,8 @@
 // export const Patient = require('../../db/models/patient');
 const Patient = require('../../db/models/patient');
+import { doesNotMatch } from 'assert';
 import { Request, Response } from 'express';
 import { Patient } from './interfaces';
-const passport = require('passport');  // authentication
 
 
 class PatientActions {
@@ -20,7 +20,7 @@ class PatientActions {
             if(err) {console.log(err); res.redirect("/api")}
             else {
                 console.log(patient);
-                passport.authenticate("local")(req, res, () => res.redirect("/api"));
+                passport.authenticate("local")(req, res, () => res.redirect("/"));
             }
         });
     }
