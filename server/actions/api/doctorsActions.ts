@@ -62,12 +62,11 @@ class DoctorActions {
 
         try {
             const doctor = await Doctor.findOne({_id: id});
-            const schedule: Schedule = {
+            const schedule = {
                 scheduleDate: new Date(scheduleDate),
                 finishHour: new Date(finishHour),
                 singleVisitTime: singleVisitTime,
                 visits: [],
-                _id: id
             };
 
             const scheduleIndex: number = doctor.schedule.push(schedule)-1;            
@@ -121,7 +120,6 @@ class DoctorActions {
         }
     }
 
-    //To-do -> uprościć!
     async editVisit(req: Request, res: Response) {
         const doctorId = req.params.doctorId;
         const scheduleId = req.params.scheduleId;
@@ -130,10 +128,7 @@ class DoctorActions {
         const isFree = req.body.isFree;
         const name = req.body.patientInfo.name;
         const surname = req.body.patientInfo.surname;
-        let scheduleIndex: number = 0;
-        let visitIndex: number = 0;
         let doctor;
-
 
         try {
             doctor = await Doctor.findOne({ _id: doctorId });
@@ -141,22 +136,8 @@ class DoctorActions {
             return res.status(500).json({message: err.message});
         }
 
-
-        for(let i=0; i<doctor.schedule.length; i++){
-            if(doctor.schedule[i]._id.toString() === scheduleId){
-                scheduleIndex = i;
-                break;
-            }
-            else continue
-        }
-
-        for(let i=0; i<doctor.schedule[scheduleIndex].visits.length; i++){
-            if(doctor.schedule[scheduleIndex].visits[i]._id.toString() === visitId){
-                visitIndex = i;
-                break;
-            }
-            else continue
-        }
+        let scheduleIndex: number = doctor.schedule.indexOf(doctor.schedule.find((sch: { _id: string; }) => sch._id.toString() === scheduleId))
+        let visitIndex: number = doctor.schedule[scheduleIndex].visits.indexOf(doctor.schedule[scheduleIndex].visits.find((vst: { _id: string; }) => vst._id.toString() === visitId))
 
         doctor.schedule[scheduleIndex].visits[visitIndex].isFree = isFree;
         doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = visitNote;
