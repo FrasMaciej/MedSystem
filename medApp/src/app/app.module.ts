@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -22,7 +21,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
-
 import { AdminPageComponent} from './admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page';
@@ -34,7 +32,6 @@ import { DoctorAddDialog } from './admin-page/doctor-add-dialog.component';
 import { DoctorEditDialog } from './admin-page/doctor-edit-dialog.component';
 import { PatientPageComponent } from './patient-page/patient-page.component';
 import { VisitSignComponent } from './patient-page/visit-sign.component';
-
 
 @NgModule({
   declarations: [
@@ -50,15 +47,6 @@ import { VisitSignComponent } from './patient-page/visit-sign.component';
     MatDialogModule, MatInputModule, MatListModule, FormsModule,
     MatSelectModule, ReactiveFormsModule, HttpClientModule, MatDatepickerModule, 
     MatNativeDateModule, MatTableModule, MatPaginatorModule,
-    RouterModule.forRoot([
-      { path: '', component: MainPageComponent },
-      { path: 'login/admin', component: LoginComponent },
-      { path: 'login/doctor', component: LoginComponent },
-      { path: 'login/patient', component: LoginComponent },
-      { path: 'adminPage', component: AdminPageComponent },
-      { path: 'patientPage', component: PatientPageComponent },
-      { path: 'schedulePage/:docId/:schId', component: SchedulePageComponent },
-    ])
   ],
   providers: [DoctorService],
   bootstrap: [AppComponent]

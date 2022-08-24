@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Patient } from '../models/schedule';
 import { PatientService } from '../services/patient.service';
 
 @Component({
@@ -79,7 +80,9 @@ export class LoginComponent implements OnInit {
 
   submit() {
     if(this.router.url === '/login/patient') {
-        this.patientService.login(this.form.get('username')?.value , this.form.get('password')?.value).subscribe(() => {
+        this.patientService.validate(this.form.get('username')?.value , this.form.get('password')?.value).then( (response) => {
+          this.patientService.setPatientInfo(response)
+          console.log(response);
           this.router.navigate([this.route]);
         })
     }
