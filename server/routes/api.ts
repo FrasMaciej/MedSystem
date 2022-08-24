@@ -34,9 +34,8 @@ router.delete('/doctors/:id', doctorActions.deleteDoctor);
 router.put('/doctors/editVisit/:doctorId/:scheduleId/:visitId', doctorActions.editVisit);
 
 // Pacjenci
-router.post('/patient/login', passport.authenticate('local', { failureRedirect: '/api' }), patientsActions.login)
-router.post('/patient/register', patientsActions.register)
-
+router.post('/patient/login', passport.authenticate('local', { failureRedirect: '/api' }), patientsActions.login);
+router.post('/patient/register', patientsActions.register);
 
 export {};
 module.exports = router;

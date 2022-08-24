@@ -7,7 +7,7 @@ import { Patient } from './interfaces';
 
 class PatientActions {
     login(req: Request, res: Response) {
-        res.redirect('/api/doctors');
+        res.redirect('/doctors');
     }
 
     register(req: Request, res: Response) {
