@@ -138,7 +138,6 @@ export class AdminPageComponent implements OnInit {
   displayedColumns: String[] = ['city', 'name', 'specs', 'buttons']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   ngAfterViewInit() {
     this.doctors.paginator = this.paginator;
   }

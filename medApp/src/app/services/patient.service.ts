@@ -1,12 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Patient } from '../models/schedule';
+import config from './config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientService {
-  public baseUrl = 'http://localhost:8080/api/patient';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -23,7 +22,7 @@ export class PatientService {
   }
 
   public validate(username: String, password: String) {
-    const loginUrl = this.baseUrl+'/'+'login';
+    const loginUrl = config.baseUrlPatient+'/'+'login';
     const loginData = {
       username: username,
       password: password,
@@ -32,7 +31,7 @@ export class PatientService {
   }
 
   public register(username: String, password: String, name: String, surname: String) {
-    const registerUrl = this.baseUrl+'/'+'register';
+    const registerUrl = config.baseUrlPatient+'/'+'register';
     const newPatient = {
       username: username,
       password: password,

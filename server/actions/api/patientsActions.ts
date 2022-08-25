@@ -3,6 +3,7 @@ const Patient = require('../../db/models/patient');
 import { doesNotMatch } from 'assert';
 import { Request, Response } from 'express';
 import { Patient } from './interfaces';
+const passport = require('passport');  
 
 
 class PatientActions {
@@ -11,12 +12,9 @@ class PatientActions {
     }
 
     register(req: Request, res: Response) {
-        const newPatient: Patient = {
-            username: req.body.username,
-            name: req.body.name,
-            surname: req.body.surname
-        }
-        Patient.register(newPatient, req.body.password, function(err: any, patient: Patient){
+        const {username, name, surname, password } = req.body;
+        const newPatient: Patient = { username, name, surname };
+        Patient.register(newPatient, password, function(err: any, patient: Patient){
             if(err) {console.log(err); res.redirect("/api")}
             else {
                 console.log(patient);

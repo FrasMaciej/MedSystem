@@ -57,6 +57,9 @@ import { PatientService } from '../services/patient.service';
   `]
 })
 export class LoginComponent implements OnInit {
+  @Input() error!: string | null;
+  @Output() submitEM = new EventEmitter();
+
   route: String = '';
 
   form: FormGroup = new FormGroup({
@@ -73,12 +76,14 @@ export class LoginComponent implements OnInit {
       this.route = '/patientPage'
   }
 
-  navigate(){
+  ngOnInit() { } 
+
+  navigate() {
     console.log(this.route)
     this.router.navigate([this.route]);
   }
 
-  submit() {
+  public submit() {
     if(this.router.url === '/login/patient') {
         this.patientService.validate(this.form.get('username')?.value , this.form.get('password')?.value).then( (response) => {
           this.patientService.setPatientInfo(response)
@@ -90,9 +95,4 @@ export class LoginComponent implements OnInit {
       this.router.navigate([this.route]);
   }
 
-  @Input() error!: string | null;
-  @Output() submitEM = new EventEmitter();
-
-  ngOnInit() {} 
-  
 }

@@ -1,9 +1,7 @@
 import { Visit, Schedule, DoctorI, VisitInfo } from './interfaces';
 import { Request, Response } from 'express';
 
-
 const Doctor = require('../../db/models/doctor');
-
 
 class DoctorActions {
 
@@ -28,9 +26,7 @@ class DoctorActions {
     }
     
     async saveDoctor(req: Request, res: Response) {
-        const name = req.body.name;
-        const surname = req.body.surname;
-        const city = req.body.city;
+        const {name, surname, city} = req.body;
         try {
             const doctor = new Doctor({ name, surname, city });
             await doctor.save();
@@ -128,6 +124,7 @@ class DoctorActions {
         const isFree = req.body.isFree;
         const name = req.body.patientInfo.name;
         const surname = req.body.patientInfo.surname;
+
         let doctor;
 
         try {
@@ -226,5 +223,3 @@ class DoctorActions {
 }
 
 module.exports = new DoctorActions()
-
-
