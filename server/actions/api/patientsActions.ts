@@ -11,6 +11,15 @@ class PatientActions {
     }
 
     register(req: Request, res: Response) {
+        // CR:KR 
+        // Wiem że wjechałam na serwer i trochę poza mój obszar, ale tutaj mogę sprzedać kilka fajnych patentów
+        // można wykorzystać coś takiego jak https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+        // const {username, name, surname, password } = req.body;
+        // a potem skrótowy zapis
+        // const newPatient: Patient = { username, name, surname };
+        // bo { username: username } <=> { username }
+
+        // tylko z tym oczywiście trzeba uważać jakby np. req.body miało być undefined 
         const newPatient: Patient = {
             username: req.body.username,
             name: req.body.name,

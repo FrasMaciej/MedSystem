@@ -86,6 +86,25 @@ export class LoginComponent implements OnInit {
     else if(this.router.url === '/login/admin')
       this.router.navigate([this.route]);
   }
+  // CR-KR
+  // Tutaj to może się wydawać pierdołą, ale tak naprawdę jest to bardzo ważna rzecz :)
+  // pisząc komponenty zazwyczaj przyjmujemy pewną ustaloną mniej-więcej kolejność 
+  // z czego Inputy i Outputy to jest tak naprawdę absolutnie najważniejsza rzecz jaka Cię interesuje
+  // jak czytasz kod komponentu, aby ułatwić sobie i innym pracę dajemy je na samą górę, żeby od razu było widać
+  // co ten komponent przyjmuje i jakie emituje eventy :)
+
+  // w wolnej chwili możesz sobie zerknąć na https://angular.io/guide/styleguide#member-sequence
+  // później zobaczysz że jakoś bardzo sztywno się nie trzymamy tych zasad, ale niektóre naprawdę warto stosować
+  
+  // najbardziej preferowana kolejność to: 
+  // Inputy, Outputy, 
+  // właściwości publiczne, prywatne, 
+  // konstruktor, 
+  // metody cyklu życia zgodnie z kolejnością wykonywania (ngOnInit, ngOnDestroy)
+  // metody publiczne
+  // metody prywatne
+
+  // jedyny Wojtek wciąż się opiera tej kolejności :D
 
   @Input() error!: string | null;
   @Output() submitEM = new EventEmitter();

@@ -104,6 +104,12 @@ class DoctorActions {
             doctor.city = req.body.city;
             doctor.specializations = req.body.specializations;
             doctor.schedule = req.body.schedule;
+            // CR-KR Analogicznie jak we wcześniejszym przykładnie, ja bym to skróciła tutaj tak:
+            // const { name, surname, city, specializations, schedule } = req.body;
+            // const doctorDB = await Doctor.findOne({_id: id});
+            // const doctor = {...doctorDb, name, surname, city, specializations, schedule }
+            
+            // oczywiście powyższy zapis nie jest zły, chciałam tylko pokazać inne możliwości :)
             await doctor.save();
             res.status(201).json(doctor);
         } catch (err: any) {
@@ -130,6 +136,8 @@ class DoctorActions {
         const isFree = req.body.isFree;
         const name = req.body.patientInfo.name;
         const surname = req.body.patientInfo.surname;
+        // CR-KR 
+        // Tutaj ten kod wyżej aż błaga żeby zrobić destructure :)
         let scheduleIndex: number = 0;
         let visitIndex: number = 0;
         let doctor;
@@ -141,6 +149,11 @@ class DoctorActions {
             return res.status(500).json({message: err.message});
         }
 
+        // CR-KR Tutaj w JS są bardzo fajne metody na tablicach polecam używać gdzie się da
+        // taka ciekawostka że u nas w kodzie bardzo ciężko jest znaleźć zwykłą pętlę for czy while :)
+        // no i też muszę tradycyjnie zareklamować na przyszłość https://github.com/marcinnajder/powerseq :)
+        // to bym zapisała jako:
+        // const scheduleIndex = doctor.schedule.findIndex(s => s._id.toString() === scheduleId)
 
         for(let i=0; i<doctor.schedule.length; i++){
             if(doctor.schedule[i]._id.toString() === scheduleId){
@@ -150,6 +163,7 @@ class DoctorActions {
             else continue
         }
 
+        // const visitIndex = doctor.schedule[scheduleIndex].visits.findIndex(v => v._id.toString() === visitId)
         for(let i=0; i<doctor.schedule[scheduleIndex].visits.length; i++){
             if(doctor.schedule[scheduleIndex].visits[i]._id.toString() === visitId){
                 visitIndex = i;
@@ -157,7 +171,12 @@ class DoctorActions {
             }
             else continue
         }
-
+        // CR-KR
+        // tutaj też by mozna było to zapisać krócej:
+        // doctor.schedule[scheduleIndex].visits[visitIndex] = {
+        //  ...doctor.schedule[scheduleIndex].visits[visitIndex],
+        //  isFree, visitNote, name, surname
+        //}
         doctor.schedule[scheduleIndex].visits[visitIndex].isFree = isFree;
         doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = visitNote;
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = name;

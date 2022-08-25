@@ -50,6 +50,9 @@ import { VisitSignComponent } from './patient-page/visit-sign.component';
     MatDialogModule, MatInputModule, MatListModule, FormsModule,
     MatSelectModule, ReactiveFormsModule, HttpClientModule, MatDatepickerModule, 
     MatNativeDateModule, MatTableModule, MatPaginatorModule,
+    // CR-KR
+    // Tutaj masz założony domyślnie plik app-routing.module :) warto by było tam 
+    // zdefiniować te ścieżki i tylko zaimportować ten moduł, raczej dobrą praktyką jest trzymać to osobno
     RouterModule.forRoot([
       { path: '', component: MainPageComponent },
       { path: 'login/admin', component: LoginComponent },

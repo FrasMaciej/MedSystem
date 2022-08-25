@@ -2,6 +2,20 @@ import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { DoctorData } from "./admin-page.component";
 
+// CR-KR
+// Tutaj fajnie że używasz gotowych kontrolek materialowych do inputów :)
+// ale no właśnie, tutaj nie są to nawet takie typowo zrobione formularze angularowe
+// angular umożliwia dwa podejścia jak można pisać formularze (z walidacją i wszystkim)
+// 1. Template-driven forms https://angular.io/guide/forms
+// 2. Reactive forms https://angular.io/guide/reactive-forms
+// gorąco zachęcam żeby się zapoznać z tymi podejściami i wypróbować w praktyce oba
+// dodając też do formularzy jakąś nawet najprostszą walidację pól
+// typu pole wymagane, albo pole nie może zawierać cyfr :)
+// zdecydowanie to jest coś co się przydaje w przyszłości 
+
+// Edit :) faktycznie w kodzie znalazłam użycie reactive-forms
+// ale jest kompletnie bez walidacji pól, więc nie wykorzystujesz tam potencjału tego mechanizmu
+
 @Component({
     selector: 'doctor-edit-dialog',
     template: `
