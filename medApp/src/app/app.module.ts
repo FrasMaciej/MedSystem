@@ -37,9 +37,7 @@ import { VisitSignComponent } from './patient-page/visit-sign.component';
   declarations: [
     AppComponent, MainPageComponent, LoginComponent, AdminPageComponent,
     DoctorEditDialog, DoctorAddDialog, EditVisitDialog, SchedulesDialog,
-    SchedulePageComponent,
-    PatientPageComponent,
-    VisitSignComponent,
+    SchedulePageComponent, PatientPageComponent, VisitSignComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, MatRadioModule, BrowserAnimationsModule,
