@@ -33,8 +33,27 @@ router.delete('/doctors/:id', doctorActions.deleteDoctor);
 // Edytowanie Danych wybranej wizyty
 router.put('/doctors/editVisit/:doctorId/:scheduleId/:visitId', doctorActions.editVisit);
 
+const auth = () => {
+    return (req: any, res: any, next: any) => {
+        passport.authenticate('local', (error: any, user: any, info: any) => {
+            if(error) res.status(400).json({"statusCode" : 200 ,"message" : error});
+            req.login(user, function(error: any) {
+                if (error) return next(error);
+                next();
+            });
+        })(req, res, next);
+    }
+}
+
+const isLoggedIn = (req: any, res: any, next: any) => {
+    if(req.isAuthenticated()){
+        return next()
+    }
+    return res.status(400).json({"statusCode" : 400, "message" : "not authenticated"})
+}
+
 // Pacjenci
-router.post('/patient/login', passport.authenticate('local', { failureRedirect: '/api' }), patientsActions.login);
+router.post('/patient/login', auth(), patientsActions.login);
 router.post('/patient/register', patientsActions.register);
 
 export {};

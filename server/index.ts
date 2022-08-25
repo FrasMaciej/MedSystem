@@ -35,9 +35,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(Patient.createStrategy());
 
-passport.serializeUser(Patient.serializeUser());
-passport.deserializeUser(Patient.deserializeUser());
+passport.serializeUser(Patient.serializeUser(function(user: any, done: any) {
+    if(user) done(null, user);
+}));
 
+passport.deserializeUser(function(id: any, done: any) {
+    done(null, id);
+});
 // server
 app.listen(port, function() {
     console.log("Backend Application listening at http://localhost:" + port)
@@ -45,3 +49,4 @@ app.listen(port, function() {
 
 // routes
 app.use('/api', apiRouter);
+

@@ -86,8 +86,8 @@ export class LoginComponent implements OnInit {
   public submit() {
     if(this.router.url === '/login/patient') {
         this.patientService.validate(this.form.get('username')?.value , this.form.get('password')?.value).then( (response) => {
-          this.patientService.setPatientInfo(response)
-          console.log(response);
+          this.patientService.setPatientInfo(response);
+          console.log(localStorage.getItem('patientInfo'));
           this.router.navigate([this.route]);
         })
     }

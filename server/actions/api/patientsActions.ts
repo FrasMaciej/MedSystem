@@ -7,8 +7,8 @@ const passport = require('passport');
 
 
 class PatientActions {
-    login(req: Request, res: Response) {
-        res.redirect('/api/doctors');
+    login(req: Request, res: Response) {       
+        //return res.redirect('/api/doctors');
     }
 
     register(req: Request, res: Response) {
