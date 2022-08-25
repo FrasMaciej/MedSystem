@@ -8,7 +8,7 @@ const passport = require('passport');
 
 class PatientActions {
     login(req: Request, res: Response) {
-        res.redirect('/patientPage');
+        res.redirect('/doctors');
     }
 
     register(req: Request, res: Response) {
