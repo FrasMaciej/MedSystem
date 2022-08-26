@@ -6,6 +6,8 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');  
 
+passport.use(User.createStrategy());
+
 const auth = () => {
     return (req: any, res: any, next: any) => {
         passport.authenticate('local', (error: any, user: any, info: any) => {
@@ -27,8 +29,8 @@ const isLoggedIn = (req: any, res: any, next: any) => {
 
 router.post('/user/login', auth(), (req: Request, res: Response) => {
     return res.redirect('/api/doctors');
-
 });
+
 router.post('/user/register', (req: Request, res: Response) => {
     const {username, name, surname, password, role } = req.body;
     const newUser: UserI = { username, name, surname, role };
@@ -42,5 +44,5 @@ router.post('/user/register', (req: Request, res: Response) => {
 });
 
 
-export {};
+export { };
 module.exports = router;

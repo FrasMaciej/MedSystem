@@ -33,7 +33,6 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(Patient.createStrategy());
 
 passport.serializeUser(Patient.serializeUser(function(user: any, done: any) {
     if(user) done(null, user);
