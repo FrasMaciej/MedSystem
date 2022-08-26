@@ -5,24 +5,24 @@ import config from './config';
 @Injectable({
   providedIn: 'root'
 })
-export class PatientService {
+export class AuthService {
 
   constructor(private httpClient: HttpClient) { }
 
   public isAuthenticated() : Boolean {
-    let patientData = localStorage.getItem('patientInfo')
-    if(patientData && JSON.parse(patientData)){
+    let userData = localStorage.getItem('userInfo')
+    if(userData && JSON.parse(userData)){
       return true;
     }
     else return false;
   }
 
-  public setPatientInfo(patient: any){
-    localStorage.setItem('patientInfo', JSON.stringify(patient));
+  public setUserInfo(user: any){
+    localStorage.setItem('userInfo', JSON.stringify(user));
   }
 
   public validate(username: String, password: String) {
-    const loginUrl = config.baseUrlPatient+'/'+'login';
+    const loginUrl = config.baseUrlUser+'/'+'login';
     const loginData = {
       username: username,
       password: password,
@@ -31,14 +31,14 @@ export class PatientService {
   }
 
   public register(username: String, password: String, name: String, surname: String) {
-    const registerUrl = config.baseUrlPatient+'/'+'register';
-    const newPatient = {
+    const registerUrl = config.baseUrlUser+'/'+'register';
+    const newUser = {
       username: username,
       password: password,
       name: name,
       surname: surname
     }
-    return this.httpClient.post(registerUrl, newPatient)
+    return this.httpClient.post(registerUrl, newUser)
   }
 
 }

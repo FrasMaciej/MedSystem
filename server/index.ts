@@ -2,12 +2,13 @@ const express = require('express');
 const cors = require("cors");
 const {port} = require('./config');
 const apiRouter = require('./routes/api');
+const auth = require('./routes/auth');
 const bodyParser = require('body-parser');
 const session = require('express-session');  
 const passport = require('passport');  
 const connectEnsureLogin = require('connect-ensure-login'); 
 
-const Patient = require('./db/models/patient'); 
+const Patient = require('./db/models/user'); 
 
 const app = express();
 
@@ -18,7 +19,6 @@ app.use(express.json());
 require('./db/mongoose');
 
 // parsers
-// Content-type: application/json
 app.use(bodyParser.json());
 
 // session
@@ -49,4 +49,4 @@ app.listen(port, function() {
 
 // routes
 app.use('/api', apiRouter);
-
+app.use('/api', auth);

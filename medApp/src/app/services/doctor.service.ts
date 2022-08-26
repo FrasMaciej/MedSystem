@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { HttpClient } from '@angular/common/http';
 import { Schedule, Visit } from '../models/schedule';
@@ -10,7 +10,6 @@ import config from './config';
 })
 export class DoctorService {
   private doctorsList: Doctor[] | any = [];
-
 
   constructor(private httpClient: HttpClient) { }
 
@@ -70,5 +69,4 @@ export class DoctorService {
     const getVisitsUrl = config.baseUrlDoc+'/'+'filteredVisits';
     return this.httpClient.post(getVisitsUrl, visitReq);
   }
-
 }

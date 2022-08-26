@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Patient } from '../models/schedule';
-import { PatientService } from '../services/patient.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor(private router: Router, private patientService: PatientService) {
+  constructor(private router: Router, private authService: AuthService) {
     if(this.router.url === '/login/admin')
       this.route = '/adminPage'
     else if(this.router.url === '/login/doctor')
@@ -85,9 +85,9 @@ export class LoginComponent implements OnInit {
 
   public submit() {
     if(this.router.url === '/login/patient') {
-        this.patientService.validate(this.form.get('username')?.value , this.form.get('password')?.value).then( (response) => {
-          this.patientService.setPatientInfo(response);
-          console.log(localStorage.getItem('patientInfo'));
+        this.authService.validate(this.form.get('username')?.value , this.form.get('password')?.value).then( (response) => {
+          this.authService.setUserInfo(response);
+          console.log(localStorage.getItem('userInfo'));
           this.router.navigate([this.route]);
         })
     }
