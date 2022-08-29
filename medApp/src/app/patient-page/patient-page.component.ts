@@ -14,6 +14,7 @@ export interface VisitData {
   note: String;
   name: String;
   surname: String;
+  patientId: String;
 }
 
 @Component({
@@ -30,6 +31,10 @@ export interface VisitData {
           </button>
         </a>
         <span>Panel Pacjenta</span>
+        <span class="spacer"></span>
+        <a [routerLink]="['/patientPage/details']">
+        <button mat-raised-button color="patientDetails" (click)="openPatientDetails()">Profil Pacjenta</button>
+        </a>
       </mat-toolbar>
     </p>
     
@@ -127,6 +132,10 @@ export interface VisitData {
       background-color: rgb(71, 106, 141);
     }
 
+    .spacer {
+      flex: 1 1 auto;
+    }
+
     .additional-selection {
       opacity: 0.75;
       font-size: 0.75em;
@@ -145,9 +154,16 @@ export interface VisitData {
     }
 
     .mat-searchButton {
-      background-color: rgb(170, 62, 198);
       width: 120px;
       height: 52px;
+      background-color: white;
+      color: black;
+      border: 2px solid black;
+      border-color: rgb(170, 62, 198);
+    }
+
+    .mat-searchButton:hover {
+      background-color: rgb(170, 62, 198);
       color: #fff;
     }
 
@@ -164,7 +180,17 @@ export interface VisitData {
     .mat-column-buttons {
       text-align: right;
     }
-    
+
+    .mat-patientDetails {
+      background-color: rgb(76, 0, 128);
+      color: white;
+    }
+
+    .mat-patientDetails:hover {
+      background-color: white;
+      color: black;
+    }
+
   `]
 })
 
@@ -189,6 +215,7 @@ export class PatientPageComponent implements OnInit {
     private doctorService: DoctorService,
     private authService: AuthService,
     public dialog: MatDialog,
+    
     ) { }
 
   openVisitSignDialog(visitInfo: VisitInfo): void {
@@ -198,13 +225,13 @@ export class PatientPageComponent implements OnInit {
       autoFocus: false,
       data: {
         visitInfo: visitInfo, note: '',
-        name: localStorage.getItem('userInfo.name'), surname: ''
+        name: '', surname: ''
       }
     });
 
     dialogRef.afterClosed().subscribe( result => {
       if(result!==null && result!==undefined){
-        this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id).subscribe(() => {
+        this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id, result.patientId).subscribe(() => {
           this.getFilteredVisits();
         })
       }
@@ -240,6 +267,10 @@ export class PatientPageComponent implements OnInit {
         this.selectedVisits.data = visitInfo;
       })
     }
+  }
+
+  openPatientDetails() {
+
   }
   
 }

@@ -44,9 +44,14 @@ export class DoctorService {
     return this.httpClient.post(addTerminsUrl, schedule);
   }
 
-  editVisit(visit: Visit, doctorId: String, scheduleId: String, visitId: String) {
+  editVisit(visit: Visit, doctorId: String, scheduleId: String, visitId: String, patientId: String) {
     const editVisitUrl = config.baseUrlDoc+'/'+'editVisit'+'/'+doctorId+'/'+scheduleId+'/'+visitId;
-    return this.httpClient.put(editVisitUrl, visit)
+    const visitInfo = {
+      visit: visit,
+      patientId: patientId
+    }
+    console.log(visitInfo);
+    return this.httpClient.put(editVisitUrl, visitInfo);
   }
 
   getCities() : Observable<any> {

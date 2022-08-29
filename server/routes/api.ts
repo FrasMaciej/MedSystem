@@ -28,7 +28,7 @@ router.put('/doctors/:id', doctorActions.updateDoctor);
 // Usuwanie lekarza
 router.delete('/doctors/:id', doctorActions.deleteDoctor);
 // Edytowanie Danych wybranej wizyty
-router.put('/doctors/editVisit/:doctorId/:scheduleId/:visitId', doctorActions.editVisit);
+router.put('/doctors/editVisit/:doctorId/:scheduleId/:visitId/', doctorActions.editVisit);
 
 export {};
 module.exports = router;

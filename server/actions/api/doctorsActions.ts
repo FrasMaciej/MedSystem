@@ -76,7 +76,8 @@ class DoctorActions {
                     isFree: true,
                     patientInfo: {
                         name: '',
-                        surname: ''
+                        surname: '',
+                        patientId: ''
                     },
                     visitNote: '',
                 };
@@ -120,10 +121,11 @@ class DoctorActions {
         const doctorId = req.params.doctorId;
         const scheduleId = req.params.scheduleId;
         const visitId = req.params.visitId;
-        const visitNote = req.body.visitNote;
-        const isFree = req.body.isFree;
-        const name = req.body.patientInfo.name;
-        const surname = req.body.patientInfo.surname;
+        const visitNote = req.body.visit.visitNote;
+        const isFree = req.body.visit.isFree;
+        const name = req.body.visit.patientInfo.name;
+        const surname = req.body.visit.patientInfo.surname;
+        const patientId = req.body.patientId;
 
         let doctor;
 
@@ -140,11 +142,15 @@ class DoctorActions {
         doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = visitNote;
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = name;
         doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = surname;
-        
+        if(patientId !== '' && patientId !== null && patientId !== undefined){
+            doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.patientId = patientId;
+        }
+
         if(doctor.schedule[scheduleIndex].visits[visitIndex].isFree===true){
             doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = '';
             doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = null
             doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = null
+            doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.patientId = null
         }
         
         await doctor.save();

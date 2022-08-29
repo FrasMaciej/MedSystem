@@ -4,7 +4,8 @@ export interface Visit {
     isFree: Boolean,
     patientInfo:{
         name: String,
-        surname: String
+        surname: String,
+        patientId: String
     },
     visitNote: String
 }
@@ -22,7 +23,7 @@ export interface DoctorI {
     name: String,
     surname: String,
     city: String,
-    specializations: String[]
+    specializations: String[],
     schedule: Schedule[]
 }
 

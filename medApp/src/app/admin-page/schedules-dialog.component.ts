@@ -12,11 +12,11 @@ import { DoctorData } from "./admin-page.component";
         <mat-selection-list #schedule [multiple]="false" class="custom-scroll-bar" underline="none"> 
             <mat-list-option *ngFor="let singleSchedule of data.doctor.schedule; let i = index" (click)="closeDialogRef()">
                 <a [routerLink]="['schedulePage/', data.doctor._id, singleSchedule._id]">
-                <div id="schedulesList">
-                    <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSchedule(singleSchedule)" (click)="onRemove($event)">
-                        <mat-icon>remove_circle</mat-icon>
-                    </button>{{singleSchedule.scheduleDate | date:'yyyy-MM-dd HH:mm':'+0000'}} – {{ singleSchedule.finishHour | date:'HH:mm':'+0000'}}
-                </div>
+                    <div id="schedulesList">
+                        <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSchedule(singleSchedule)" (click)="onRemove($event)">
+                            <mat-icon>remove_circle</mat-icon>
+                        </button>{{singleSchedule.scheduleDate | date:'yyyy-MM-dd HH:mm':'+0000'}} – {{ singleSchedule.finishHour | date:'HH:mm':'+0000'}}
+                    </div>
                 </a>
             </mat-list-option>
         </mat-selection-list>
