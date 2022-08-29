@@ -6,7 +6,6 @@ const auth = require('./routes/auth');
 const bodyParser = require('body-parser');
 const session = require('express-session');  
 const passport = require('passport');  
-const connectEnsureLogin = require('connect-ensure-login'); 
 
 const Patient = require('./db/models/user'); 
 
@@ -34,13 +33,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(Patient.serializeUser(function(user: any, done: any) {
-    if(user) done(null, user);
-}));
-
-passport.deserializeUser(function(id: any, done: any) {
-    done(null, id);
-});
 // server
 app.listen(port, function() {
     console.log("Backend Application listening at http://localhost:" + port)

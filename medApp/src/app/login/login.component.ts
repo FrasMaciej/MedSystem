@@ -86,13 +86,13 @@ export class LoginComponent implements OnInit {
   public submit() {
     if(this.router.url === '/login/patient') {
         this.authService.validate(this.form.get('username')?.value , this.form.get('password')?.value).then( (response) => {
-          this.authService.setUserInfo(response);
-          console.log(localStorage.getItem('userInfo'));
+          this.authService.setUserInfo({'user': response});
           this.router.navigate([this.route]);
         })
     }
-    else if(this.router.url === '/login/admin')
+    else if(this.router.url === '/login/admin'){
       this.router.navigate([this.route]);
+    }
   }
 
 }

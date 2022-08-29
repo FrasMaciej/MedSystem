@@ -6,7 +6,6 @@ import config from './config';
   providedIn: 'root'
 })
 export class AuthService {
-
   constructor(private httpClient: HttpClient) { }
 
   public isAuthenticated() : Boolean {
