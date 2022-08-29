@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Doctor } from '../models/doctor';
 import { Visit, VisitInfo } from '../models/schedule';
+import { AuthService } from '../services/auth.service';
 import { DoctorService } from '../services/doctor.service';
 import { VisitSignComponent } from './visit-sign.component';
 
@@ -186,6 +187,7 @@ export class PatientPageComponent implements OnInit {
 
   constructor(
     private doctorService: DoctorService,
+    private authService: AuthService,
     public dialog: MatDialog,
     ) { }
 
@@ -196,12 +198,12 @@ export class PatientPageComponent implements OnInit {
       autoFocus: false,
       data: {
         visitInfo: visitInfo, note: '',
-        name: '', surname: ''
+        name: localStorage.getItem('userInfo.name'), surname: ''
       }
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      if(result!==null){
+      if(result!==null && result!==undefined){
         this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id).subscribe(() => {
           this.getFilteredVisits();
         })

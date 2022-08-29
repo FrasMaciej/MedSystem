@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Patient } from '../models/schedule';
 import { AuthService } from '../services/auth.service';
 
+// To-do -> info dla użytkownika przy podaniu złych danych logowania
 @Component({
   selector: 'app-login',
   template: `

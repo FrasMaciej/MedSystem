@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AuthService } from '../services/auth.service';
 import { DoctorService } from '../services/doctor.service';
 import { VisitData } from './patient-page.component';
 
@@ -12,11 +13,11 @@ import { VisitData } from './patient-page.component';
     </h1>
     <div mat-dialog-content>
       <mat-form-field>
-        <input matInput placeholder="Imię" [(ngModel)]="data.name">
+        <input matInput placeholder="Imię" [(ngModel)]="data.name" [disabled]='true'>
       </mat-form-field>    
       <br>
       <mat-form-field>
-        <input matInput placeholder="Nazwisko" [(ngModel)]="data.surname">
+        <input matInput placeholder="Nazwisko" [(ngModel)]="data.surname" [disabled]='true'>
       </mat-form-field>    
       <br>
       <mat-form-field>
@@ -39,7 +40,12 @@ export class VisitSignComponent {
   constructor(
     public dialogRef: MatDialogRef<VisitSignComponent>,
     private doctorService: DoctorService,
-    @Inject(MAT_DIALOG_DATA) public data: VisitData) { }
+    private authService: AuthService,
+    @Inject(MAT_DIALOG_DATA) public data: VisitData) { 
+      const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
+      this.data.name = userInfo.user.user.name;
+      this.data.surname = userInfo.user.user.surname;
+    }
 
   backClick() {
     this.dialogRef.close();
