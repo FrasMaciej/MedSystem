@@ -14,6 +14,7 @@ export interface VisitData {
   note: String;
   name: String;
   surname: String;
+  patientId: String;
 }
 
 @Component({
@@ -189,6 +190,7 @@ export class PatientPageComponent implements OnInit {
     private doctorService: DoctorService,
     private authService: AuthService,
     public dialog: MatDialog,
+    
     ) { }
 
   openVisitSignDialog(visitInfo: VisitInfo): void {
@@ -198,13 +200,13 @@ export class PatientPageComponent implements OnInit {
       autoFocus: false,
       data: {
         visitInfo: visitInfo, note: '',
-        name: localStorage.getItem('userInfo.name'), surname: ''
+        name: '', surname: ''
       }
     });
 
     dialogRef.afterClosed().subscribe( result => {
       if(result!==null && result!==undefined){
-        this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id).subscribe(() => {
+        this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id, result.patientId).subscribe(() => {
           this.getFilteredVisits();
         })
       }

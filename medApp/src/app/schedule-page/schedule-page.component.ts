@@ -12,6 +12,7 @@ import { EditVisitDialog } from './edit-visit-dialog.component';
 export interface ScheduleData {
   schedule_id: string;
   doctor_id: string;
+  patient_id: string;
   visit: Visit;
   newName: String;
   newSurname: String;
@@ -134,7 +135,7 @@ export class SchedulePageComponent implements OnInit {
   constructor(
     private actRoute: ActivatedRoute,
     private doctorService: DoctorService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) { 
     this.schedule_id = this.actRoute.snapshot.params['schId'];
     this.doctor_id = this.actRoute.snapshot.params['docId'];
@@ -152,8 +153,8 @@ export class SchedulePageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      if(result!==null){
-        this.doctorService.editVisit(result.visit, result.doctor_id, result.schedule_id, result.visit._id).subscribe(() => {
+      if(result!==null && result!==undefined){
+        this.doctorService.editVisit(result.visit, result.doctor_id, result.schedule_id, result.visit._id, '').subscribe(() => {
           this.updateDoctor();
         })
       }

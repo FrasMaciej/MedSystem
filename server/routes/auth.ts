@@ -45,50 +45,6 @@ router.get('/getData', isLoggedIn, (req: any, res: any) => {
     res.json("data is")
 })
 
-// router.post('/user/login', auth(), (req: Request, res: Response) => {
-//     return JSON.stringify(req.body);
-// });
-
-// router.post('/user/login', (req: any, res: any, next: any) => {
-//     passport.authenticate('local',
-//     (err: any, user: any, info: any) => {
-//       if (err) {
-//         return next(err);
-//       }
-  
-//       if (!user) {
-//         return res.redirect('user/login?info=' + info);
-//       }
-  
-//       req.logIn(user, function(err: any) {
-//         if (err) {
-//           return next(err);
-//         }
-//         return req.body;
-//       });
-  
-//     })(req, res, next);
-//   });
-
-// router.get('/user/login',
-//   (req: any, res: any) => console.log(req.body)
-// );
-
-// router.get('/',
-//   connectEnsureLogin.ensureLoggedIn(),
-//   (req: any, res: any) => res.sendFile('html/index.html', {root: __dirname})
-// );
-
-// router.get('/private',
-//   connectEnsureLogin.ensureLoggedIn(),
-//   (req: any, res: any) => res.sendFile('html/private.html', {root: __dirname})
-// );
-
-// router.get('/user',
-//   connectEnsureLogin.ensureLoggedIn(),
-//   (req: any, res: any) => res.send({user: req.user})
-// );
-
 router.post('/user/register', (req: Request, res: Response) => {
     const {username, name, surname, password, role } = req.body;
     const newUser: UserI = { username, name, surname, role };

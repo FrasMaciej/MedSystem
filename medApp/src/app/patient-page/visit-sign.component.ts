@@ -45,6 +45,7 @@ export class VisitSignComponent {
       const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
       this.data.name = userInfo.user.user.name;
       this.data.surname = userInfo.user.user.surname;
+      this.data.patientId = userInfo.user.user._id;
     }
 
   backClick() {

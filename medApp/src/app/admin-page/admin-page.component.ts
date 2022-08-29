@@ -156,7 +156,7 @@ export class AdminPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result !== null) {
+      if (result !== null && result!==undefined) {
         this.doctorService.editDoctor(result).subscribe((result) => {
           this.updateDoctors();
         });
@@ -173,7 +173,7 @@ export class AdminPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result!==null){
+      if(result!==null && result!==undefined){
         this.doctorService.addDoctor(result).subscribe((result)=>{
           this.updateDoctors();
         });

@@ -25,7 +25,7 @@ app.use(session({
     secret: 'r8q,+&1LM3)CD*zAGpx1xm{NeQhc;#',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 1000 } // 1 hour
+    cookie: { maxAge: 1000 }    // to-do -> raczej czas sesji nie działa prawidłowo, sama sesja - jest obsługiwana
 }));
 
 // passport
