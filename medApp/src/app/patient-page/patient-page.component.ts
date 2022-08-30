@@ -80,7 +80,6 @@ export interface VisitData {
         </mat-form-field>
       </div>
 
-
       <div class="formElem">
         <button mat-raised-button color="searchButton" (click)="getFilteredVisits()">Wyszukaj</button>
       </div>

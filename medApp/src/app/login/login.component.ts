@@ -91,12 +91,16 @@ export class LoginComponent implements OnInit {
           this.router.navigate([this.route]);
         })
     }
+    else if(this.router.url === '/login/doctor'){
+      this.authService.validate(this.form.get('username')?.value , this.form.get('password')?.value).then( (response) => {
+        this.authService.setUserInfo({'user': response});
+        this.router.navigate([this.route]);
+      })
+    }
     else if(this.router.url === '/login/admin'){
       this.router.navigate([this.route]);
     }
-    else if(this.router.url === '/login/doctor'){
-      this.router.navigate([this.route]);
-    }
+    
   }
 
 }
