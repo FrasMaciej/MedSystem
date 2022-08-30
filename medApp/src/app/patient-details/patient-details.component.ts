@@ -17,7 +17,7 @@ import { DoctorService } from '../services/doctor.service';
             <mat-icon>exit_to_app</mat-icon>
           </button>
         </a>
-        <span>Dane pacjenta</span>
+        <span>Dane pacjenta - moje wizyty</span>
       </mat-toolbar>
     </p>
 
@@ -73,7 +73,6 @@ import { DoctorService } from '../services/doctor.service';
     .mat-column-buttons {
       text-align: right;
     }
-    
   `]
 })
 export class PatientDetailsComponent implements OnInit {

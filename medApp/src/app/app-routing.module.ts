@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminPageComponent } from './admin-page/admin-page.component';
+import { DoctorPageComponent } from './doctor-page/doctor-page.component';
 import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'patientPage', component: PatientPageComponent, canActivate : [AuthGuard] },
   { path: 'patientPage/details', component: PatientDetailsComponent, canActivate : [AuthGuard] },
   { path: 'schedulePage/:docId/:schId', component: SchedulePageComponent },
+  { path: 'doctorPage', component: DoctorPageComponent },
 ];
 
 @NgModule({

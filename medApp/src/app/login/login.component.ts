@@ -94,6 +94,9 @@ export class LoginComponent implements OnInit {
     else if(this.router.url === '/login/admin'){
       this.router.navigate([this.route]);
     }
+    else if(this.router.url === '/login/doctor'){
+      this.router.navigate([this.route]);
+    }
   }
 
 }

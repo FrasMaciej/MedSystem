@@ -33,12 +33,13 @@ import { DoctorEditDialog } from './admin-page/doctor-edit-dialog.component';
 import { PatientPageComponent } from './patient-page/patient-page.component';
 import { VisitSignComponent } from './patient-page/visit-sign.component';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
+import { DoctorPageComponent } from './doctor-page/doctor-page.component';
 
 @NgModule({
   declarations: [
     AppComponent, MainPageComponent, LoginComponent, AdminPageComponent,
     DoctorEditDialog, DoctorAddDialog, EditVisitDialog, SchedulesDialog,
-    SchedulePageComponent, PatientPageComponent, VisitSignComponent, PatientDetailsComponent,
+    SchedulePageComponent, PatientPageComponent, VisitSignComponent, PatientDetailsComponent, DoctorPageComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, MatRadioModule, BrowserAnimationsModule,
