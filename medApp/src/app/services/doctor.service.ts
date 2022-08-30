@@ -74,4 +74,9 @@ export class DoctorService {
     const getVisitsUrl = config.baseUrlDoc+'/'+'filteredVisits';
     return this.httpClient.post(getVisitsUrl, visitReq);
   }
+
+  getVisitsByPatient(patientId: String) : Observable<any>{
+    const getVisitsByPatientUrl = config.baseUrlDoc+'/'+'findVisitByPatient'+'/'+patientId;
+    return this.httpClient.get(getVisitsByPatientUrl)
+  }
 }
