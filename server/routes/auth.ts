@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { UserI } from './interfaces';
 
+const Doctor = require('../db/models/doctor');
 const User = require('../db/models/user'); 
 const express = require('express');
 const router = express.Router();
@@ -46,12 +47,17 @@ router.get('/getData', isLoggedIn, (req: any, res: any) => {
 })
 
 router.post('/user/register', (req: Request, res: Response) => {
-    const {username, name, surname, password, role } = req.body;
-    const newUser: UserI = { username, name, surname, role };
+    const {username, name, surname, password, role, city} = req.body;
+    const newUser: UserI = { username, name, surname, role, };
     User.register(newUser, password, function(err: any, user: UserI){
         if(err) {console.log(err); res.redirect("/api")}
         else {
             console.log(user);
+            if(role === "Doctor") {
+                const doctor = new Doctor({ name, surname, city });
+                doctor.userId = user._id;
+                doctor.save();
+            }
             passport.authenticate("local")(req, res, () => res.redirect("/"));
         }
     });

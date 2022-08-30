@@ -46,6 +46,7 @@ const ScheduleSchema = new mongoose.Schema({
 })
 
 const DoctorSchema = new mongoose.Schema({
+    userId: String,
     name: {
         type: String,
         required: true,
