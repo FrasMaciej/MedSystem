@@ -31,7 +31,7 @@ export interface VisitInfo {
     doctorId: String,
     scheduleId: String,
     visit: Visit,
-    docSpecialization: String,
+    docSpecialization?: String,
     docName: String,
     docSurname: String,
     docCity: String

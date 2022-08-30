@@ -263,8 +263,8 @@ export class PatientPageComponent implements OnInit {
   getFilteredVisits() {
     if(this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end){
       const cities: String[] = this.selectedCities.value;
-      this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((visitInfo: VisitInfo[]) => {
-        this.selectedVisits.data = visitInfo;
+      this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((matchingVisits: VisitInfo[]) => {
+        this.selectedVisits.data = matchingVisits;
       })
     }
   }

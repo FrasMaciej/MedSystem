@@ -181,15 +181,16 @@ class DoctorActions {
     }
 
     async getFilteredVisits(req: Request, res: Response) {
+        const specialization: String = req.body.specialization;
+        const cities = Array.from(req.body.cities);
+        const startDate: Date = new Date(req.body.startDate);
+        const endDate: Date = new Date(req.body.endDate);
+        let matchingVisits: VisitInfo[] = []; 
+        let datesArray: Date[] = [];
+        let loop = new Date(startDate);
         try {
             const doctors: DoctorI[] = await Doctor.find({});
-            const specialization: String = req.body.specialization;
-            const cities = Array.from(req.body.cities);
-            const startDate: Date = new Date(req.body.startDate);
-            const endDate: Date = new Date(req.body.endDate);
-            let matchingVisits: VisitInfo[] = []; 
-            let datesArray: Date[] = [];
-            let loop = new Date(startDate);
+            
 
             while(loop <= endDate) {
                 datesArray.push(new Date(loop));
@@ -224,6 +225,34 @@ class DoctorActions {
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
+    }
+
+    async getVisitByPatientId(req: Request, res: Response) {
+        const patientId = req.params.id;
+        let matchingVisits: VisitInfo[] = []; 
+
+        try {
+            const doctors: DoctorI[] = await Doctor.find({});
+            doctors.map(d => d.schedule
+                    .map(s => s.visits
+                    .filter(v => { if(v.patientInfo.patientId.toString() === patientId) {
+                        let visitInfo: VisitInfo = {
+                            doctorId: d._id,
+                            scheduleId: s._id,
+                            visit: v,
+                            docName: d.name,
+                            docSurname: d.surname,
+                            docCity: d.city
+                        }
+                        matchingVisits.push(visitInfo);
+                     } } )));
+            matchingVisits.sort((a: VisitInfo, b: VisitInfo) => (a.visit.startHour < b.visit.finishHour ? -1 : 1));
+            res.status(201).json(matchingVisits);
+        }
+        catch (err: any) {
+            return res.status(500).json({ message: err.message });
+        }
+
     }
 }
 
