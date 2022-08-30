@@ -235,7 +235,7 @@ class DoctorActions {
             const doctors: DoctorI[] = await Doctor.find({});
             doctors.map(d => d.schedule
                     .map(s => s.visits
-                    .filter(v => { if(v.patientInfo.patientId.toString() === patientId) {
+                    .filter(v => { if(v.patientInfo.patientId === patientId) {
                         let visitInfo: VisitInfo = {
                             doctorId: d._id,
                             scheduleId: s._id,

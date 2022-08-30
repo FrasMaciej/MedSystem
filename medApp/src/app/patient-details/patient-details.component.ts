@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { VisitInfo } from '../models/schedule';
+import { Visit, VisitInfo } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 
 @Component({
@@ -38,11 +38,16 @@ import { DoctorService } from '../services/doctor.service';
           <td mat-cell *matCellDef="let element"> {{element.visit.startHour | date:'yyyy-MM-dd HH:mm':'+0000' }} — {{element.visit.finishHour | date:'HH:mm':'+0000' }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="note">
+          <th mat-header-cell *matHeaderCellDef> Notatka do wizyty </th>
+          <td mat-cell *matCellDef="let element"> {{element.visit.visitNote}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="buttons">
-          <th mat-header-cell *matHeaderCellDef>  </th>
+          <th mat-header-cell *matHeaderCellDef>  </th>, 
           <td mat-cell *matCellDef="let element">
-            <button id ="editButton" mat-icon-button color="black">
-                <mat-icon>assignment icon</mat-icon>
+            <button id ="editButton" mat-icon-button color="black" (click)="cancelVisit(element.visit, element.doctorId, element.scheduleId)">
+                <mat-icon>delete_forever</mat-icon>
             </button>
           </td>
         </ng-container>
@@ -76,7 +81,7 @@ export class PatientDetailsComponent implements OnInit {
   name: String;
   surname: String;
   selectedVisits = new MatTableDataSource<VisitInfo>();
-  displayedColumns: String[] = ['city', 'name', 'visitDate', 'buttons']
+  displayedColumns: String[] = ['city', 'name', 'visitDate', 'note', 'buttons']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngAfterViewInit() {
@@ -100,4 +105,12 @@ export class PatientDetailsComponent implements OnInit {
         this.selectedVisits.data = matchingVisits;
       })
   }
+
+  cancelVisit(visit: Visit, doctor_id: String, schedule_id: String) {
+    visit.isFree = true;
+    this.doctorService.editVisit(visit, doctor_id, schedule_id, visit._id, '').subscribe(() => {
+      this.getFilteredVisits();
+    })
+  }
+
 }

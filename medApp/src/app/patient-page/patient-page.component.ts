@@ -33,7 +33,7 @@ export interface VisitData {
         <span>Panel Pacjenta</span>
         <span class="spacer"></span>
         <a [routerLink]="['/patientPage/details']">
-        <button mat-raised-button color="patientDetails" (click)="openPatientDetails()">Profil Pacjenta</button>
+        <button mat-raised-button color="patientDetails" (click)="openPatientDetails()">Moje Wizyty</button>
         </a>
       </mat-toolbar>
     </p>
