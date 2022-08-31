@@ -19,6 +19,8 @@ router.post('/doctors/filteredVisits', doctorActions.getFilteredVisits);
 router.get('/doctors/findVisitByPatient/:id', doctorActions.getVisitByPatientId);
 // Pobieranie konkretnego lekarza
 router.get('/doctors/:id', doctorActions.getDoctor);
+// Pobieranie konkretnego lekarza na podstawie Id usera
+router.get('/doctors/getByUserId/:id', doctorActions.getDoctorByUserId);
 // Zapisywanie nowego lekarza
 router.post('/doctors', doctorActions.saveDoctor);
 // Dodawanie nowej specjalizacji dla lekarza

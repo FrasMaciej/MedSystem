@@ -24,7 +24,17 @@ class DoctorActions {
             return res.status(500).json({message: err.message});
         }
     }
-    
+
+    async getDoctorByUserId(req: Request, res: Response) {
+        const id = req.params.id;
+        try {
+            const doc = await Doctor.findOne({ userId: id});
+            res.status(200).json(doc);
+        } catch (err: any) {
+            return res.status(500).json({message: err.message});
+        }
+    }
+
     async saveDoctor(req: Request, res: Response) {
         const {name, surname, city} = req.body;
         try {

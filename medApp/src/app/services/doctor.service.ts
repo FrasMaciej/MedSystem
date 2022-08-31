@@ -19,9 +19,13 @@ export class DoctorService {
   }
 
   getDoctors() : Observable<any> {
-    console.log(config.baseUrlDoc);
     this.doctorsList = this.httpClient.get(config.baseUrlDoc);
     return this.doctorsList;
+  }
+
+  getDoctorByUserId(id: String) : Observable<any> {
+    const getDoctorByUserIdUrl = config.baseUrlDoc+'/'+'getByUserId'+'/'+id;
+    return this.httpClient.get(getDoctorByUserIdUrl)
   }
 
   removeDoctor(doctor: Doctor) {
