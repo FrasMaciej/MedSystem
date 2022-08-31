@@ -118,7 +118,7 @@ export class DoctorPageComponent implements OnInit {
   }
 
   doctorId: String;
-  doctor?: Doctor;
+  doctor!: Doctor;
 
   constructor(private doctorService: DoctorService, public dialog: MatDialog) { 
     const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
@@ -134,7 +134,11 @@ export class DoctorPageComponent implements OnInit {
   }
 
   removeSchedule(schedule: Schedule) {
-
+    const index = this.schedules.data.indexOf(schedule);
+    this.schedules.data.splice(index, 1);   
+    this.doctorService.editDoctor(this.doctor).subscribe(() => {
+      this.updateDoctor();
+    });
   }
 
   editSchedule(schedule: Schedule) {

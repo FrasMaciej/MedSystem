@@ -82,7 +82,6 @@ import { DoctorData } from "./admin-page.component";
     removeSchedule(schedule: Schedule): void {
       const index = this.data.newSchedule.indexOf(schedule);
       this.data.newSchedule.splice(index, 1);   
-      
       this.doctorService.editDoctor(this.data.doctor).subscribe(() => {
   
       });

@@ -39,5 +39,4 @@ export class AuthService {
     }
     return this.httpClient.post(registerUrl, newUser)
   }
-
 }
