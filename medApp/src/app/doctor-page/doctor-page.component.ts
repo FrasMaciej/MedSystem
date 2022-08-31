@@ -55,9 +55,11 @@ export interface DoctorData {
       <ng-container matColumnDef="buttons" id="buttons">
         <th mat-header-cell *matHeaderCellDef>  </th>
         <td mat-cell *matCellDef="let element"> 
-        <button id ="editButton" mat-icon-button color="black" (click)="editSchedule(element)" (click)="updateDoctor()">
-          <mat-icon>edit</mat-icon>
-        </button>
+        <a [routerLink]="['/schedulePage/doctor/', doctor._id, element._id]">
+          <button id ="editButton" mat-icon-button color="black" (click)="editSchedule(element)" (click)="updateDoctor()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </a>
         <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSchedule(element)" (click)="onRemove($event)">
           <mat-icon>remove_circle</mat-icon>
         </button>

@@ -17,7 +17,8 @@ const routes: Routes = [
   { path: 'adminPage', component: AdminPageComponent },
   { path: 'patientPage', component: PatientPageComponent, canActivate : [AuthGuard] },
   { path: 'patientPage/details', component: PatientDetailsComponent, canActivate : [AuthGuard] },
-  { path: 'schedulePage/:docId/:schId', component: SchedulePageComponent },
+  { path: 'schedulePage/doctor/:docId/:schId', component: SchedulePageComponent, canActivate : [AuthGuard] },
+  { path: 'schedulePage/admin/:docId/:schId', component: SchedulePageComponent, canActivate : [AuthGuard] },
   { path: 'doctorPage', component: DoctorPageComponent, canActivate : [AuthGuard] },
 ];
 

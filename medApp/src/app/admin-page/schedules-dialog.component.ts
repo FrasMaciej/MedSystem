@@ -11,7 +11,7 @@ import { DoctorData } from "./admin-page.component";
         <div class="schedules"><h1>Grafiki dzienne - Dr. {{data.doctor.name}} {{data.doctor.surname}}</h1></div>
         <mat-selection-list #schedule [multiple]="false" class="custom-scroll-bar" underline="none"> 
             <mat-list-option *ngFor="let singleSchedule of data.doctor.schedule; let i = index" (click)="closeDialogRef()">
-                <a [routerLink]="['schedulePage/', data.doctor._id, singleSchedule._id]">
+                <a [routerLink]="['schedulePage/admin/', data.doctor._id, singleSchedule._id]">
                     <div id="schedulesList">
                         <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSchedule(singleSchedule)" (click)="onRemove($event)">
                             <mat-icon>remove_circle</mat-icon>

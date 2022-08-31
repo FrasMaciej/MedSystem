@@ -2,7 +2,7 @@ import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Doctor } from '../models/doctor';
 import { Patient, Schedule } from '../models/schedule';
 import { Visit } from '../models/schedule';
@@ -28,12 +28,10 @@ export interface ScheduleData {
       <button mat-icon-button class="icon">
         <mat-icon>menu</mat-icon>
       </button>
-      <a [routerLink]="['/adminPage']">
-        <button mat-icon-button class="icon">
-          <mat-icon>exit_to_app</mat-icon>
-        </button>
-      </a>
-      Panel Administratora - obsługa grafiku dr.&nbsp;<div *ngIf="doctor?.name">{{doctor.name}}</div> &nbsp; <div *ngIf="doctor?.name">{{doctor.surname}}</div> 
+      <button mat-icon-button class="icon" (click)="backToPreviousPage()">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+      Obsługa grafiku dr.&nbsp;<div *ngIf="doctor?.name">{{doctor.name}}</div> &nbsp; <div *ngIf="doctor?.name">{{doctor.surname}}</div> 
       &nbsp; <div *ngIf="scheduleToDisplay?.scheduleDate">[{{scheduleToDisplay?.scheduleDate | date:'yyyy-MM-dd':'+0000'}}]</div>
       <span class="spacer"></span>
     </mat-toolbar>
@@ -125,6 +123,7 @@ export class SchedulePageComponent implements OnInit {
   scheduleToDisplay: any;
   visitsList= new MatTableDataSource<Visit>();
   displayedColumns: String[] = ['time', 'isFree', 'patientName', 'note', 'buttons']
+  backRoute: String = '';
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -133,10 +132,15 @@ export class SchedulePageComponent implements OnInit {
   }
   
   constructor(
+    private router: Router,
     private actRoute: ActivatedRoute,
     private doctorService: DoctorService,
     public dialog: MatDialog,
   ) { 
+    if(this.router.url.includes('/schedulePage/doctor'))
+      this.backRoute = '/doctorPage'
+    else if(this.router.url.includes('/schedulePage/admin'))
+      this.backRoute = '/adminPage'
     this.schedule_id = this.actRoute.snapshot.params['schId'];
     this.doctor_id = this.actRoute.snapshot.params['docId'];
     this.doctor = {_id: '', name: '', surname: '', city: '', specializations: [], schedule: []}
@@ -182,4 +186,7 @@ export class SchedulePageComponent implements OnInit {
     return this.scheduleToDisplay;
   }
 
+  backToPreviousPage() {
+    this.router.navigate([this.backRoute]);
+  }
 }
