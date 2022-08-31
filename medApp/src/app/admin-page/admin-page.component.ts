@@ -11,11 +11,11 @@ import { SchedulesDialog } from './schedules-dialog.component';
 
 export interface DoctorData {
   doctor: Doctor;
-  newName: string;
-  newSurname: string;
-  newCity: string;
-  newSpecializations: string[];
-  newSpec: string;
+  newName: String;
+  newSurname: String;
+  newCity: String;
+  newSpecializations: String[];
+  newSpec: String;
   newSchedule: Schedule[];
   newVisitTime: number;
   newStartDate: Date;
@@ -82,7 +82,7 @@ export interface DoctorData {
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+    <mat-paginator [pageSizeOptions]="[10, 20]"
                  showFirstLastButtons >
     </mat-paginator>
   </div>

@@ -1,10 +1,10 @@
 import { Schedule } from "./schedule";
 
 export interface Doctor {
-    _id: string;
-    name: string;
-    surname: string;
-    city: string;
-    specializations: string[];
+    name: String;
+    surname: String;
+    city: String;
+    specializations: String[];
     schedule: Schedule[];
+    _id?: String;
 }

@@ -135,6 +135,7 @@ class DoctorActions {
         const {name, surname, city} = req.body;
         try {
             const doctor = new Doctor({ name, surname, city });
+            console.log(doctor);
             await doctor.save();
             res.status(201).json(doctor);
         } catch (err: any) {

@@ -114,7 +114,7 @@ export class DoctorEditDialog {
     e.stopImmediatePropagation();
   }
 
-  removeSpecialization(specialization: string) {
+  removeSpecialization(specialization: String) {
     const index = this.data.newSpecializations.indexOf(specialization);
     this.data.newSpecializations.splice(index, 1);                              
   }
