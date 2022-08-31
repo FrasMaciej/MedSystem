@@ -24,11 +24,11 @@ import { DoctorData } from "./admin-page.component";
             <mat-form-field>
                 <input matInput type="datetime-local" placeholder="Data początkowa" [(ngModel)]="data.newStartDate">
             </mat-form-field>   
-        <br>
+            <br>
             <mat-form-field>
                 <input matInput type="datetime-local" placeholder="Data końcowa" [(ngModel)]="data.newFinishDate">
             </mat-form-field> 
-        <br>
+            <br>
             <mat-form-field>
                 <input matInput placeholder="Czas pojedynczej wizyty (w min)" [(ngModel)]="data.newVisitTime">
             </mat-form-field>   
@@ -77,10 +77,6 @@ import { DoctorData } from "./admin-page.component";
   
     backClick(): void {
       this.dialogRef.close();
-    }
-  
-    saveClick(): void {
-      this.data.doctor.schedule = this.data.newSchedule;
     }
   
     removeSchedule(schedule: Schedule): void {

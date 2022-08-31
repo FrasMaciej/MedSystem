@@ -1,9 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
+import { ScheduleAddDialog } from './schedule-add-dialog.component';
+
+export interface DoctorData {
+  doctor: Doctor;
+  newSchedule: Schedule[];
+  newVisitTime: number;
+  newStartDate: Date;
+  newFinishDate: Date;
+}
 
 @Component({
   selector: 'app-doctor-page',
@@ -19,6 +29,8 @@ import { DoctorService } from '../services/doctor.service';
           </button>
         </a>
         <span>Panel Lekarza</span>
+        <span class="spacer"></span>
+        <button mat-raised-button color="newScheduleButton" (click)="openAddSheduleDialog()">Dodaj Grafik</button>
       </mat-toolbar>
     </p>
 
@@ -63,6 +75,10 @@ import { DoctorService } from '../services/doctor.service';
 
   `,
   styles: [`
+    .spacer {
+      flex: 1 1 auto;
+    }
+
     table {
       width: 100%;
     }
@@ -74,6 +90,16 @@ import { DoctorService } from '../services/doctor.service';
 
     .mat-column-buttons {
       text-align: right;
+    }
+
+    .mat-newScheduleButton {
+      background-color: rgb(255, 255, 255);
+      color: black;
+    }
+
+    .mat-newScheduleButton:hover {
+      background-color: rgb(35, 47, 92);
+      color: white;
     }
 
   `]
@@ -94,7 +120,7 @@ export class DoctorPageComponent implements OnInit {
   doctorId: String;
   doctor?: Doctor;
 
-  constructor(private doctorService: DoctorService) { 
+  constructor(private doctorService: DoctorService, public dialog: MatDialog) { 
     const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
     this.doctorId = userInfo.user.user._id;
     this.updateDoctor();
@@ -120,6 +146,19 @@ export class DoctorPageComponent implements OnInit {
   onRemove(e: Event) {
     e.preventDefault();
     e.stopImmediatePropagation();
+  }
+
+  openAddSheduleDialog(): void {
+    const dialogRef = this.dialog.open(ScheduleAddDialog, {
+      width: '400px',
+      height: '350px',
+      autoFocus: false,
+      data: {doctor: this.doctor, newSchedule: this.schedules.data, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0}
+    });
+
+    dialogRef.afterClosed().subscribe( () => {
+      this.updateDoctor();
+    });
   }
 
 }
