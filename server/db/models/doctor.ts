@@ -1,25 +1,13 @@
 const mongoose = require('mongoose');
 
 const ScheduleSchema = new mongoose.Schema({
-    scheduleDate:{
-        type: Date,
-    },
-    //Godzina zakończenia pracy
-    finishHour:{
-        type: Date,
-    },
-    //Czas pojedynczej wizyty (ilość minut na jeden "slot")
-    singleVisitTime:{
-        type: Number,
-    },
-    //Tablica z poszczególnymi slotami
+    scheduleDate:Date,
+    finishHour: Date,
+    singleVisitTime:Number,
     visits:[{
-        startHour:{
-            type: Date,
-        },
-        finishHour:{
-            type: Date,
-        },
+        startHour: Date,
+        finishHour: Date,
+        
         isFree:{
             type: Boolean,
             default: true
@@ -59,12 +47,8 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    specializations: {
-        type: [String],
-    },
-    schedule:{
-        type: [ScheduleSchema]
-    } 
+    specializations: [String],
+    schedule: [ScheduleSchema]
 });
 
 const Doctor = mongoose.model('Doctor', DoctorSchema);

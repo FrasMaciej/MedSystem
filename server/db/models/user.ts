@@ -2,12 +2,8 @@ import mongoose from "mongoose";
 const passportLocalMongoose = require('passport-local-mongoose');
 
 const UserSchema = new mongoose.Schema({
-    username: {
-        type: String,
-    },
-    password: {
-        type: String,
-    },
+    username: String,
+    password: String,
     name: String,
     surname: String,
     role: String

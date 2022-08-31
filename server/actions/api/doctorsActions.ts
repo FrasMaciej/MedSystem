@@ -1,4 +1,4 @@
-import { Visit, Schedule, DoctorI, VisitInfo } from './interfaces';
+import { VisitI, DoctorI, VisitInfoI } from '../../models';
 import { Request, Response } from 'express';
 
 const Doctor = require('../../db/models/doctor');
@@ -11,6 +11,102 @@ class DoctorActions {
             doctors.sort((a: DoctorI, b: DoctorI) => (a.surname < b.surname ? -1 : 1));
             return res.status(200).json(doctors);
         } catch (err: any) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    async getSpecs(req: Request, res: Response) {
+        try {
+            const doctors: DoctorI[] = await Doctor.find({});
+            let specs = new Set();
+            doctors.map(doc => doc.specializations
+                   .map(spec => specs.add(spec)));
+            return res.status(200).json(Array.from(specs));
+        } catch (err: any) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    async getCities(req: Request, res: Response) {
+        try {
+            const doctors: DoctorI[] = await Doctor.find({});
+            let cities = new Set();
+            doctors.map(doc => cities.add(doc.city));
+            return res.status(200).json(Array.from(cities));
+        } catch (err: any) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    async getFilteredVisits(req: Request, res: Response) {
+        const specialization: String = req.body.specialization;
+        const cities = Array.from(req.body.cities);
+        const startDate: Date = new Date(req.body.startDate);
+        const endDate: Date = new Date(req.body.endDate);
+        let matchingVisits: VisitInfoI[] = []; 
+        let datesArray: Date[] = [];
+        let loop = new Date(startDate);
+        try {
+            const doctors: DoctorI[] = await Doctor.find({});
+            
+            while(loop <= endDate) {
+                datesArray.push(new Date(loop));
+                loop.setDate(loop.getDate()+1);
+            }
+            
+            let matchingDoctors: DoctorI[] = doctors.filter(doc => (doc.specializations.indexOf(specialization) > -1 && cities.indexOf(doc.city) > -1));
+            matchingDoctors.map(doc => doc.schedule
+                           .map(sch => {
+                                for(let date of datesArray) {
+                                    if((date.getDate() === sch.scheduleDate.getDate()) && (date.getMonth() === sch.scheduleDate.getMonth()) && (date.getFullYear === sch.scheduleDate.getFullYear)) {
+                                        sch.visits.filter(visit => { 
+                                        if(visit.isFree) { 
+                                            let visitInfo: VisitInfoI = {
+                                                doctorId: doc._id,
+                                                scheduleId: sch._id,
+                                                visit: visit,
+                                                docSpecialization: specialization,
+                                                docName: doc.name,
+                                                docSurname: doc.surname,
+                                                docCity: doc.city
+                                            }
+                                            matchingVisits.push(visitInfo); 
+                                        } })
+                                    }
+                                }
+                        }
+                        ));
+
+            matchingVisits.sort((a: VisitInfoI, b: VisitInfoI) => (a.visit.startHour < b.visit.finishHour ? -1 : 1));
+            res.status(201).json(matchingVisits);
+        } catch (err: any) {
+            return res.status(500).json({ message: err.message });
+        }
+    }
+
+    async getVisitsByPatientId(req: Request, res: Response) {
+        const patientId = req.params.id;
+        let matchingVisits: VisitInfoI[] = []; 
+
+        try {
+            const doctors: DoctorI[] = await Doctor.find({});
+            doctors.map(d => d.schedule
+                    .map(s => s.visits
+                    .filter(v => { if(v.patientInfo.patientId === patientId) {
+                        let visitInfo: VisitInfoI = {
+                            doctorId: d._id,
+                            scheduleId: s._id,
+                            visit: v,
+                            docName: d.name,
+                            docSurname: d.surname,
+                            docCity: d.city
+                        }
+                        matchingVisits.push(visitInfo);
+                     } } )));
+            matchingVisits.sort((a: VisitInfoI, b: VisitInfoI) => (a.visit.startHour < b.visit.finishHour ? -1 : 1));
+            res.status(201).json(matchingVisits);
+        }
+        catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
     }
@@ -80,7 +176,7 @@ class DoctorActions {
             let end: Date = new Date(finishHour);
 
             while(loop < end){
-                const visit: Visit = {
+                const visit: VisitI = {
                     startHour: new Date(loop),
                     finishHour: new Date(loop.setMinutes(loop.getMinutes() + singleVisitTime)),
                     isFree: true,
@@ -165,105 +261,7 @@ class DoctorActions {
         
         await doctor.save();
         res.status(201).json(doctor);
-    }
-
-    async getSpecs(req: Request, res: Response) {
-        try {
-            const doctors: DoctorI[] = await Doctor.find({});
-            let specs = new Set();
-            doctors.map(doc => doc.specializations
-                   .map(spec => specs.add(spec)));
-            return res.status(200).json(Array.from(specs));
-        } catch (err: any) {
-            return res.status(500).json({ message: err.message });
-        }
-    }
-
-    async getCities(req: Request, res: Response) {
-        try {
-            const doctors: DoctorI[] = await Doctor.find({});
-            let cities = new Set();
-            doctors.map(doc => cities.add(doc.city));
-            return res.status(200).json(Array.from(cities));
-        } catch (err: any) {
-            return res.status(500).json({ message: err.message });
-        }
-    }
-
-    async getFilteredVisits(req: Request, res: Response) {
-        const specialization: String = req.body.specialization;
-        const cities = Array.from(req.body.cities);
-        const startDate: Date = new Date(req.body.startDate);
-        const endDate: Date = new Date(req.body.endDate);
-        let matchingVisits: VisitInfo[] = []; 
-        let datesArray: Date[] = [];
-        let loop = new Date(startDate);
-        try {
-            const doctors: DoctorI[] = await Doctor.find({});
-            
-
-            while(loop <= endDate) {
-                datesArray.push(new Date(loop));
-                loop.setDate(loop.getDate()+1);
-            }
-            
-            let matchingDoctors: DoctorI[] = doctors.filter(doc => (doc.specializations.indexOf(specialization) > -1 && cities.indexOf(doc.city) > -1));
-            matchingDoctors.map(doc => doc.schedule
-                            .map(sch => {
-                            for(let date of datesArray) {
-                                if((date.getDate() === sch.scheduleDate.getDate()) && (date.getMonth() === sch.scheduleDate.getMonth()) && (date.getFullYear === sch.scheduleDate.getFullYear)) {
-                                    sch.visits.filter(visit => { 
-                                    if(visit.isFree) { 
-                                        let visitInfo: VisitInfo = {
-                                            doctorId: doc._id,
-                                            scheduleId: sch._id,
-                                            visit: visit,
-                                            docSpecialization: specialization,
-                                            docName: doc.name,
-                                            docSurname: doc.surname,
-                                            docCity: doc.city
-                                        }
-                                        matchingVisits.push(visitInfo); 
-                                    } })
-                                }
-                            }
-                        }
-                        ));
-
-            matchingVisits.sort((a: VisitInfo, b: VisitInfo) => (a.visit.startHour < b.visit.finishHour ? -1 : 1));
-            res.status(201).json(matchingVisits);
-        } catch (err: any) {
-            return res.status(500).json({ message: err.message });
-        }
-    }
-
-    async getVisitByPatientId(req: Request, res: Response) {
-        const patientId = req.params.id;
-        let matchingVisits: VisitInfo[] = []; 
-
-        try {
-            const doctors: DoctorI[] = await Doctor.find({});
-            doctors.map(d => d.schedule
-                    .map(s => s.visits
-                    .filter(v => { if(v.patientInfo.patientId === patientId) {
-                        let visitInfo: VisitInfo = {
-                            doctorId: d._id,
-                            scheduleId: s._id,
-                            visit: v,
-                            docName: d.name,
-                            docSurname: d.surname,
-                            docCity: d.city
-                        }
-                        matchingVisits.push(visitInfo);
-                     } } )));
-            matchingVisits.sort((a: VisitInfo, b: VisitInfo) => (a.visit.startHour < b.visit.finishHour ? -1 : 1));
-            res.status(201).json(matchingVisits);
-        }
-        catch (err: any) {
-            return res.status(500).json({ message: err.message });
-        }
-
-    }
+    }   
 }
 
 module.exports = new DoctorActions()

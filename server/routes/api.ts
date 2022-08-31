@@ -6,7 +6,6 @@ const doctorActions = require('../actions/api/doctorsActions');
 
 //Test Api
 router.get('/', helloApi.rootPath);
-
 // Pobieranie wszystkich lekarzy
 router.get('/doctors', doctorActions.getAllDoctors);
 // Wyciągnięcie wszystkich specjalizacji wśród lekarzy
@@ -16,7 +15,7 @@ router.get('/doctors/cities', doctorActions.getCities);
 // Wyciągnięcie wizyt przy określonych kryteriach (miasta, specjalizacje, terminy wizyt)
 router.post('/doctors/filteredVisits', doctorActions.getFilteredVisits);
 // Wyciągnięcie wizyt przypisanych dla wybranego pacjenta na podstawie jego Id
-router.get('/doctors/findVisitByPatient/:id', doctorActions.getVisitByPatientId);
+router.get('/doctors/findVisitByPatient/:id', doctorActions.getVisitsByPatientId);
 // Pobieranie konkretnego lekarza
 router.get('/doctors/:id', doctorActions.getDoctor);
 // Pobieranie konkretnego lekarza na podstawie Id usera

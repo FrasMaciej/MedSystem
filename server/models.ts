@@ -1,4 +1,4 @@
-export interface Visit {
+export interface VisitI {
     startHour: Date,
     finishHour: Date,
     isFree: Boolean,
@@ -10,12 +10,12 @@ export interface Visit {
     visitNote: String
 }
 
-export interface Schedule {
+export interface ScheduleI {
     _id: String,
     scheduleDate: Date,
     finishHour: Date,
     singleVisitTime: Number,
-    visits: Visit[]
+    visits: VisitI[]
 }
 
 export interface DoctorI {
@@ -24,16 +24,23 @@ export interface DoctorI {
     surname: String,
     city: String,
     specializations: String[],
-    schedule: Schedule[]
+    schedule: ScheduleI[]
 }
 
-export interface VisitInfo {
+export interface VisitInfoI {
     doctorId: String,
     scheduleId: String,
-    visit: Visit,
+    visit: VisitI,
     docSpecialization?: String,
     docName: String,
     docSurname: String,
     docCity: String
 }
 
+export interface UserI {
+    _id?: String,
+    username: String,
+    name: String,
+    surname: String,
+    role: String
+}
