@@ -1,6 +1,5 @@
 import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Patient } from "../models/schedule";
 import { DoctorService } from "../services/doctor.service";
 import { ScheduleData } from "./schedule-page.component";
 
@@ -28,7 +27,7 @@ import { ScheduleData } from "./schedule-page.component";
       <mat-radio-button class="radio-button" [value]=false color="primary">Zajęty</mat-radio-button>
     </mat-radio-group>
     <div mat-dialog-actions align="center">
-      <button mat-button (click)="backClick()">Powrót</button>
+      <button mat-button (click)="closeDialogRef()">Powrót</button>
       <button mat-button (click)="saveClick()" [mat-dialog-close]="data">Zapisz</button>
     </div>
   `,
@@ -54,7 +53,7 @@ export class EditVisitDialog {
     private doctorService: DoctorService,
     @Inject(MAT_DIALOG_DATA) public data: ScheduleData) { }
 
-  backClick() {
+  closeDialogRef() {
     this.dialogRef.close();
   }
 

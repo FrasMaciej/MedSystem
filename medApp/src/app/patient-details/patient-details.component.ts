@@ -65,14 +65,7 @@ import { DoctorService } from '../services/doctor.service';
     .mat-toolbar.mat-primary {
       background-color: rgb(71, 106, 141);
     }
-
-    table {
-      width: 100%;
-    }
-
-    .mat-column-buttons {
-      text-align: right;
-    }
+    
   `]
 })
 export class PatientDetailsComponent implements OnInit {

@@ -42,10 +42,6 @@ import { Router } from '@angular/router';
       background-size: cover;
     }
 
-    .spacer {
-      flex: auto;
-    }
-
     .hover-class:hover {
       background-color: rgb(40, 123, 134);
       color: white;

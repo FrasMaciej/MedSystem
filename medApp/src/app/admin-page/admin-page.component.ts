@@ -42,46 +42,45 @@ export interface DoctorData {
     </p>
 
     <div class="doctorsList">
-    <table mat-table [dataSource]="doctors" class="mat-elevation-z8">
+      <table mat-table [dataSource]="doctors" class="mat-elevation-z8">
 
-      <ng-container matColumnDef="city">
-        <th mat-header-cell *matHeaderCellDef> Miasto </th>
-        <td mat-cell *matCellDef="let element"> {{element.city}}</td>
-      </ng-container>
+        <ng-container matColumnDef="city">
+          <th mat-header-cell *matHeaderCellDef> Miasto </th>
+          <td mat-cell *matCellDef="let element"> {{element.city}}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Imię i nazwisko lekarza </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} {{element.surname}}</td>
-      </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Imię i nazwisko lekarza </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} {{element.surname}}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="specs">
-        <th mat-header-cell *matHeaderCellDef> Specjalizacje </th>
-        <td mat-cell *matCellDef="let element"> 
-          <span *ngFor="let spec of element.specializations">
-            {{spec}}, 
-          </span>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="specs">
+          <th mat-header-cell *matHeaderCellDef> Specjalizacje </th>
+          <td mat-cell *matCellDef="let element"> 
+            <span *ngFor="let spec of element.specializations">
+              {{spec}}, 
+            </span>
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="buttons" id="buttons">
-        <th mat-header-cell *matHeaderCellDef>  </th>
-        <td mat-cell *matCellDef="let element"> 
-        <button id = "deleteButton" mat-icon-button color="warn" (click)="removeDoctor(element)" (click)="onRemove($event)">
-          <mat-icon>remove_circle</mat-icon>
-        </button>
-        <button id ="editButton" mat-icon-button color="black" (click)="openEditDoctorDialog(element)" (click)="updateDoctors()">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button id ="editSchedule" mat-icon-button color="black" (click)="openSchedulesDialog(element)" (click)="updateDoctors()">
-          <mat-icon>schedule</mat-icon>
-         </button>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="buttons" id="buttons">
+          <th mat-header-cell *matHeaderCellDef>  </th>
+          <td mat-cell *matCellDef="let element"> 
+          <button id = "deleteButton" mat-icon-button color="warn" (click)="removeDoctor(element)" (click)="onRemove($event)">
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+          <button id ="editButton" mat-icon-button color="black" (click)="openEditDoctorDialog(element)" (click)="updateDoctors()">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button id ="editSchedule" mat-icon-button color="black" (click)="openSchedulesDialog(element)" (click)="updateDoctors()">
+            <mat-icon>schedule</mat-icon>
+          </button>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
     <mat-paginator [pageSizeOptions]="[10, 20]"
                  showFirstLastButtons >
     </mat-paginator>
@@ -89,10 +88,6 @@ export interface DoctorData {
     
   `,
   styles: [`
-    .spacer {
-      flex: 1 1 auto;
-    }
-
     #doctorsString{
       margin: 1%;
     }
@@ -115,21 +110,6 @@ export interface DoctorData {
     .mat-toolbar.mat-primary {
       background-color: rgb(143, 68, 2);
     }
-
-    .custom-scroll-bar{
-      height:50vh;
-      overflow-y: scroll;
-      overflow-x: hidden;
-    }
-
-    table {
-      width: 100%;
-    }
-
-    .mat-column-buttons {
-      text-align: right;
-    }
-
   `]
 })
 

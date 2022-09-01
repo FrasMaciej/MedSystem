@@ -14,11 +14,11 @@ const routes: Routes = [
   { path: 'login/admin', component: LoginComponent },
   { path: 'login/doctor', component: LoginComponent },
   { path: 'login/patient', component: LoginComponent },
-  { path: 'adminPage', component: AdminPageComponent },
   { path: 'patientPage', component: PatientPageComponent, canActivate : [AuthGuard] },
   { path: 'patientPage/details', component: PatientDetailsComponent, canActivate : [AuthGuard] },
   { path: 'schedulePage/doctor/:docId/:schId', component: SchedulePageComponent, canActivate : [AuthGuard] },
   { path: 'schedulePage/admin/:docId/:schId', component: SchedulePageComponent, canActivate : [AuthGuard] },
+  { path: 'adminPage', component: AdminPageComponent },
   { path: 'doctorPage', component: DoctorPageComponent, canActivate : [AuthGuard] },
 ];
 

@@ -20,7 +20,7 @@ export interface DoctorData {
   template: `
     <p>
       <mat-toolbar color="primary">
-        <button mat-icon-button class="icon" (click)="click()">
+        <button mat-icon-button class="icon">
           <mat-icon>menu</mat-icon>
         </button>
         <a [routerLink]="['/']">
@@ -77,21 +77,10 @@ export interface DoctorData {
 
   `,
   styles: [`
-    .spacer {
-      flex: 1 1 auto;
-    }
-
-    table {
-      width: 100%;
-    }
 
     #schedulesList{
       display: flex;
       align-items: center;
-    }
-
-    .mat-column-buttons {
-      text-align: right;
     }
 
     .mat-newScheduleButton {
@@ -146,8 +135,6 @@ export class DoctorPageComponent implements OnInit {
   editSchedule(schedule: Schedule) {
 
   }
-
-  click() { }
 
   onRemove(e: Event) {
     e.preventDefault();

@@ -22,7 +22,7 @@ export interface VisitData {
   template: `
     <p>
       <mat-toolbar color="primary">
-        <button mat-icon-button class="icon" (click)="click()">
+        <button mat-icon-button class="icon">
           <mat-icon>menu</mat-icon>
         </button>
         <a [routerLink]="['/']">
@@ -131,10 +131,6 @@ export interface VisitData {
       background-color: rgb(71, 106, 141);
     }
 
-    .spacer {
-      flex: 1 1 auto;
-    }
-
     .additional-selection {
       opacity: 0.75;
       font-size: 0.75em;
@@ -164,20 +160,6 @@ export interface VisitData {
     .mat-searchButton:hover {
       background-color: rgb(170, 62, 198);
       color: #fff;
-    }
-
-    .custom-scroll-bar {
-      height:60vh;
-      overflow-y: scroll;
-      overflow-x: hidden;
-    }
-
-    table {
-      width: 100%;
-    }
-
-    .mat-column-buttons {
-      text-align: right;
     }
 
     .mat-patientDetails {
@@ -249,10 +231,6 @@ export class PatientPageComponent implements OnInit {
     this.doctorService.getSpecs().subscribe((specs: String[]) => {
       this.specsList = specs;
     })
-  }
-
-  click(){
-    console.log(this.selectedVisits);
   }
 
   selectSpec(event: Event) {

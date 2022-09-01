@@ -20,7 +20,7 @@ import { DoctorData } from "./admin-page.component";
             </mat-form-field>    
         </div>
         <div mat-dialog-actions align="center">
-            <button mat-button (click)="backClick()">Powrót</button>
+            <button mat-button (click)="closeDialogRef()">Powrót</button>
             <button mat-button (click)="saveClick()" [mat-dialog-close]="data.doctor">Dodaj</button>
         </div>
     `,
@@ -35,7 +35,7 @@ export class DoctorAddDialog {
     public dialogRef: MatDialogRef<DoctorAddDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
-  backClick(): void {
+  closeDialogRef(): void {
     this.dialogRef.close();
   }
 

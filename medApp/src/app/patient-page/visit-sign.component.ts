@@ -26,7 +26,7 @@ import { VisitData } from './patient-page.component';
     </div>
 
     <div mat-dialog-actions align="center">
-      <button mat-button (click)="backClick()">Powrót</button>
+      <button mat-button (click)="closeDialogRef()">Powrót</button>
       <button mat-button (click)="saveClick()" [mat-dialog-close]="data">Zapisz mnie na wizytę</button>
     </div>
   `,
@@ -48,7 +48,7 @@ export class VisitSignComponent {
       this.data.patientId = userInfo.user.user._id;
     }
 
-  backClick() {
+  closeDialogRef() {
     this.dialogRef.close();
   }
   

@@ -21,7 +21,7 @@ import { DoctorData } from "./admin-page.component";
         </div>
 
         <div class="specializations">Specjalizacje</div>
-        <mat-selection-list #doctor [multiple]="false" class="custom-scroll-bar"> 
+        <mat-selection-list #doctor [multiple]="false" class="scroll-bar"> 
             <mat-list-option *ngFor="let specialization of data.doctor.specializations">
                 <div id="specializationsList">
                 <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSpecialization(specialization)" (click)="onRemove($event)">
@@ -45,7 +45,7 @@ import { DoctorData } from "./admin-page.component";
         </div>
 
         <div mat-dialog-actions align="center">
-            <button mat-button (click)="backClick()">Powrót</button>
+            <button mat-button (click)="closeDialogRef()">Powrót</button>
             <button mat-button (click)="saveClick()" [mat-dialog-close]="data.doctor">Zapisz</button>
         </div>
     `,
@@ -54,7 +54,7 @@ import { DoctorData } from "./admin-page.component";
           text-align: center;
         }
 
-        .custom-scroll-bar{
+        .scroll-bar{
           height:15vh;
           overflow-x: hidden;
         }
@@ -98,7 +98,7 @@ export class DoctorEditDialog {
     public dialogRef: MatDialogRef<DoctorEditDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
-  backClick(): void {
+  closeDialogRef(): void {
     this.dialogRef.close();
   }
 

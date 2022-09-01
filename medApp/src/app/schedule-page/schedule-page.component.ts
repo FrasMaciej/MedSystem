@@ -104,16 +104,6 @@ export interface ScheduleData {
     .mat-toolbar.mat-primary {
       background-color: rgb(143, 68, 2);
     }
-
-    table {
-      width: 100%;
-    }
-
-    .mat-column-buttons {
-      text-align: right;
-    }
-
-
   `]
 })
 export class SchedulePageComponent implements OnInit {

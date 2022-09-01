@@ -9,10 +9,10 @@ import { DoctorData } from "./admin-page.component";
     selector: 'schedules-dialog',
     template: `
         <div class="schedules"><h1>Grafiki dzienne - Dr. {{data.doctor.name}} {{data.doctor.surname}}</h1></div>
-        <mat-selection-list #schedule [multiple]="false" class="custom-scroll-bar" underline="none"> 
-            <mat-list-option *ngFor="let singleSchedule of data.doctor.schedule; let i = index" (click)="closeDialogRef()">
+        <mat-selection-list #schedule [multiple]="false" class="custom-scroll-bar" underline="none" > 
+            <mat-list-option *ngFor="let singleSchedule of data.doctor.schedule; let i = index"  (click)="closeDialogRef()">
                 <a [routerLink]="['schedulePage/admin/', data.doctor._id, singleSchedule._id]">
-                    <div id="schedulesList">
+                    <div id="schedulesList" >
                         <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSchedule(singleSchedule)" (click)="onRemove($event)">
                             <mat-icon>remove_circle</mat-icon>
                         </button>{{singleSchedule.scheduleDate | date:'yyyy-MM-dd HH:mm':'+0000'}} – {{ singleSchedule.finishHour | date:'HH:mm':'+0000'}}
@@ -39,7 +39,7 @@ import { DoctorData } from "./admin-page.component";
         </div>
         <br>
         <div mat-dialog-actions align="center">
-            <button mat-button (click)="backClick()">Powrót</button>
+            <button mat-button (click)="closeDialogRef()">Powrót</button>
         </div>
     `,
     styles: [`
@@ -56,16 +56,6 @@ import { DoctorData } from "./admin-page.component";
             text-align: center;
         }
 
-        #specializationsList{
-            display: flex;
-            align-items: center;
-        }
-
-        .content-wrapper .mat-selection-list-underline {
-            display: none;
-        }
-
-
     `]
   })
   export class SchedulesDialog {
@@ -74,16 +64,11 @@ import { DoctorData } from "./admin-page.component";
       private doctorService: DoctorService,
       @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
   
-  
-    backClick(): void {
-      this.dialogRef.close();
-    }
-  
     removeSchedule(schedule: Schedule): void {
       const index = this.data.newSchedule.indexOf(schedule);
       this.data.newSchedule.splice(index, 1);   
-      this.doctorService.editDoctor(this.data.doctor).subscribe(() => {
-  
+      this.doctorService.editDoctor(this.data.doctor).subscribe(() => { 
+        
       });
     }
   
