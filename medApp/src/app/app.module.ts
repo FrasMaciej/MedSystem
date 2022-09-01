@@ -31,9 +31,9 @@ import { SchedulesDialog } from './admin-page/schedules-dialog.component';
 import { DoctorAddDialog } from './admin-page/doctor-add-dialog.component';
 import { DoctorEditDialog } from './admin-page/doctor-edit-dialog.component';
 import { PatientPageComponent } from './patient-page/patient-page.component';
-import { VisitSignComponent } from './patient-page/visit-sign.component';
+import { VisitSignComponent } from './patient-page/visit-sign.component'; 
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
-import { DoctorPageComponent } from './doctor-page/doctor-page.component';
+import { DoctorPageComponent } from './doctor-page/doctor-page.component'; 
 import { ScheduleAddDialog } from './doctor-page/schedule-add-dialog.component';
 
 @NgModule({

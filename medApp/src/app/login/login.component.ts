@@ -1,41 +1,40 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Patient } from '../models/schedule';
 import { AuthService } from '../services/auth.service';
 
-// To-do -> info dla użytkownika przy podaniu złych danych logowania
 @Component({
   selector: 'app-login',
   template: `
     <body scroll="no" style="overflow: hidden">
-      <div class="logging-form">
-        <button id="homeButton" mat-fab color="primary" [routerLink]="['/']">
-          <mat-icon>home</mat-icon>
-        </button>
-        <form [formGroup]="form" (ngSubmit)="submit()">
-          <p>
-            <mat-form-field appearance="outline">
-              <mat-label>Login</mat-label>
-              <input type="text" matInput placeholder="Wpisz login" formControlName="username">
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field appearance="outline">
-              <mat-label>Hasło</mat-label>
-              <input type="password" matInput placeholder="Wpisz hasło" formControlName="password">
-              <mat-hint>Podaj silne hasło (min 8 znaków)</mat-hint>
-            </mat-form-field>
-          </p>
+    <div class="logging-form">
+      <button id="homeButton" mat-fab color="primary" [routerLink]="['/']">
+        <mat-icon>home</mat-icon>
+      </button>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <p>
+          <mat-form-field appearance="outline">
+            <mat-label>Login</mat-label>
+            <input type="text" matInput placeholder="Wpisz login" formControlName="username">
+          </mat-form-field>
+        </p>
 
-          <p *ngIf="error" class="error">
-            {{ error }}
-          </p>
+        <p>
+          <mat-form-field appearance="outline">
+            <mat-label>Hasło</mat-label>
+            <input type="password" matInput placeholder="Wpisz hasło" formControlName="password">
+            <mat-hint>Podaj silne hasło (min 8 znaków)</mat-hint>
+          </mat-form-field>
+        </p>
 
-          <p>
-            <button type="submit" mat-raised-button (click)="submit()">Zaloguj się</button>
-          </p>
-        </form>
+        <p *ngIf="error" class="error">
+          {{ error }}
+        </p>
+
+        <p>
+          <button type="submit" mat-raised-button (click)="submit()">Zaloguj się</button>
+        </p>
+      </form>
     </div>
   `,
   styles: [`
@@ -57,12 +56,11 @@ import { AuthService } from '../services/auth.service';
     }
   `]
 })
-export class LoginComponent implements OnInit {
+
+export class LoginComponent {
   @Input() error!: string | null;
   @Output() submitEM = new EventEmitter();
-
   route: String = '';
-
   form: FormGroup = new FormGroup({
     username: new FormControl(''),
     password: new FormControl(''),
@@ -77,21 +75,8 @@ export class LoginComponent implements OnInit {
       this.route = '/patientPage'
   }
 
-  ngOnInit() { } 
-
-  navigate() {
-    console.log(this.route)
-    this.router.navigate([this.route]);
-  }
-
-  public submit() {
-    if(this.router.url === '/login/patient') {
-        this.authService.validate(this.form.get('username')?.value , this.form.get('password')?.value).then( (response) => {
-          this.authService.setUserInfo({'user': response});
-          this.router.navigate([this.route]);
-        })
-    }
-    else if(this.router.url === '/login/doctor'){
+  public submit(): void {
+    if(this.router.url === '/login/patient' || this.router.url === '/login/doctor') {
       this.authService.validate(this.form.get('username')?.value , this.form.get('password')?.value).then( (response) => {
         this.authService.setUserInfo({'user': response});
         this.router.navigate([this.route]);
@@ -100,7 +85,5 @@ export class LoginComponent implements OnInit {
     else if(this.router.url === '/login/admin'){
       this.router.navigate([this.route]);
     }
-    
   }
-
 }

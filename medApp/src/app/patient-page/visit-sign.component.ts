@@ -1,15 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AuthService } from '../services/auth.service';
-import { DoctorService } from '../services/doctor.service';
 import { VisitData } from './patient-page.component';
 
 @Component({
   selector: 'app-visit-sign',
   template: `
     <h1 mat-dialog-title>Zapisujesz się na wizytę <br> 
-    {{data.visitInfo.visit.startHour | date:'yyyy-MM-dd HH:mm':'+0000'}} — {{data.visitInfo.visit.finishHour | date:'HH:mm':'+0000'}}<br>
-    {{data.visitInfo.docName}} {{data.visitInfo.docSurname}}, {{data.visitInfo.docSpecialization}}
+      {{data.visitInfo.visit.startHour | date:'yyyy-MM-dd HH:mm':'+0000'}} — {{data.visitInfo.visit.finishHour | date:'HH:mm':'+0000'}}<br>
+      {{data.visitInfo.docName}} {{data.visitInfo.docSurname}}, {{data.visitInfo.docSpecialization}}
     </h1>
     <div mat-dialog-content>
       <mat-form-field>
@@ -39,24 +37,21 @@ import { VisitData } from './patient-page.component';
 export class VisitSignComponent {
   constructor(
     public dialogRef: MatDialogRef<VisitSignComponent>,
-    private doctorService: DoctorService,
-    private authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: VisitData) { 
       const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
       this.data.name = userInfo.user.user.name;
       this.data.surname = userInfo.user.user.surname;
       this.data.patientId = userInfo.user.user._id;
-    }
-
-  closeDialogRef() {
-    this.dialogRef.close();
   }
-  
-  saveClick() {
+
+  saveClick(): void {
     this.data.visitInfo.visit.isFree = false;
     this.data.visitInfo.visit.patientInfo.name = this.data.name;
     this.data.visitInfo.visit.patientInfo.surname = this.data.surname;
     this.data.visitInfo.visit.visitNote = this.data.note;
   }
 
+  closeDialogRef(): void {
+    this.dialogRef.close();
+  }
 }

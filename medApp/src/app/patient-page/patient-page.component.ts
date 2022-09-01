@@ -3,9 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Doctor } from '../models/doctor';
-import { Visit, VisitInfo } from '../models/schedule';
-import { AuthService } from '../services/auth.service';
+import { VisitInfo } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { VisitSignComponent } from './visit-sign.component';
 
@@ -33,7 +31,7 @@ export interface VisitData {
         <span>Panel Pacjenta</span>
         <span class="spacer"></span>
         <a [routerLink]="['/patientPage/details']">
-        <button mat-raised-button color="patientDetails" (click)="openPatientDetails()">Moje Wizyty</button>
+          <button mat-raised-button color="patientDetails">Moje Wizyty</button>
         </a>
       </mat-toolbar>
     </p>
@@ -74,7 +72,6 @@ export interface VisitData {
           <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
-
           <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
           <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
         </mat-form-field>
@@ -111,7 +108,7 @@ export interface VisitData {
         <th mat-header-cell *matHeaderCellDef>  </th>
         <td mat-cell *matCellDef="let element">
           <button id ="editButton" mat-icon-button color="black" (click)="openVisitSignDialog(element)">
-              <mat-icon>assignment icon</mat-icon>
+            <mat-icon>assignment icon</mat-icon>
           </button>
         </td>
       </ng-container>
@@ -120,11 +117,9 @@ export interface VisitData {
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[10, 20]"
-                 showFirstLastButtons >
+    <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons>
     </mat-paginator>
   </div>
-
   `,
   styles: [`
     .mat-toolbar.mat-primary {
@@ -171,11 +166,11 @@ export interface VisitData {
       background-color: white;
       color: black;
     }
-
   `]
 })
 
 export class PatientPageComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   citiesList: String[] = [];
   specsList: String[] = [];
   selectedCities = new FormControl(this.citiesList);
@@ -187,17 +182,17 @@ export class PatientPageComponent implements OnInit {
   selectedVisits = new MatTableDataSource<VisitInfo>();
   displayedColumns: String[] = ['city', 'name', 'spec', 'visitDate', 'buttons']
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  ngAfterViewInit() {
-    this.selectedVisits.paginator = this.paginator;
-  }
-
   constructor(
     private doctorService: DoctorService,
-    private authService: AuthService,
-    public dialog: MatDialog,
-    
-    ) { }
+    public dialog: MatDialog) { }
+
+  ngOnInit(): void {
+    this.updateMenuData();
+  }
+
+  ngAfterViewInit(): void {
+    this.selectedVisits.paginator = this.paginator;
+  }
 
   openVisitSignDialog(visitInfo: VisitInfo): void {
     const dialogRef = this.dialog.open(VisitSignComponent, {
@@ -217,11 +212,19 @@ export class PatientPageComponent implements OnInit {
         })
       }
     });
-    
   }
 
-  ngOnInit(): void {
-    this.updateMenuData();
+  selectSpec(event: Event): void {
+    this.selectedSpec = (event.target as HTMLSelectElement).value;
+  }
+
+  getFilteredVisits(): void {
+    if(this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end){
+      const cities: String[] = this.selectedCities.value;
+      this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((matchingVisits: VisitInfo[]) => {
+        this.selectedVisits.data = matchingVisits;
+      })
+    }
   }
 
   updateMenuData(): void {
@@ -232,22 +235,4 @@ export class PatientPageComponent implements OnInit {
       this.specsList = specs;
     })
   }
-
-  selectSpec(event: Event) {
-    this.selectedSpec = (event.target as HTMLSelectElement).value;
-  }
-
-  getFilteredVisits() {
-    if(this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end){
-      const cities: String[] = this.selectedCities.value;
-      this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((matchingVisits: VisitInfo[]) => {
-        this.selectedVisits.data = matchingVisits;
-      })
-    }
-  }
-
-  openPatientDetails() {
-
-  }
-  
 }

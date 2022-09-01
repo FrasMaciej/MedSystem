@@ -35,18 +35,14 @@ import { DoctorData } from "./doctor-page.component";
             text-align: center;
         }
     `]
-  })
+})
 export class ScheduleAddDialog {
     constructor(
         public dialogRef: MatDialogRef<ScheduleAddDialog>,
         private doctorService: DoctorService,
         @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }  
 
-    closeDialogRef() {
-        this.dialogRef.close();
-    }  
-
-    addNewSchedule() {
+    addNewSchedule(): void {
         var startDate: Date = new Date(this.data.newStartDate);
         var finishDate: Date = new Date(this.data.newFinishDate);
         this.data.newStartDate = new Date(startDate.setHours(startDate.getHours() - (startDate.getUTCHours() - startDate.getHours())));
@@ -60,5 +56,9 @@ export class ScheduleAddDialog {
         })
         this.data.newSchedule.push(schedule);
         this.closeDialogRef();
-      }
+    }
+
+    closeDialogRef(): void {
+        this.dialogRef.close();
+    }  
 }

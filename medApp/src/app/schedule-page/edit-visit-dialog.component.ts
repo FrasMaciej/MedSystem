@@ -1,6 +1,5 @@
 import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { DoctorService } from "../services/doctor.service";
 import { ScheduleData } from "./schedule-page.component";
 
 @Component({
@@ -47,20 +46,19 @@ import { ScheduleData } from "./schedule-page.component";
     }
   `]
 })
+
 export class EditVisitDialog {
   constructor(
     public dialogRef: MatDialogRef<EditVisitDialog>,
-    private doctorService: DoctorService,
     @Inject(MAT_DIALOG_DATA) public data: ScheduleData) { }
 
-  closeDialogRef() {
-    this.dialogRef.close();
-  }
-
-  saveClick() {
+  saveClick(): void {
     this.data.visit.isFree = this.data.newIsFree;
     this.data.visit.visitNote = this.data.newVisitNote;
     this.data.visit.patientInfo = {name: this.data.newName, surname: this.data.newSurname}
   }
 
+  closeDialogRef(): void {
+    this.dialogRef.close();
+  }
 }

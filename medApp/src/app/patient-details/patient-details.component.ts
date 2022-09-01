@@ -47,38 +47,30 @@ import { DoctorService } from '../services/doctor.service';
           <th mat-header-cell *matHeaderCellDef>  </th>, 
           <td mat-cell *matCellDef="let element">
             <button id ="editButton" mat-icon-button color="black" (click)="cancelVisit(element.visit, element.doctorId, element.scheduleId)">
-                <mat-icon>delete_forever</mat-icon>
+              <mat-icon>delete_forever</mat-icon>
             </button>
           </td>
         </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-      <mat-paginator [pageSizeOptions]="[10, 20]"
-                  showFirstLastButtons >
+      <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons >
       </mat-paginator>
     </div>
-
   `,
   styles: [`
     .mat-toolbar.mat-primary {
       background-color: rgb(71, 106, 141);
-    }
-    
+    } 
   `]
 })
 export class PatientDetailsComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   patientId: String;
   name: String;
   surname: String;
   selectedVisits = new MatTableDataSource<VisitInfo>();
   displayedColumns: String[] = ['city', 'name', 'visitDate', 'note', 'buttons']
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  ngAfterViewInit() {
-    this.selectedVisits.paginator = this.paginator;
-  }
 
   constructor(private doctorService: DoctorService) { 
     const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
@@ -92,17 +84,20 @@ export class PatientDetailsComponent implements OnInit {
     this.getFilteredVisits();
   }
 
-  getFilteredVisits() {
-      this.doctorService.getVisitsByPatient(this.patientId).subscribe((matchingVisits: VisitInfo[]) => {
-        this.selectedVisits.data = matchingVisits;
-      })
+  ngAfterViewInit(): void {
+    this.selectedVisits.paginator = this.paginator;
   }
 
-  cancelVisit(visit: Visit, doctor_id: String, schedule_id: String) {
+  getFilteredVisits(): void {
+    this.doctorService.getVisitsByPatient(this.patientId).subscribe((matchingVisits: VisitInfo[]) => {
+      this.selectedVisits.data = matchingVisits;
+    })
+  }
+
+  cancelVisit(visit: Visit, doctor_id: String, schedule_id: String): void {
     visit.isFree = true;
     this.doctorService.editVisit(visit, doctor_id, schedule_id, visit._id, '').subscribe(() => {
       this.getFilteredVisits();
     })
   }
-
 }

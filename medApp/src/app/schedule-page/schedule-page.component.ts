@@ -1,10 +1,10 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Doctor } from '../models/doctor';
-import { Patient, Schedule } from '../models/schedule';
+import { Schedule } from '../models/schedule';
 import { Visit } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { EditVisitDialog } from './edit-visit-dialog.component';
@@ -83,8 +83,6 @@ export interface ScheduleData {
                  showFirstLastButtons >
     </mat-paginator>
   </div>
-
-  
   `,
   styles: [`
     .custom-scroll-bar {
@@ -106,7 +104,9 @@ export interface ScheduleData {
     }
   `]
 })
+
 export class SchedulePageComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   schedule_id: string;
   doctor_id: string;
   doctor: Doctor;
@@ -115,12 +115,6 @@ export class SchedulePageComponent implements OnInit {
   displayedColumns: String[] = ['time', 'isFree', 'patientName', 'note', 'buttons']
   backRoute: String = '';
 
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  ngAfterViewInit() {
-    this.visitsList.paginator = this.paginator;
-  }
-  
   constructor(
     private router: Router,
     private actRoute: ActivatedRoute,
@@ -134,6 +128,17 @@ export class SchedulePageComponent implements OnInit {
     this.schedule_id = this.actRoute.snapshot.params['schId'];
     this.doctor_id = this.actRoute.snapshot.params['docId'];
     this.doctor = {_id: '', name: '', surname: '', city: '', specializations: [], schedule: []}
+  }
+
+  ngOnInit(): void {
+    this.doctor = {} as Doctor;
+    this.scheduleToDisplay = {} as Schedule;
+    this.visitsList.data = this.scheduleToDisplay.visits;
+    this.updateDoctor();
+  }
+
+  ngAfterViewInit(): void {
+    this.visitsList.paginator = this.paginator;
   }
 
   openEditVisitDialog(visit: Visit): void {
@@ -153,14 +158,6 @@ export class SchedulePageComponent implements OnInit {
         })
       }
     });
-
-  }
-
-  ngOnInit(): void {
-    this.doctor = {} as Doctor;
-    this.scheduleToDisplay = {} as Schedule;
-    this.visitsList.data = this.scheduleToDisplay.visits;
-    this.updateDoctor();
   }
 
   updateDoctor(): void {
@@ -170,13 +167,12 @@ export class SchedulePageComponent implements OnInit {
     })
   }
 
-  getSchedule(): Schedule {
+  getSchedule(): void {
     this.scheduleToDisplay = this.doctor.schedule.find(i => i._id === this.schedule_id);
     this.visitsList.data = this.scheduleToDisplay.visits;
-    return this.scheduleToDisplay;
   }
 
-  backToPreviousPage() {
+  backToPreviousPage(): void {
     this.router.navigate([this.backRoute]);
   }
 }

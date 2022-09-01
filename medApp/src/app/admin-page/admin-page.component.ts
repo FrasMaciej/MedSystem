@@ -85,7 +85,6 @@ export interface DoctorData {
                  showFirstLastButtons >
     </mat-paginator>
   </div>
-    
   `,
   styles: [`
     #doctorsString{
@@ -114,15 +113,36 @@ export interface DoctorData {
 })
 
 export class AdminPageComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   doctors = new MatTableDataSource<Doctor>();
   displayedColumns: String[] = ['city', 'name', 'specs', 'buttons']
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  ngAfterViewInit() {
+  constructor(private doctorService: DoctorService, public dialog: MatDialog) { } 
+
+  ngOnInit(): void {
+    this.updateDoctors();
+  }
+
+  ngAfterViewInit(): void {
     this.doctors.paginator = this.paginator;
   }
 
-  constructor(private doctorService: DoctorService, public dialog: MatDialog) { } 
+  openAddDoctorDialog(): void {
+    const dialogRef = this.dialog.open(DoctorAddDialog, {
+      width: '500px',
+      height: '325px',
+      autoFocus: false,
+      data: { newName: '', newSurname: '', newCity: '', doctor: { } }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result !== null && result !== undefined){
+        this.doctorService.addDoctor(result).subscribe((result)=>{
+          this.updateDoctors();
+        });
+      }
+    });
+  }
 
   openEditDoctorDialog(doctor: Doctor): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
@@ -136,25 +156,8 @@ export class AdminPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result !== null && result!==undefined) {
+      if (result !== null && result !== undefined) {
         this.doctorService.editDoctor(result).subscribe((result) => {
-          this.updateDoctors();
-        });
-      }
-    });
-  }
-
-  openAddDoctorDialog(): void {
-    const dialogRef = this.dialog.open(DoctorAddDialog, {
-      width: '500px',
-      height: '325px',
-      autoFocus: false,
-      data: { newName: '', newSurname: '', newCity: '', doctor: { } }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result!==null && result!==undefined){
-        this.doctorService.addDoctor(result).subscribe((result)=>{
           this.updateDoctors();
         });
       }
@@ -174,23 +177,19 @@ export class AdminPageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.updateDoctors();
-  }
-
   updateDoctors(): void {
     this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
       this.doctors.data = doctors;
     })
   }
 
-  removeDoctor(doctor: Doctor) {
+  removeDoctor(doctor: Doctor): void {
     this.doctorService.removeDoctor(doctor).subscribe(() => {
       this.updateDoctors();
     });
   }
 
-  onRemove(e: Event) {
+  onRemove(e: Event): void {
     e.preventDefault();
     e.stopImmediatePropagation();
   }
