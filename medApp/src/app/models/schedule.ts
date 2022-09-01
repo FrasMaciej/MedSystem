@@ -1,31 +1,31 @@
 export interface Patient {
-    name: String;
-    surname: String;
+    name: string;
+    surname: string;
 }
 
 export interface Visit {
-    _id: String;
+    _id: string;
     startHour: Date;
     finishHour: Date;
-    isFree: Boolean;
+    isFree: boolean;
     patientInfo: Patient;
-    visitNote: String;
+    visitNote: string;
 }
 
 export interface Schedule {
     _id: string;
     scheduleDate: Date;
     finishHour: Date;
-    singleVisitTime: Number;
+    singleVisitTime: number;
     visits: Visit[];
 }
 
 export interface VisitInfo {
-    doctorId: String,
-    scheduleId: String,
-    visit: Visit,
-    docSpecialization: String,
-    docName: String,
-    docSurname: String,
-    docCity: String
+    doctorId: string;
+    scheduleId: string;
+    visit: Visit;
+    docSpecialization: string;
+    docName: string;
+    docSurname: string;
+    docCity: string;
 }

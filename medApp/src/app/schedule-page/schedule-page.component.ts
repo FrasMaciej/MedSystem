@@ -14,10 +14,10 @@ export interface ScheduleData {
   doctor_id: string;
   patient_id: string;
   visit: Visit;
-  newName: String;
-  newSurname: String;
-  newVisitNote: String;
-  newIsFree: Boolean;
+  newName: string;
+  newSurname: string;
+  newVisitNote: string;
+  newIsFree: boolean;
 }
 
 @Component({

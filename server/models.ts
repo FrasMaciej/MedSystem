@@ -1,46 +1,46 @@
 export interface VisitI {
-    startHour: Date,
-    finishHour: Date,
-    isFree: Boolean,
+    startHour: Date;
+    finishHour: Date;
+    isFree: boolean;
     patientInfo: {
-        name: String,
-        surname: String,
-        patientId: String
+        name: string;
+        surname: string;
+        patientId: string;
     },
-    visitNote: String
+    visitNote: string;
 }
 
 export interface ScheduleI {
-    _id: String,
-    scheduleDate: Date,
-    finishHour: Date,
-    singleVisitTime: Number,
-    visits: VisitI[]
+    _id: string;
+    scheduleDate: Date;
+    finishHour: Date;
+    singleVisitTime: number;
+    visits: VisitI[];
 }
 
 export interface DoctorI {
-    _id: String,
-    name: String,
-    surname: String,
-    city: String,
-    specializations: String[],
-    schedule: ScheduleI[]
+    _id: string;
+    name: string;
+    surname: string;
+    city: string;
+    specializations: string[];
+    schedule: ScheduleI[];
 }
 
 export interface VisitInfoI {
-    doctorId: String,
-    scheduleId: String,
-    visit: VisitI,
-    docSpecialization?: String,
-    docName: String,
-    docSurname: String,
-    docCity: String
+    doctorId: string;
+    scheduleId: string;
+    visit: VisitI;
+    docSpecialization?: string;
+    docName: string;
+    docSurname: string;
+    docCity: string;
 }
 
 export interface UserI {
-    _id?: String,
-    username: String,
-    name: String,
-    surname: String,
-    role: String
+    _id?: string;
+    username: string;
+    name: string;
+    surname: string;
+    role: string;
 }

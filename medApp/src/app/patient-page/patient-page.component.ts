@@ -9,10 +9,10 @@ import { VisitSignComponent } from './visit-sign.component';
 
 export interface VisitData {
   visitInfo: VisitInfo;
-  note: String;
-  name: String;
-  surname: String;
-  patientId: String;
+  note: string;
+  name: string;
+  surname: string;
+  patientId: string;
 }
 
 @Component({

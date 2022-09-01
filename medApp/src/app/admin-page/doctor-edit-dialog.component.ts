@@ -105,7 +105,7 @@ export class DoctorEditDialog {
     }
   }
 
-  removeSpecialization(specialization: String): void {
+  removeSpecialization(specialization: string): void {
     const index = this.data.newSpecializations.indexOf(specialization);
     this.data.newSpecializations.splice(index, 1);
   }

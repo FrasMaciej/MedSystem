@@ -11,11 +11,11 @@ import { SchedulesDialog } from './schedules-dialog.component';
 
 export interface DoctorData {
   doctor: Doctor;
-  newName: String;
-  newSurname: String;
-  newCity: String;
-  newSpecializations: String[];
-  newSpec: String;
+  newName: string;
+  newSurname: string;
+  newCity: string;
+  newSpecializations: string[];
+  newSpec: string;
   newSchedule: Schedule[];
   newVisitTime: number;
   newStartDate: Date;
