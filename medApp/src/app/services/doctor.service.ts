@@ -13,43 +13,43 @@ export class DoctorService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getDoctor(id: string) : Observable<any> {
-    const getSelectedDoctorUrl = config.baseUrlDoc+'/'+id;
+  getDoctor(id: string): Observable<any> {
+    const getSelectedDoctorUrl = config.baseUrlDoc + '/' + id;
     return this.httpClient.get(getSelectedDoctorUrl);
   }
 
-  getDoctors() : Observable<any> {
+  getDoctors(): Observable<any> {
     this.doctorsList = this.httpClient.get(config.baseUrlDoc);
     return this.doctorsList;
   }
 
-  getDoctorByUserId(id: String) : Observable<any> {
-    const getDoctorByUserIdUrl = config.baseUrlDoc+'/'+'getByUserId'+'/'+id;
+  getDoctorByUserId(id: String): Observable<any> {
+    const getDoctorByUserIdUrl = config.baseUrlDoc + '/' + 'getByUserId' + '/' + id;
     return this.httpClient.get(getDoctorByUserIdUrl)
   }
 
   removeDoctor(doctor: Doctor) {
-    const deleteUrl = config.baseUrlDoc+'/'+doctor._id;
+    const deleteUrl = config.baseUrlDoc + '/' + doctor._id;
     return this.httpClient.delete(deleteUrl);
   }
 
   editDoctor(doctor: Doctor) {
-    const editUrl = config.baseUrlDoc+'/'+doctor._id;
+    const editUrl = config.baseUrlDoc + '/' + doctor._id;
     return this.httpClient.put(editUrl, doctor);
-  } 
+  }
 
   addDoctor(doctor: Doctor) {
     const addUrl = config.baseUrlDoc;
     return this.httpClient.post(addUrl, doctor);
   }
 
-  addTerminsSlots(schedule: Schedule, doctor: Doctor) : Observable<any> {
-    const addTerminsUrl = config.baseUrlDoc+'/'+'addTerminsSlots'+'/'+doctor._id;
+  addTerminsSlots(schedule: Schedule, doctor: Doctor): Observable<any> {
+    const addTerminsUrl = config.baseUrlDoc + '/' + 'addTerminsSlots' + '/' + doctor._id;
     return this.httpClient.post(addTerminsUrl, schedule);
   }
 
   editVisit(visit: Visit, doctorId: String, scheduleId: String, visitId: String, patientId: String) {
-    const editVisitUrl = config.baseUrlDoc+'/'+'editVisit'+'/'+doctorId+'/'+scheduleId+'/'+visitId;
+    const editVisitUrl = config.baseUrlDoc + '/' + 'editVisit' + '/' + doctorId + '/' + scheduleId + '/' + visitId;
     const visitInfo = {
       visit: visit,
       patientId: patientId
@@ -58,29 +58,29 @@ export class DoctorService {
     return this.httpClient.put(editVisitUrl, visitInfo);
   }
 
-  getCities() : Observable<any> {
-    const getCitiesUrl = config.baseUrlDoc+'/'+'cities';
+  getCities(): Observable<any> {
+    const getCitiesUrl = config.baseUrlDoc + '/' + 'cities';
     return this.httpClient.get(getCitiesUrl);
   }
 
-  getSpecs() : Observable<any> {
-    const getSpecsUrl = config.baseUrlDoc+'/'+'specs';
+  getSpecs(): Observable<any> {
+    const getSpecsUrl = config.baseUrlDoc + '/' + 'specs';
     return this.httpClient.get(getSpecsUrl);
   }
 
-  getFilteredVisits(specialization: String, cities: String[], startDate: Date, endDate: Date) : Observable<any> {
+  getFilteredVisits(specialization: String, cities: String[], startDate: Date, endDate: Date): Observable<any> {
     const visitReq = {
       specialization: specialization,
       cities: cities,
       startDate: startDate,
       endDate: endDate
     }
-    const getVisitsUrl = config.baseUrlDoc+'/'+'filteredVisits';
+    const getVisitsUrl = config.baseUrlDoc + '/' + 'filteredVisits';
     return this.httpClient.post(getVisitsUrl, visitReq);
   }
 
-  getVisitsByPatient(patientId: String) : Observable<any>{
-    const getVisitsByPatientUrl = config.baseUrlDoc+'/'+'findVisitByPatient'+'/'+patientId;
+  getVisitsByPatient(patientId: String): Observable<any> {
+    const getVisitsByPatientUrl = config.baseUrlDoc + '/' + 'findVisitByPatient' + '/' + patientId;
     return this.httpClient.get(getVisitsByPatientUrl)
   }
 }

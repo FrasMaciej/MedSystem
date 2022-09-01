@@ -30,7 +30,7 @@ import { DoctorData } from "./admin-page.component";
       }
   `]
 })
-  
+
 export class DoctorAddDialog {
   constructor(
     public dialogRef: MatDialogRef<DoctorAddDialog>,

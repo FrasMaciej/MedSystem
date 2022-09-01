@@ -9,8 +9,8 @@ export class AuthGuardService implements CanActivate {
 
   constructor(private authService: AuthService, private route: Router) { }
 
-  canActivate(){
-    if(this.authService.isAuthenticated()){
+  canActivate() {
+    if (this.authService.isAuthenticated()) {
       return true;
     }
     this.route.navigate(['login/patient']);

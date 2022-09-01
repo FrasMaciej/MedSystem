@@ -1,23 +1,23 @@
 const mongoose = require('mongoose');
 
 const ScheduleSchema = new mongoose.Schema({
-    scheduleDate:Date,
+    scheduleDate: Date,
     finishHour: Date,
-    singleVisitTime:Number,
-    visits:[{
+    singleVisitTime: Number,
+    visits: [{
         startHour: Date,
         finishHour: Date,
-        
-        isFree:{
+
+        isFree: {
             type: Boolean,
             default: true
         },
-        patientInfo:{
-            name:{
+        patientInfo: {
+            name: {
                 type: String,
                 defualt: ''
             },
-            surname:{
+            surname: {
                 type: String,
                 defualt: ''
             },
@@ -26,7 +26,7 @@ const ScheduleSchema = new mongoose.Schema({
                 defualt: ''
             }
         },
-        visitNote:{
+        visitNote: {
             type: String,
             defualt: ''
         }
@@ -43,7 +43,7 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    city:{
+    city: {
         type: String,
         required: true
     },
@@ -53,6 +53,6 @@ const DoctorSchema = new mongoose.Schema({
 
 const Doctor = mongoose.model('Doctor', DoctorSchema);
 
-export {};
+export { };
 module.exports = Doctor;
 

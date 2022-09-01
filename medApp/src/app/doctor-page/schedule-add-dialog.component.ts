@@ -40,7 +40,7 @@ export class ScheduleAddDialog {
     constructor(
         public dialogRef: MatDialogRef<ScheduleAddDialog>,
         private doctorService: DoctorService,
-        @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }  
+        @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
     addNewSchedule(): void {
         var startDate: Date = new Date(this.data.newStartDate);
@@ -48,11 +48,11 @@ export class ScheduleAddDialog {
         this.data.newStartDate = new Date(startDate.setHours(startDate.getHours() - (startDate.getUTCHours() - startDate.getHours())));
         this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
         const schedule: Schedule = {
-            scheduleDate: this.data.newStartDate, finishHour: this.data.newFinishDate, 
+            scheduleDate: this.data.newStartDate, finishHour: this.data.newFinishDate,
             singleVisitTime: this.data.newVisitTime, _id: '', visits: []
         };
         this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe((doctor: Doctor) => {
-          this.data.doctor = doctor;
+            this.data.doctor = doctor;
         })
         this.data.newSchedule.push(schedule);
         this.closeDialogRef();
@@ -60,5 +60,5 @@ export class ScheduleAddDialog {
 
     closeDialogRef(): void {
         this.dialogRef.close();
-    }  
+    }
 }

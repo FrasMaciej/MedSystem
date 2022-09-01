@@ -21,33 +21,33 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
-import { AdminPageComponent} from './admin-page/admin-page.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page';
 import { DoctorService } from './services/doctor.service';
-import { SchedulePageComponent} from './schedule-page/schedule-page.component';
+import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { EditVisitDialog } from './schedule-page/edit-visit-dialog.component';
 import { SchedulesDialog } from './admin-page/schedules-dialog.component';
 import { DoctorAddDialog } from './admin-page/doctor-add-dialog.component';
 import { DoctorEditDialog } from './admin-page/doctor-edit-dialog.component';
 import { PatientPageComponent } from './patient-page/patient-page.component';
-import { VisitSignComponent } from './patient-page/visit-sign.component'; 
+import { VisitSignComponent } from './patient-page/visit-sign.component';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
-import { DoctorPageComponent } from './doctor-page/doctor-page.component'; 
+import { DoctorPageComponent } from './doctor-page/doctor-page.component';
 import { ScheduleAddDialog } from './doctor-page/schedule-add-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent, MainPageComponent, LoginComponent, AdminPageComponent,
     DoctorEditDialog, DoctorAddDialog, EditVisitDialog, SchedulesDialog,
-    SchedulePageComponent, PatientPageComponent, VisitSignComponent, PatientDetailsComponent, 
+    SchedulePageComponent, PatientPageComponent, VisitSignComponent, PatientDetailsComponent,
     DoctorPageComponent, ScheduleAddDialog
   ],
   imports: [
     BrowserModule, AppRoutingModule, MatRadioModule, BrowserAnimationsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatCardModule,
     MatDialogModule, MatInputModule, MatListModule, FormsModule,
-    MatSelectModule, ReactiveFormsModule, HttpClientModule, MatDatepickerModule, 
+    MatSelectModule, ReactiveFormsModule, HttpClientModule, MatDatepickerModule,
     MatNativeDateModule, MatTableModule, MatPaginatorModule,
   ],
   providers: [DoctorService],

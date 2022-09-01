@@ -37,11 +37,11 @@ import { VisitData } from './patient-page.component';
 export class VisitSignComponent {
   constructor(
     public dialogRef: MatDialogRef<VisitSignComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: VisitData) { 
-      const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
-      this.data.name = userInfo.user.user.name;
-      this.data.surname = userInfo.user.user.surname;
-      this.data.patientId = userInfo.user.user._id;
+    @Inject(MAT_DIALOG_DATA) public data: VisitData) {
+    const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
+    this.data.name = userInfo.user.user.name;
+    this.data.surname = userInfo.user.user.surname;
+    this.data.patientId = userInfo.user.user._id;
   }
 
   saveClick(): void {

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Doctor } from '../models/doctor';
@@ -117,7 +117,7 @@ export class AdminPageComponent implements OnInit {
   doctors = new MatTableDataSource<Doctor>();
   displayedColumns: String[] = ['city', 'name', 'specs', 'buttons']
 
-  constructor(private doctorService: DoctorService, public dialog: MatDialog) { } 
+  constructor(private doctorService: DoctorService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.updateDoctors();
@@ -132,12 +132,12 @@ export class AdminPageComponent implements OnInit {
       width: '500px',
       height: '325px',
       autoFocus: false,
-      data: { newName: '', newSurname: '', newCity: '', doctor: { } }
+      data: { newName: '', newSurname: '', newCity: '', doctor: {} }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result !== null && result !== undefined){
-        this.doctorService.addDoctor(result).subscribe((result)=>{
+      if (result !== null && result !== undefined) {
+        this.doctorService.addDoctor(result).subscribe((result) => {
           this.updateDoctors();
         });
       }
@@ -169,10 +169,10 @@ export class AdminPageComponent implements OnInit {
       width: '600px',
       height: '700px',
       autoFocus: false,
-      data: {doctor: doctor, newSchedule: doctor.schedule, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0}
+      data: { doctor: doctor, newSchedule: doctor.schedule, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0 }
     });
-    
-    dialogRef.afterClosed().subscribe( () => {
+
+    dialogRef.afterClosed().subscribe(() => {
       this.updateDoctors();
     });
   }

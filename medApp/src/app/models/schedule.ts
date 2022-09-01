@@ -1,9 +1,9 @@
-export interface Patient{
+export interface Patient {
     name: String;
     surname: String;
 }
 
-export interface Visit{
+export interface Visit {
     _id: String;
     startHour: Date;
     finishHour: Date;

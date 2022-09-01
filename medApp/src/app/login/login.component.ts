@@ -67,22 +67,22 @@ export class LoginComponent {
   });
 
   constructor(private router: Router, private authService: AuthService) {
-    if(this.router.url === '/login/admin')
+    if (this.router.url === '/login/admin')
       this.route = '/adminPage'
-    else if(this.router.url === '/login/doctor')
+    else if (this.router.url === '/login/doctor')
       this.route = '/doctorPage'
-    else if(this.router.url === '/login/patient')
+    else if (this.router.url === '/login/patient')
       this.route = '/patientPage'
   }
 
   public submit(): void {
-    if(this.router.url === '/login/patient' || this.router.url === '/login/doctor') {
-      this.authService.validate(this.form.get('username')?.value , this.form.get('password')?.value).then( (response) => {
-        this.authService.setUserInfo({'user': response});
+    if (this.router.url === '/login/patient' || this.router.url === '/login/doctor') {
+      this.authService.validate(this.form.get('username')?.value, this.form.get('password')?.value).then((response) => {
+        this.authService.setUserInfo({ 'user': response });
         this.router.navigate([this.route]);
       })
     }
-    else if(this.router.url === '/login/admin'){
+    else if (this.router.url === '/login/admin') {
       this.router.navigate([this.route]);
     }
   }

@@ -72,7 +72,7 @@ export class PatientDetailsComponent implements OnInit {
   selectedVisits = new MatTableDataSource<VisitInfo>();
   displayedColumns: String[] = ['city', 'name', 'visitDate', 'note', 'buttons']
 
-  constructor(private doctorService: DoctorService) { 
+  constructor(private doctorService: DoctorService) {
     const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
     this.patientId = userInfo.user.user._id;
     this.name = userInfo.user.user.name

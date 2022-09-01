@@ -33,5 +33,5 @@ router.delete('/doctors/:id', doctorActions.deleteDoctor);
 // Edytowanie Danych wybranej wizyty
 router.put('/doctors/editVisit/:doctorId/:scheduleId/:visitId/', doctorActions.editVisit);
 
-export {};
+export { };
 module.exports = router;

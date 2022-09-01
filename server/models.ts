@@ -2,7 +2,7 @@ export interface VisitI {
     startHour: Date,
     finishHour: Date,
     isFree: Boolean,
-    patientInfo:{
+    patientInfo: {
         name: String,
         surname: String,
         patientId: String

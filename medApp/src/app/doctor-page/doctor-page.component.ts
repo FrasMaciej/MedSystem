@@ -35,45 +35,44 @@ export interface DoctorData {
     </p>
 
     <div class="schedulesList">
-      <table mat-table [dataSource]="schedules" class="mat-elevation-z8">
+    <table mat-table [dataSource]="schedules" class="mat-elevation-z8">
 
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef> Dzień </th>
-          <td mat-cell *matCellDef="let element"> {{element.scheduleDate | date:'yyyy-MM-dd':'+0000'}}</td>
-        </ng-container>
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Dzień </th>
+        <td mat-cell *matCellDef="let element"> {{element.scheduleDate | date:'yyyy-MM-dd':'+0000'}}</td>
+      </ng-container>
 
-        <ng-container matColumnDef="hour">
-          <th mat-header-cell *matHeaderCellDef> Godzina </th>
-          <td mat-cell *matCellDef="let element"> {{element.scheduleDate | date:'HH:mm':'+0000'}} – {{ element.finishHour | date:'HH:mm':'+0000'}} </td>
-        </ng-container>
+      <ng-container matColumnDef="hour">
+        <th mat-header-cell *matHeaderCellDef> Godzina </th>
+        <td mat-cell *matCellDef="let element"> {{element.scheduleDate | date:'HH:mm':'+0000'}} – {{ element.finishHour | date:'HH:mm':'+0000'}} </td>
+      </ng-container>
 
-        <ng-container matColumnDef="visitTime">
-          <th mat-header-cell *matHeaderCellDef> Czas pojedynczej wizyty </th>
-          <td mat-cell *matCellDef="let element"> {{element.singleVisitTime}} min</td>
-        </ng-container>
+      <ng-container matColumnDef="visitTime">
+        <th mat-header-cell *matHeaderCellDef> Czas pojedynczej wizyty </th>
+        <td mat-cell *matCellDef="let element"> {{element.singleVisitTime}} min</td>
+      </ng-container>
 
-        <ng-container matColumnDef="buttons" id="buttons">
-          <th mat-header-cell *matHeaderCellDef>  </th>
-          <td mat-cell *matCellDef="let element"> 
-          <a [routerLink]="['/schedulePage/doctor/', doctor._id, element._id]">
-            <button id ="editButton" mat-icon-button color="black" (click)="updateDoctor()">
-              <mat-icon>edit</mat-icon>
-            </button>
-          </a>
-          <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSchedule(element)" (click)="onRemove($event)">
-            <mat-icon>remove_circle</mat-icon>
+      <ng-container matColumnDef="buttons" id="buttons">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element"> 
+        <a [routerLink]="['/schedulePage/doctor/', doctor._id, element._id]">
+          <button id ="editButton" mat-icon-button color="black" (click)="updateDoctor()">
+            <mat-icon>edit</mat-icon>
           </button>
-          </td>
-        </ng-container>
+        </a>
+        <button id = "deleteButton" mat-icon-button color="warn" (click)="removeSchedule(element)" (click)="onRemove($event)">
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+        </td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                  showFirstLastButtons >
-      </mat-paginator>
-    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons >
+    </mat-paginator>
   `,
   styles: [`
     #schedulesList{
@@ -100,13 +99,13 @@ export class DoctorPageComponent implements OnInit {
   doctorId: String;
   doctor = {} as Doctor;
 
-  constructor(private doctorService: DoctorService, public dialog: MatDialog) { 
+  constructor(private doctorService: DoctorService, public dialog: MatDialog) {
     const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
     this.doctorId = userInfo.user.user._id;
     this.updateDoctor();
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.updateDoctor();
   }
 
@@ -119,16 +118,16 @@ export class DoctorPageComponent implements OnInit {
       width: '400px',
       height: '350px',
       autoFocus: false,
-      data: {doctor: this.doctor, newSchedule: this.schedules.data, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0}
+      data: { doctor: this.doctor, newSchedule: this.schedules.data, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0 }
     });
 
-    dialogRef.afterClosed().subscribe( () => {
+    dialogRef.afterClosed().subscribe(() => {
       this.updateDoctor();
     });
   }
 
   updateDoctor(): void {
-    this.doctorService.getDoctorByUserId(this.doctorId).subscribe( (response: Doctor) => {
+    this.doctorService.getDoctorByUserId(this.doctorId).subscribe((response: Doctor) => {
       this.doctor = response;
       this.schedules.data = this.doctor.schedule;
     })
@@ -136,7 +135,7 @@ export class DoctorPageComponent implements OnInit {
 
   removeSchedule(schedule: Schedule): void {
     const index = this.schedules.data.indexOf(schedule);
-    this.schedules.data.splice(index, 1);   
+    this.schedules.data.splice(index, 1);
     this.doctor.schedule = this.schedules.data;
     this.doctorService.editDoctor(this.doctor).subscribe(() => {
       this.updateDoctor();

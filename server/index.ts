@@ -1,12 +1,12 @@
 const express = require('express');
 const cors = require("cors");
-const {port} = require('./config');
+const { port } = require('./config');
 const apiRouter = require('./routes/api');
 const auth = require('./routes/auth');
 const bodyParser = require('body-parser');
-const session = require('express-session');  
-const passport = require('passport');  
-const Patient = require('./db/models/user'); 
+const session = require('express-session');
+const passport = require('passport');
+const Patient = require('./db/models/user');
 
 const app = express();
 
@@ -33,7 +33,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // server
-app.listen(port, function() {
+app.listen(port, function () {
     console.log("Backend Application listening at http://localhost:" + port)
 });
 

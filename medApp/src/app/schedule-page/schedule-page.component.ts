@@ -111,7 +111,7 @@ export class SchedulePageComponent implements OnInit {
   doctor_id: string;
   doctor: Doctor;
   scheduleToDisplay: any;
-  visitsList= new MatTableDataSource<Visit>();
+  visitsList = new MatTableDataSource<Visit>();
   displayedColumns: String[] = ['time', 'isFree', 'patientName', 'note', 'buttons']
   backRoute: String = '';
 
@@ -120,14 +120,14 @@ export class SchedulePageComponent implements OnInit {
     private actRoute: ActivatedRoute,
     private doctorService: DoctorService,
     public dialog: MatDialog,
-  ) { 
-    if(this.router.url.includes('/schedulePage/doctor'))
+  ) {
+    if (this.router.url.includes('/schedulePage/doctor'))
       this.backRoute = '/doctorPage'
-    else if(this.router.url.includes('/schedulePage/admin'))
+    else if (this.router.url.includes('/schedulePage/admin'))
       this.backRoute = '/adminPage'
     this.schedule_id = this.actRoute.snapshot.params['schId'];
     this.doctor_id = this.actRoute.snapshot.params['docId'];
-    this.doctor = {_id: '', name: '', surname: '', city: '', specializations: [], schedule: []}
+    this.doctor = { _id: '', name: '', surname: '', city: '', specializations: [], schedule: [] }
   }
 
   ngOnInit(): void {
@@ -146,13 +146,15 @@ export class SchedulePageComponent implements OnInit {
       width: '500px',
       height: '450px',
       autoFocus: false,
-      data: {schedule_id: this.schedule_id, doctor_id: this.doctor_id,
-        visit: visit, newName: '', newSurname: '', 
-        newVisitNote: '', newIsFree: false}
+      data: {
+        schedule_id: this.schedule_id, doctor_id: this.doctor_id,
+        visit: visit, newName: '', newSurname: '',
+        newVisitNote: '', newIsFree: false
+      }
     });
 
-    dialogRef.afterClosed().subscribe( result => {
-      if(result!==null && result!==undefined){
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== null && result !== undefined) {
         this.doctorService.editVisit(result.visit, result.doctor_id, result.schedule_id, result.visit._id, '').subscribe(() => {
           this.updateDoctor();
         })

@@ -99,7 +99,7 @@ export class DoctorEditDialog {
     @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
   addSpecialization(): void {
-    if (this.data.newSpec !== ''){
+    if (this.data.newSpec !== '') {
       this.data.newSpecializations.push(this.data.newSpec);
       this.data.newSpec = '';
     }
@@ -107,7 +107,7 @@ export class DoctorEditDialog {
 
   removeSpecialization(specialization: String): void {
     const index = this.data.newSpecializations.indexOf(specialization);
-    this.data.newSpecializations.splice(index, 1);                              
+    this.data.newSpecializations.splice(index, 1);
   }
 
   saveClick(): void {

@@ -9,7 +9,7 @@
         "@schematics/angular:component": {
           "inlineStyle": true,
           "inlineTemplate": true
-         }
+        }
       },
       "root": "",
       "sourceRoot": "src",

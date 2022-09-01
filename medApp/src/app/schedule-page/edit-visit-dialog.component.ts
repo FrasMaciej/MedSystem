@@ -55,7 +55,7 @@ export class EditVisitDialog {
   saveClick(): void {
     this.data.visit.isFree = this.data.newIsFree;
     this.data.visit.visitNote = this.data.newVisitNote;
-    this.data.visit.patientInfo = {name: this.data.newName, surname: this.data.newSurname}
+    this.data.visit.patientInfo = { name: this.data.newName, surname: this.data.newSurname }
   }
 
   closeDialogRef(): void {

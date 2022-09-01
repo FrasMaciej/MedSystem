@@ -60,17 +60,17 @@ import { DoctorData } from "./admin-page.component";
 
 export class SchedulesDialog {
     constructor(
-    public dialogRef: MatDialogRef<SchedulesDialog>,
+        public dialogRef: MatDialogRef<SchedulesDialog>,
         private doctorService: DoctorService,
         @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
-        
+
     addSchedule(): void {
         var startDate: Date = new Date(this.data.newStartDate);
         var finishDate: Date = new Date(this.data.newFinishDate);
         this.data.newStartDate = new Date(startDate.setHours(startDate.getHours() - (startDate.getUTCHours() - startDate.getHours())));
         this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
         const schedule: Schedule = {
-            scheduleDate: this.data.newStartDate, finishHour: this.data.newFinishDate, 
+            scheduleDate: this.data.newStartDate, finishHour: this.data.newFinishDate,
             singleVisitTime: this.data.newVisitTime, _id: '', visits: []
         };
         this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe((doctor: Doctor) => {
@@ -81,20 +81,19 @@ export class SchedulesDialog {
 
     removeSchedule(schedule: Schedule): void {
         const index = this.data.newSchedule.indexOf(schedule);
-        this.data.newSchedule.splice(index, 1);   
+        this.data.newSchedule.splice(index, 1);
         this.data.doctor.schedule = this.data.newSchedule;
-        this.doctorService.editDoctor(this.data.doctor).subscribe(() => { 
+        this.doctorService.editDoctor(this.data.doctor).subscribe(() => {
 
         });
     }
-  
+
     onRemove(e: Event): void {
         e.preventDefault();
         e.stopImmediatePropagation();
     }
-  
+
     closeDialogRef(): void {
         this.dialogRef.close();
     }
 }
-  

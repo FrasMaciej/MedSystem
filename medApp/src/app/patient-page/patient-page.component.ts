@@ -205,8 +205,8 @@ export class PatientPageComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe( result => {
-      if(result!==null && result!==undefined){
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== null && result !== undefined) {
         this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id, result.patientId).subscribe(() => {
           this.getFilteredVisits();
         })
@@ -219,7 +219,7 @@ export class PatientPageComponent implements OnInit {
   }
 
   getFilteredVisits(): void {
-    if(this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end){
+    if (this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end) {
       const cities: String[] = this.selectedCities.value;
       this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((matchingVisits: VisitInfo[]) => {
         this.selectedVisits.data = matchingVisits;
