@@ -54,7 +54,6 @@ export class DoctorService {
       visit: visit,
       patientId: patientId
     }
-    console.log(visitInfo);
     return this.httpClient.put(editVisitUrl, visitInfo);
   }
 

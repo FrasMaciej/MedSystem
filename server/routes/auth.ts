@@ -39,7 +39,6 @@ router.post('/user/register', (req: Request, res: Response) => {
     User.register(newUser, password, function (err: any, user: UserI) {
         if (err) { console.log(err); res.redirect("/api") }
         else {
-            console.log(user);
             if (role === "Doctor") {
                 const doctor = new Doctor({ name, surname, city });
                 doctor.userId = user._id;

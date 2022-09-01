@@ -40,7 +40,6 @@ export class DoctorAddDialog {
     this.data.doctor.name = this.data.newName;
     this.data.doctor.surname = this.data.newSurname;
     this.data.doctor.city = this.data.newCity;
-    console.log(this.data.doctor);
   }
 
   closeDialogRef(): void {
