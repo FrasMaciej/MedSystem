@@ -39,7 +39,7 @@ class DoctorActions {
     }
 
     async getFilteredVisits(req: Request, res: Response) {
-        const specialization: String = req.body.specialization;
+        const specialization: string = req.body.specialization;
         const cities = Array.from(req.body.cities);
         const startDate: Date = new Date(req.body.startDate);
         const endDate: Date = new Date(req.body.endDate);
