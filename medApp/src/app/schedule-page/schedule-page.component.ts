@@ -112,8 +112,8 @@ export class SchedulePageComponent implements OnInit {
   doctor: Doctor;
   scheduleToDisplay: any;
   visitsList = new MatTableDataSource<Visit>();
-  displayedColumns: String[] = ['time', 'isFree', 'patientName', 'note', 'buttons']
-  backRoute: String = '';
+  displayedColumns: string[] = ['time', 'isFree', 'patientName', 'note', 'buttons']
+  backRoute: string = '';
 
   constructor(
     private router: Router,

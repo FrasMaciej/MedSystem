@@ -66,11 +66,11 @@ import { DoctorService } from '../services/doctor.service';
 })
 export class PatientDetailsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  patientId: String;
-  name: String;
-  surname: String;
+  patientId: string;
+  name: string;
+  surname: string;
   selectedVisits = new MatTableDataSource<VisitInfo>();
-  displayedColumns: String[] = ['city', 'name', 'visitDate', 'note', 'buttons']
+  displayedColumns: string[] = ['city', 'name', 'visitDate', 'note', 'buttons']
 
   constructor(private doctorService: DoctorService) {
     const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
@@ -94,7 +94,7 @@ export class PatientDetailsComponent implements OnInit {
     })
   }
 
-  cancelVisit(visit: Visit, doctor_id: String, schedule_id: String): void {
+  cancelVisit(visit: Visit, doctor_id: string, schedule_id: string): void {
     visit.isFree = true;
     this.doctorService.editVisit(visit, doctor_id, schedule_id, visit._id, '').subscribe(() => {
       this.getFilteredVisits();

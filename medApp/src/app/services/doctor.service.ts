@@ -23,7 +23,7 @@ export class DoctorService {
     return this.doctorsList;
   }
 
-  getDoctorByUserId(id: String): Observable<any> {
+  getDoctorByUserId(id: string): Observable<any> {
     const getDoctorByUserIdUrl = config.baseUrlDoc + '/' + 'getByUserId' + '/' + id;
     return this.httpClient.get(getDoctorByUserIdUrl)
   }
@@ -48,7 +48,7 @@ export class DoctorService {
     return this.httpClient.post(addTerminsUrl, schedule);
   }
 
-  editVisit(visit: Visit, doctorId: String, scheduleId: String, visitId: String, patientId: String) {
+  editVisit(visit: Visit, doctorId: string, scheduleId: string, visitId: string, patientId: string) {
     const editVisitUrl = config.baseUrlDoc + '/' + 'editVisit' + '/' + doctorId + '/' + scheduleId + '/' + visitId;
     const visitInfo = {
       visit: visit,
@@ -67,7 +67,7 @@ export class DoctorService {
     return this.httpClient.get(getSpecsUrl);
   }
 
-  getFilteredVisits(specialization: String, cities: String[], startDate: Date, endDate: Date): Observable<any> {
+  getFilteredVisits(specialization: string, cities: string[], startDate: Date, endDate: Date): Observable<any> {
     const visitReq = {
       specialization: specialization,
       cities: cities,
@@ -78,7 +78,7 @@ export class DoctorService {
     return this.httpClient.post(getVisitsUrl, visitReq);
   }
 
-  getVisitsByPatient(patientId: String): Observable<any> {
+  getVisitsByPatient(patientId: string): Observable<any> {
     const getVisitsByPatientUrl = config.baseUrlDoc + '/' + 'findVisitByPatient' + '/' + patientId;
     return this.httpClient.get(getVisitsByPatientUrl)
   }

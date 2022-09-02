@@ -8,7 +8,7 @@ import config from './config';
 export class AuthService {
   constructor(private httpClient: HttpClient) { }
 
-  public isAuthenticated(): Boolean {
+  public isAuthenticated(): boolean {
     let userData = localStorage.getItem('userInfo')
     if (userData && JSON.parse(userData)) {
       return true;
@@ -20,7 +20,7 @@ export class AuthService {
     localStorage.setItem('userInfo', JSON.stringify(user));
   }
 
-  public validate(username: String, password: String) {
+  public validate(username: string, password: string) {
     const loginUrl = config.baseUrlUser + '/' + 'login';
     const loginData = {
       username: username,
@@ -29,7 +29,7 @@ export class AuthService {
     return this.httpClient.post(loginUrl, loginData).toPromise();
   }
 
-  public register(username: String, password: String, name: String, surname: String) {
+  public register(username: string, password: string, name: string, surname: string) {
     const registerUrl = config.baseUrlUser + '/' + 'register';
     const newUser = {
       username: username,

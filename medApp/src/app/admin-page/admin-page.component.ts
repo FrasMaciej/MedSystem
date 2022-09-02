@@ -115,7 +115,7 @@ export interface DoctorData {
 export class AdminPageComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   doctors = new MatTableDataSource<Doctor>();
-  displayedColumns: String[] = ['city', 'name', 'specs', 'buttons']
+  displayedColumns: string[] = ['city', 'name', 'specs', 'buttons']
 
   constructor(private doctorService: DoctorService, public dialog: MatDialog) { }
 

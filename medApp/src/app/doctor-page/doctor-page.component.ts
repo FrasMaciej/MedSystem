@@ -95,8 +95,8 @@ export interface DoctorData {
 export class DoctorPageComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   schedules = new MatTableDataSource<Schedule>();
-  displayedColumns: String[] = ['date', 'hour', 'visitTime', 'buttons']
-  doctorId: String;
+  displayedColumns: string[] = ['date', 'hour', 'visitTime', 'buttons']
+  doctorId: string;
   doctor = {} as Doctor;
 
   constructor(private doctorService: DoctorService, public dialog: MatDialog) {

@@ -60,7 +60,7 @@ import { AuthService } from '../services/auth.service';
 export class LoginComponent {
   @Input() error!: string | null;
   @Output() submitEM = new EventEmitter();
-  route: String = '';
+  route: string = '';
   form: FormGroup = new FormGroup({
     username: new FormControl(''),
     password: new FormControl(''),

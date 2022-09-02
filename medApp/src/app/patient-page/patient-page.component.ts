@@ -171,16 +171,16 @@ export interface VisitData {
 
 export class PatientPageComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  citiesList: String[] = [];
-  specsList: String[] = [];
+  citiesList: string[] = [];
+  specsList: string[] = [];
   selectedCities = new FormControl(this.citiesList);
-  selectedSpec: String = this.specsList[0];
+  selectedSpec: string = this.specsList[0];
   range = new FormGroup({
     start: new FormControl<Date>(new Date()),
     end: new FormControl<Date>(new Date())
   })
   selectedVisits = new MatTableDataSource<VisitInfo>();
-  displayedColumns: String[] = ['city', 'name', 'spec', 'visitDate', 'buttons']
+  displayedColumns: string[] = ['city', 'name', 'spec', 'visitDate', 'buttons']
 
   constructor(
     private doctorService: DoctorService,
@@ -220,7 +220,7 @@ export class PatientPageComponent implements OnInit {
 
   getFilteredVisits(): void {
     if (this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end) {
-      const cities: String[] = this.selectedCities.value;
+      const cities: string[] = this.selectedCities.value;
       this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((matchingVisits: VisitInfo[]) => {
         this.selectedVisits.data = matchingVisits;
       })
@@ -228,10 +228,10 @@ export class PatientPageComponent implements OnInit {
   }
 
   updateMenuData(): void {
-    this.doctorService.getCities().subscribe((cities: String[]) => {
+    this.doctorService.getCities().subscribe((cities: string[]) => {
       this.citiesList = cities;
     })
-    this.doctorService.getSpecs().subscribe((specs: String[]) => {
+    this.doctorService.getSpecs().subscribe((specs: string[]) => {
       this.specsList = specs;
     })
   }
