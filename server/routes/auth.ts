@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { UserI } from '../models';
+import express from "express";
 
-const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 

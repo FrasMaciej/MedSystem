@@ -2,7 +2,7 @@ import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Doctor } from "../models/doctor";
 import { Schedule } from "../models/schedule";
-import { DoctorService } from "../services/doctor.service";
+import { DoctorService } from "../globalServices/doctor.service";
 import { DoctorData } from "./doctor-page.component";
 
 @Component({

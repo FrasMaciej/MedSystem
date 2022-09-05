@@ -1,10 +1,12 @@
 import express from 'express';
+import bodyParser from 'body-parser';
+import { connectToDB } from './db/mongoose';
+
 const { port } = require('./config');
 
 const cors = require("cors");
 const apiRouter = require('./routes/api');
 const auth = require('./routes/auth');
-const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 
@@ -14,8 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 // db
-require('./db/mongoose');
-
+connectToDB();
 // parsers
 app.use(bodyParser.json());
 

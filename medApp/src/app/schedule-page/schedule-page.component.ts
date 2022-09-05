@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { Visit } from '../models/schedule';
-import { DoctorService } from '../services/doctor.service';
+import { DoctorService } from '../globalServices/doctor.service';
 import { EditVisitDialog } from './edit-visit-dialog.component';
 
 export interface ScheduleData {

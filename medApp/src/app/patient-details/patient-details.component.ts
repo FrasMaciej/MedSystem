@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Visit, VisitInfo } from '../models/schedule';
-import { DoctorService } from '../services/doctor.service';
+import { DoctorService } from '../globalServices/doctor.service';
 
 @Component({
   selector: 'app-patient-details',

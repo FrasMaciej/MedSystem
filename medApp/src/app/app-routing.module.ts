@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { DoctorPageComponent } from './doctor-page/doctor-page.component';
 import { LoginComponent } from './login/login.component';
-import { MainPageComponent } from './main-page/main-page';
+import { MainPageComponent } from './main-page/main-page.component';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
 import { PatientPageComponent } from './patient-page/patient-page.component';
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
-import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
+import { AuthGuardService as AuthGuard } from './login/auth-guard.service';
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
