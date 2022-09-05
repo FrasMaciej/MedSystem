@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-
+import mongoose from "mongoose";
 const ScheduleSchema = new mongoose.Schema({
     scheduleDate: Date,
     finishHour: Date,
@@ -52,7 +51,6 @@ const DoctorSchema = new mongoose.Schema({
 });
 
 const Doctor = mongoose.model('Doctor', DoctorSchema);
-
 export { };
 module.exports = Doctor;
 

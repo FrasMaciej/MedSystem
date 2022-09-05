@@ -10,7 +10,8 @@
     "openssl": "^2.0.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^7.1.2"
+    "passport-local-mongoose": "^7.1.2",
+    "powerseq": "^1.0.4"
   },
   "scripts": {
     "build": "npx tsc",

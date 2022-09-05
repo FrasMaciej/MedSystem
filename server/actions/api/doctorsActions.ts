@@ -1,9 +1,10 @@
 import { VisitI, DoctorI, VisitInfoI } from '../../models';
 import { Request, Response } from 'express';
+import { pipe, flatmap, orderby, map, filter, toarray, distinct } from "powerseq";
 
 const Doctor = require('../../db/models/doctor');
 
-class DoctorActions {
+export class DoctorActions {
 
     async getAllDoctors(req: Request, res: Response) {
         try {
@@ -18,10 +19,8 @@ class DoctorActions {
     async getSpecs(req: Request, res: Response) {
         try {
             const doctors: DoctorI[] = await Doctor.find({});
-            let specs = new Set();
-            doctors.map(doc => doc.specializations
-                .map(spec => specs.add(spec)));
-            return res.status(200).json(Array.from(specs));
+            const uniqueSpecs = pipe(doctors, flatmap(doc => doc.specializations), distinct(), toarray());
+            return res.status(200).json(uniqueSpecs);
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
@@ -43,42 +42,28 @@ class DoctorActions {
         const cities = Array.from(req.body.cities);
         const startDate: Date = new Date(req.body.startDate);
         const endDate: Date = new Date(req.body.endDate);
-        let matchingVisits: VisitInfoI[] = [];
-        let datesArray: Date[] = [];
-        let loop = new Date(startDate);
+
         try {
             const doctors: DoctorI[] = await Doctor.find({});
-
-            while (loop <= endDate) {
-                datesArray.push(new Date(loop));
-                loop.setDate(loop.getDate() + 1);
-            }
-
             let matchingDoctors: DoctorI[] = doctors.filter(doc => (doc.specializations.indexOf(specialization) > -1 && cities.indexOf(doc.city) > -1));
-            matchingDoctors.map(doc => doc.schedule
-                .map(sch => {
-                    for (let date of datesArray) {
-                        if ((date.getDate() === sch.scheduleDate.getDate()) && (date.getMonth() === sch.scheduleDate.getMonth()) && (date.getFullYear === sch.scheduleDate.getFullYear)) {
-                            sch.visits.filter(visit => {
-                                if (visit.isFree) {
-                                    let visitInfo: VisitInfoI = {
-                                        doctorId: doc._id,
-                                        scheduleId: sch._id,
-                                        visit: visit,
-                                        docSpecialization: specialization,
-                                        docName: doc.name,
-                                        docSurname: doc.surname,
-                                        docCity: doc.city
-                                    }
-                                    matchingVisits.push(visitInfo);
-                                }
-                            })
-                        }
-                    }
-                }
-                ));
-
-            matchingVisits.sort((a: VisitInfoI, b: VisitInfoI) => (a.visit.startHour < b.visit.finishHour ? -1 : 1));
+            var matchingVisits = pipe(
+                matchingDoctors,
+                flatmap(doc => doc.schedule, (doc, sch) => ({ doc, sch })),
+                filter(({ sch }) => sch.scheduleDate >= startDate && sch.scheduleDate <= endDate),
+                flatmap(({ sch }) => sch.visits, ({ doc, sch }, visit) => ({ doc, sch, visit })),
+                filter(({ visit }) => visit.isFree.valueOf() === true),
+                orderby(({ visit }) => visit.startHour),
+                map(({ doc, sch, visit }) => ({
+                    doctorId: doc._id,
+                    scheduleId: sch._id,
+                    visit: visit,
+                    docSpecialization: specialization,
+                    docName: doc.name,
+                    docSurname: doc.surname,
+                    docCity: doc.city
+                }) as VisitInfoI),
+                toarray()
+            )
             res.status(201).json(matchingVisits);
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
@@ -267,4 +252,8 @@ class DoctorActions {
     }
 }
 
+export default DoctorActions;
 module.exports = new DoctorActions()
+
+
+
