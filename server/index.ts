@@ -1,8 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { connectToDB } from './db/mongoose';
-
-const { port } = require('./config');
+import { config } from './config';
 
 const cors = require("cors");
 const apiRouter = require('./routes/api');
@@ -34,8 +33,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // server
-app.listen(port, function () {
-    console.log("Backend Application listening at http://localhost:" + port)
+app.listen(config.port, function () {
+    console.log("Backend Application listening at http://localhost:" + config.port)
 });
 
 // routes

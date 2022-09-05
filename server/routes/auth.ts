@@ -44,7 +44,7 @@ router.post('/user/register', (req: Request, res: Response) => {
                 doctor.userId = user._id;
                 doctor.save();
             }
-            passport.authenticate("local")(req, res, () => res.redirect("/"));
+            passport.authenticate("local")(req, res, () => res.redirect("/api"));
         }
     });
 });

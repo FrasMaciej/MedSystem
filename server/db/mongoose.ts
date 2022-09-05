@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-const { database } = require('../config');
+import { config } from '../config';
 
 export async function connectToDB() {
     try {
-        await mongoose.connect(database, {});
+        await mongoose.connect(config.database, {});
     } catch (error) {
         console.log(error);
         process.exit(1);

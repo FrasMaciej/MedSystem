@@ -4,8 +4,7 @@ import { pipe, flatmap, orderby, map, filter, toarray, distinct } from "powerseq
 
 const Doctor = require('../../db/models/doctor');
 
-export class DoctorActions {
-
+export const DoctorActions = {
     async getAllDoctors(req: Request, res: Response) {
         try {
             const doctors = await Doctor.find({});
@@ -14,7 +13,7 @@ export class DoctorActions {
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
-    }
+    },
 
     async getSpecs(req: Request, res: Response) {
         try {
@@ -24,7 +23,7 @@ export class DoctorActions {
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
-    }
+    },
 
     async getCities(req: Request, res: Response) {
         try {
@@ -35,7 +34,7 @@ export class DoctorActions {
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
-    }
+    },
 
     async getFilteredVisits(req: Request, res: Response) {
         const specialization: string = req.body.specialization;
@@ -68,7 +67,7 @@ export class DoctorActions {
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
-    }
+    },
 
     async getVisitsByPatientId(req: Request, res: Response) {
         const patientId = req.params.id;
@@ -97,7 +96,7 @@ export class DoctorActions {
         catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
-    }
+    },
 
     async getDoctor(req: Request, res: Response) {
         const id = req.params.id;
@@ -107,7 +106,7 @@ export class DoctorActions {
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
-    }
+    },
 
     async getDoctorByUserId(req: Request, res: Response) {
         const id = req.params.id;
@@ -117,7 +116,7 @@ export class DoctorActions {
         } catch (err: any) {
             return res.status(500).json({ message: err.message });
         }
-    }
+    },
 
     async saveDoctor(req: Request, res: Response) {
         const { name, surname, city } = req.body;
@@ -128,7 +127,7 @@ export class DoctorActions {
         } catch (err: any) {
             return res.status(422).json({ message: err.message });
         }
-    }
+    },
 
     async addSpecialization(req: Request, res: Response) {
         const id = req.params.id;
@@ -141,7 +140,7 @@ export class DoctorActions {
         } catch (err: any) {
             return res.status(422).json({ message: err.message });
         }
-    }
+    },
 
     async addTerminsSlots(req: Request, res: Response) {
         const id = req.params.id;
@@ -183,7 +182,7 @@ export class DoctorActions {
         } catch (err: any) {
             return res.status(422).json({ message: err.message });
         }
-    }
+    },
 
     async updateDoctor(req: Request, res: Response) {
         const id = req.params.id;
@@ -199,7 +198,7 @@ export class DoctorActions {
         } catch (err: any) {
             return res.status(422).json({ message: err.message });
         }
-    }
+    },
 
     async deleteDoctor(req: Request, res: Response) {
         const id = req.params.id;
@@ -209,7 +208,7 @@ export class DoctorActions {
         } catch (err: any) {
             res.sendStatus(404).json({ message: err.message });
         }
-    }
+    },
 
     async editVisit(req: Request, res: Response) {
         const doctorId = req.params.doctorId;
@@ -252,8 +251,8 @@ export class DoctorActions {
     }
 }
 
-export default DoctorActions;
-module.exports = new DoctorActions()
+//export default DoctorActions;
+//module.exports = new DoctorActions()
 
 
 
