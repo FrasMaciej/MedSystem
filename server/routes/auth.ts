@@ -4,7 +4,7 @@ import passport from 'passport';
 import { UserI } from '../db/models/user';
 import User from '../db/models/user';
 import { Doctor } from '../db/models/doctor';
-//const Doctor = require('../db/models/doctor');
+
 const authApi = express.Router();
 
 passport.use(User.createStrategy());

@@ -93,5 +93,4 @@ const DoctorSchema = new mongoose.Schema<DoctorI>({
 });
 
 export const Doctor = mongoose.model('Doctor', DoctorSchema);
-//module.exports = Doctor;
 

@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
-import { DoctorService } from '../globalServices/doctor.service';
+import { DoctorService } from '../services/doctor.service';
 import { ScheduleAddDialog } from './schedule-add-dialog.component';
 
 export interface DoctorData {

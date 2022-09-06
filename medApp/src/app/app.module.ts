@@ -24,7 +24,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page.component';
-import { DoctorService } from './globalServices/doctor.service';
+import { DoctorService } from './services/doctor.service';
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { EditVisitDialog } from './schedule-page/edit-visit-dialog.component';
 import { SchedulesDialog } from './admin-page/schedules-dialog.component';

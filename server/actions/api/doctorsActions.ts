@@ -1,11 +1,7 @@
 import { VisitI, DoctorI, ScheduleI, VisitInfoI } from '../../db/models/doctor';
 import { Request, Response } from 'express';
-import { pipe, flatmap, orderby, map, filter, toarray, distinct, except } from "powerseq";
-
-//const Doctor = require('../../db/models/doctor');
-
+import { pipe, flatmap, orderby, map, filter, toarray, distinct } from "powerseq";
 import { Doctor } from '../../db/models/doctor';
-//import { ScheduleI } from '../../models';
 
 export const DoctorActions = {
     async getAllDoctors(req: Request, res: Response) {
@@ -239,16 +235,9 @@ export const DoctorActions = {
 
         if (doctor !== null) {
             const matchingSchedule = doctor.schedule.find(s => s._id?.toString() === scheduleId);
-            let scheduleIndex: number = 0;
-            if (matchingSchedule !== undefined) {
-                scheduleIndex = doctor.schedule.indexOf(matchingSchedule);
-            }
+            const scheduleIndex: number = matchingSchedule ? doctor.schedule.indexOf(matchingSchedule) : 0;
             const matchingVisit = doctor.schedule[scheduleIndex].visits.find(v => v._id?.toString() === visitId);
-            let visitIndex: number = 0;
-            if (matchingVisit !== undefined) {
-                visitIndex = doctor.schedule[scheduleIndex].visits.indexOf(matchingVisit)
-            }
-
+            const visitIndex: number = matchingVisit ? doctor.schedule[scheduleIndex].visits.indexOf(matchingVisit) : 0;
 
             doctor.schedule[scheduleIndex].visits[visitIndex].isFree = isFree;
             doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = visitNote;
@@ -270,7 +259,3 @@ export const DoctorActions = {
         res.status(201).json(doctor);
     }
 }
-
-
-
-

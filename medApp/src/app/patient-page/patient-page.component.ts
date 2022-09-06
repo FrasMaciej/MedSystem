@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { VisitInfo } from '../models/schedule';
-import { DoctorService } from '../globalServices/doctor.service';
+import { DoctorService } from '../services/doctor.service';
 import { VisitSignComponent } from './visit-sign.component';
 
 export interface VisitData {
@@ -158,7 +158,7 @@ export interface VisitData {
     }
 
     .mat-patientDetails {
-      background-color: rgb(76, 0, 128);
+      background-color: rgb(170, 62, 198);
       color: white;
     }
 

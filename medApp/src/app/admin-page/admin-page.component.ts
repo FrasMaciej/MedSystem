@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { switchMap } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
-import { DoctorService } from '../globalServices/doctor.service';
+import { DoctorService } from '../services/doctor.service';
 import { DoctorAddDialog } from './doctor-add-dialog.component';
 import { DoctorEditDialog } from './doctor-edit-dialog.component';
 import { SchedulesDialog } from './schedules-dialog.component';
@@ -135,13 +136,14 @@ export class AdminPageComponent implements OnInit {
       data: { newName: '', newSurname: '', newCity: '', doctor: {} }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== null && result !== undefined) {
-        this.doctorService.addDoctor(result).subscribe((result) => {
-          this.updateDoctors();
-        });
-      }
-    });
+    dialogRef.afterClosed().pipe(
+      switchMap(result => this.doctorService.addDoctor(result),
+
+      ))
+      .subscribe((result) => {
+        this.updateDoctors();
+      })
+
   }
 
   openEditDoctorDialog(doctor: Doctor): void {
