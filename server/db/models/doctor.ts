@@ -1,5 +1,47 @@
 import mongoose from "mongoose";
-const ScheduleSchema = new mongoose.Schema({
+
+export interface VisitI {
+    _id?: String;
+    startHour: Date;
+    finishHour: Date;
+    isFree: boolean;
+    patientInfo: {
+        name: string;
+        surname: string;
+        patientId: string;
+    },
+    visitNote: string;
+}
+
+export interface ScheduleI {
+    _id?: string;
+    scheduleDate: Date;
+    finishHour: Date;
+    singleVisitTime: number;
+    visits: VisitI[];
+}
+
+export interface DoctorI {
+    _id: string;
+    name: string;
+    surname: string;
+    city: string;
+    specializations: string[];
+    schedule: ScheduleI[];
+    userId: string;
+}
+
+export interface VisitInfoI {
+    doctorId: string;
+    scheduleId?: string;
+    visit: VisitI;
+    docSpecialization?: string;
+    docName: string;
+    docSurname: string;
+    docCity: string;
+}
+
+const ScheduleSchema = new mongoose.Schema<ScheduleI>({
     scheduleDate: Date,
     finishHour: Date,
     singleVisitTime: Number,
@@ -32,7 +74,7 @@ const ScheduleSchema = new mongoose.Schema({
     }]
 })
 
-const DoctorSchema = new mongoose.Schema({
+const DoctorSchema = new mongoose.Schema<DoctorI>({
     userId: String,
     name: {
         type: String,
@@ -50,6 +92,6 @@ const DoctorSchema = new mongoose.Schema({
     schedule: [ScheduleSchema]
 });
 
-const Doctor = mongoose.model('Doctor', DoctorSchema);
-module.exports = Doctor;
+export const Doctor = mongoose.model('Doctor', DoctorSchema);
+//module.exports = Doctor;
 

@@ -1,8 +1,11 @@
-import { VisitI, DoctorI, VisitInfoI } from '../../models';
+import { VisitI, DoctorI, ScheduleI, VisitInfoI } from '../../db/models/doctor';
 import { Request, Response } from 'express';
-import { pipe, flatmap, orderby, map, filter, toarray, distinct } from "powerseq";
+import { pipe, flatmap, orderby, map, filter, toarray, distinct, except } from "powerseq";
 
-const Doctor = require('../../db/models/doctor');
+//const Doctor = require('../../db/models/doctor');
+
+import { Doctor } from '../../db/models/doctor';
+//import { ScheduleI } from '../../models';
 
 export const DoctorActions = {
     async getAllDoctors(req: Request, res: Response) {
@@ -134,8 +137,10 @@ export const DoctorActions = {
         const specialization = req.body.specialization;
         try {
             const doctor = await Doctor.findOne({ _id: id });
-            doctor.specializations.push(specialization);
-            await doctor.save();
+            if (doctor !== null) {
+                doctor.specializations.push(specialization);
+                await doctor.save();
+            }
             res.status(201).json(doctor);
         } catch (err: any) {
             return res.status(422).json({ message: err.message });
@@ -151,33 +156,35 @@ export const DoctorActions = {
 
         try {
             const doctor = await Doctor.findOne({ _id: id });
-            const schedule = {
+            const schedule: ScheduleI = {
                 scheduleDate: new Date(scheduleDate),
                 finishHour: new Date(finishHour),
                 singleVisitTime: singleVisitTime,
                 visits: [],
             };
 
-            const scheduleIndex: number = doctor.schedule.push(schedule) - 1;
-            let loop: Date = new Date(scheduleDate);
-            let end: Date = new Date(finishHour);
+            if (doctor !== null) {
+                const scheduleIndex: number = doctor.schedule.push(schedule) - 1;
+                let loop: Date = new Date(scheduleDate);
+                let end: Date = new Date(finishHour);
 
-            while (loop < end) {
-                const visit: VisitI = {
-                    startHour: new Date(loop),
-                    finishHour: new Date(loop.setMinutes(loop.getMinutes() + singleVisitTime)),
-                    isFree: true,
-                    patientInfo: {
-                        name: '',
-                        surname: '',
-                        patientId: ''
-                    },
-                    visitNote: '',
-                };
-                doctor.schedule[scheduleIndex].visits.push(visit);
+                while (loop < end) {
+                    const visit: VisitI = {
+                        startHour: new Date(loop),
+                        finishHour: new Date(loop.setMinutes(loop.getMinutes() + singleVisitTime)),
+                        isFree: true,
+                        patientInfo: {
+                            name: '',
+                            surname: '',
+                            patientId: ''
+                        },
+                        visitNote: '',
+                    };
+                    doctor.schedule[scheduleIndex].visits.push(visit);
+                }
+                await doctor.save();
             }
 
-            await doctor.save();
             res.status(201).json(doctor);
         } catch (err: any) {
             return res.status(422).json({ message: err.message });
@@ -188,12 +195,14 @@ export const DoctorActions = {
         const id = req.params.id;
         try {
             const doctor = await Doctor.findOne({ _id: id });
-            doctor.name = req.body.name;
-            doctor.surname = req.body.surname;
-            doctor.city = req.body.city;
-            doctor.specializations = req.body.specializations;
-            doctor.schedule = req.body.schedule;
-            await doctor.save();
+            if (doctor !== null) {
+                doctor.name = req.body.name;
+                doctor.surname = req.body.surname;
+                doctor.city = req.body.city;
+                doctor.specializations = req.body.specializations;
+                doctor.schedule = req.body.schedule;
+                await doctor.save();
+            }
             res.status(201).json(doctor);
         } catch (err: any) {
             return res.status(422).json({ message: err.message });
@@ -228,31 +237,40 @@ export const DoctorActions = {
             return res.status(500).json({ message: err.message });
         }
 
-        let scheduleIndex: number = doctor.schedule.indexOf(doctor.schedule.find((sch: { _id: string; }) => sch._id.toString() === scheduleId))
-        let visitIndex: number = doctor.schedule[scheduleIndex].visits.indexOf(doctor.schedule[scheduleIndex].visits.find((vst: { _id: string; }) => vst._id.toString() === visitId))
+        if (doctor !== null) {
+            const matchingSchedule = doctor.schedule.find(s => s._id?.toString() === scheduleId);
+            let scheduleIndex: number = 0;
+            if (matchingSchedule !== undefined) {
+                scheduleIndex = doctor.schedule.indexOf(matchingSchedule);
+            }
+            const matchingVisit = doctor.schedule[scheduleIndex].visits.find(v => v._id?.toString() === visitId);
+            let visitIndex: number = 0;
+            if (matchingVisit !== undefined) {
+                visitIndex = doctor.schedule[scheduleIndex].visits.indexOf(matchingVisit)
+            }
 
-        doctor.schedule[scheduleIndex].visits[visitIndex].isFree = isFree;
-        doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = visitNote;
-        doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = name;
-        doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = surname;
-        if (patientId !== '' && patientId !== null && patientId !== undefined) {
-            doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.patientId = patientId;
+
+            doctor.schedule[scheduleIndex].visits[visitIndex].isFree = isFree;
+            doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = visitNote;
+            doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = name;
+            doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = surname;
+            if (patientId !== '' && patientId !== null && patientId !== undefined) {
+                doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.patientId = patientId;
+            }
+
+            if (doctor.schedule[scheduleIndex].visits[visitIndex].isFree === true) {
+                doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = '';
+                doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = '';
+                doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = '';
+                doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.patientId = '';
+            }
+
+            await doctor.save();
         }
-
-        if (doctor.schedule[scheduleIndex].visits[visitIndex].isFree === true) {
-            doctor.schedule[scheduleIndex].visits[visitIndex].visitNote = '';
-            doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.name = null
-            doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.surname = null
-            doctor.schedule[scheduleIndex].visits[visitIndex].patientInfo.patientId = null
-        }
-
-        await doctor.save();
         res.status(201).json(doctor);
     }
 }
 
-//export default DoctorActions;
-//module.exports = new DoctorActions()
 
 
 

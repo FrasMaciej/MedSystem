@@ -2,12 +2,12 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { connectToDB } from './db/mongoose';
 import { config } from './config';
+import apiRouter from './routes/api';
+import cors from "cors";
+import authApi from "./routes/auth";
+import session from "express-session";
+import passport from "passport";
 
-const cors = require("cors");
-const apiRouter = require('./routes/api');
-const auth = require('./routes/auth');
-const session = require('express-session');
-const passport = require('passport');
 
 const app = express();
 
@@ -39,4 +39,4 @@ app.listen(config.port, function () {
 
 // routes
 app.use('/api', apiRouter);
-app.use('/api', auth);
+app.use('/api', authApi);

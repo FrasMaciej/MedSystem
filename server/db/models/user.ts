@@ -1,7 +1,16 @@
 import mongoose from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
 
-const UserSchema = new mongoose.Schema({
+export interface UserI {
+    _id?: string;
+    username: string,
+    password?: string,
+    name: string,
+    surname: string,
+    role: string
+}
+
+const UserSchema = new mongoose.Schema<UserI>({
     username: String,
     password: String,
     name: String,
@@ -10,5 +19,5 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.plugin(passportLocalMongoose);
-module.exports = mongoose.model('users', UserSchema, 'users');
-
+const User = mongoose.model('users', UserSchema, 'users');
+export default User;
