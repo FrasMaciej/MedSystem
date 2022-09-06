@@ -8,7 +8,6 @@ import authApi from "./routes/auth";
 import session from "express-session";
 import passport from "passport";
 
-
 const app = express();
 
 app.use(cors());
