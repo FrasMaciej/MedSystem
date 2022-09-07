@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { switchMap } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { VisitInfo } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { VisitSignComponent } from './visit-sign.component';
@@ -170,7 +170,7 @@ export interface VisitData {
   `]
 })
 
-export class PatientPageComponent implements OnInit {
+export class PatientPageComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   citiesList: string[] = [];
   specsList: string[] = [];
@@ -182,13 +182,23 @@ export class PatientPageComponent implements OnInit {
   })
   selectedVisits = new MatTableDataSource<VisitInfo>();
   displayedColumns: string[] = ['city', 'name', 'spec', 'visitDate', 'buttons']
+  subscription: Subscription = new Subscription;
+  interval!: any;
 
   constructor(
     private doctorService: DoctorService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.updateMenuData();
+    this.interval = setInterval(() => {
+      this.updateMenuData();
+    }, 500);
+    this.subscription = this.interval;
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval);
+    this.subscription.unsubscribe;
   }
 
   ngAfterViewInit(): void {
@@ -210,7 +220,8 @@ export class PatientPageComponent implements OnInit {
       switchMap(
         (result) => this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id, result.patientId)),
       switchMap(
-        () => this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value as string[], this.range.value.start as Date, this.range.value.end as Date))
+        () => this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value as string[], this.range.value.start as Date, this.range.value.end as Date)
+      )
     ).subscribe((matchingVisits: VisitInfo[]) => {
       this.selectedVisits.data = matchingVisits;
     })
@@ -232,10 +243,14 @@ export class PatientPageComponent implements OnInit {
 
   updateMenuData(): void {
     this.doctorService.getCities().subscribe((cities: string[]) => {
-      this.citiesList = cities;
+      if (JSON.stringify(this.citiesList) !== JSON.stringify(cities)) {
+        this.citiesList = cities;
+      }
     })
     this.doctorService.getSpecs().subscribe((specs: string[]) => {
-      this.specsList = specs;
+      if (JSON.stringify(this.specsList) !== JSON.stringify(specs)) {
+        this.specsList = specs;
+      }
     })
   }
 }

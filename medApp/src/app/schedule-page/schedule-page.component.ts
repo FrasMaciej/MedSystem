@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription, switchMap } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { Visit } from '../models/schedule';
@@ -105,7 +106,7 @@ export interface ScheduleData {
   `]
 })
 
-export class SchedulePageComponent implements OnInit {
+export class SchedulePageComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   schedule_id: string;
   doctor_id: string;
@@ -114,6 +115,8 @@ export class SchedulePageComponent implements OnInit {
   visitsList = new MatTableDataSource<Visit>();
   displayedColumns: string[] = ['time', 'isFree', 'patientName', 'note', 'buttons']
   backRoute: string = '';
+  subscription: Subscription = new Subscription;
+  interval!: any;
 
   constructor(
     private router: Router,
@@ -131,10 +134,15 @@ export class SchedulePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.doctor = {} as Doctor;
-    this.scheduleToDisplay = {} as Schedule;
-    this.visitsList.data = this.scheduleToDisplay.visits;
-    this.updateDoctor();
+    this.interval = setInterval(() => {
+      this.updateDoctor();
+    }, 500);
+    this.subscription = this.interval;
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval);
+    this.subscription.unsubscribe;
   }
 
   ngAfterViewInit(): void {
@@ -153,19 +161,19 @@ export class SchedulePageComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== null && result !== undefined) {
-        this.doctorService.editVisit(result.visit, result.doctor_id, result.schedule_id, result.visit._id, '').subscribe(() => {
-          this.updateDoctor();
-        })
-      }
-    });
+    dialogRef.afterClosed().pipe(
+      switchMap(
+        (result) => this.doctorService.editVisit(result.visit, result.doctor_id, result.schedule_id, result.visit._id, '')
+      )
+    ).subscribe(() => { })
   }
 
   updateDoctor(): void {
     this.doctorService.getDoctor(this.doctor_id).subscribe((doctor: Doctor) => {
-      this.doctor = doctor;
-      this.getSchedule();
+      if (JSON.stringify(this.doctor) !== JSON.stringify(doctor)) {
+        this.doctor = doctor;
+        this.getSchedule();
+      }
     })
   }
 

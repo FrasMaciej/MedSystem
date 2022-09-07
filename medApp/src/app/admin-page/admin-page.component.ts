@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { last, lastValueFrom, Observable, switchMap } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
@@ -70,10 +70,10 @@ export interface DoctorData {
           <button id = "deleteButton" mat-icon-button color="warn" (click)="removeDoctor(element)" (click)="onRemove($event)">
             <mat-icon>remove_circle</mat-icon>
           </button>
-          <button id ="editButton" mat-icon-button color="black" (click)="openEditDoctorDialog(element)" (click)="updateDoctors()">
+          <button id ="editButton" mat-icon-button color="black" (click)="openEditDoctorDialog(element)">
             <mat-icon>edit</mat-icon>
           </button>
-          <button id ="editSchedule" mat-icon-button color="black" (click)="openSchedulesDialog(element)" (click)="updateDoctors()">
+          <button id ="editSchedule" mat-icon-button color="black" (click)="openSchedulesDialog(element)">
             <mat-icon>schedule</mat-icon>
           </button>
           </td>
@@ -113,15 +113,24 @@ export interface DoctorData {
   `]
 })
 
-export class AdminPageComponent implements OnInit {
+export class AdminPageComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   doctors = new MatTableDataSource<Doctor>();
-  displayedColumns: string[] = ['city', 'name', 'specs', 'buttons']
+  displayedColumns: string[] = ['city', 'name', 'specs', 'buttons'];
+  subscription: Subscription = new Subscription;
+  interval!: any;
 
   constructor(private doctorService: DoctorService, public dialog: MatDialog) { }
-
   ngOnInit(): void {
-    this.updateDoctors();
+    this.interval = setInterval(() => {
+      this.updateDoctors();
+    }, 500);
+    this.subscription = this.interval;
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval);
+    this.subscription.unsubscribe;
   }
 
   ngAfterViewInit(): void {
@@ -139,11 +148,7 @@ export class AdminPageComponent implements OnInit {
     dialogRef.afterClosed().pipe(
       switchMap(
         (newDoctor) => this.doctorService.addDoctor(newDoctor)),
-      switchMap(
-        () => this.doctorService.getDoctors())
-    ).subscribe((updatedDoctors) => {
-      this.doctors.data = updatedDoctors as Doctor[]
-    })
+    ).subscribe(() => { })
 
   }
 
@@ -163,9 +168,7 @@ export class AdminPageComponent implements OnInit {
         (updatedDoctor) => this.doctorService.editDoctor(updatedDoctor)),
       switchMap(
         () => this.doctorService.getDoctors())
-    ).subscribe((updatedDoctors) => {
-      this.doctors.data = updatedDoctors as Doctor[];
-    })
+    ).subscribe(() => { })
   }
 
   openSchedulesDialog(doctor: Doctor): void {
@@ -179,25 +182,20 @@ export class AdminPageComponent implements OnInit {
     dialogRef.afterClosed().pipe(
       switchMap(
         () => this.doctorService.getDoctors())
-    ).subscribe((updatedDoctors) => {
-      this.doctors.data = updatedDoctors as Doctor[]
-    })
+    ).subscribe(() => { })
 
   }
 
   updateDoctors(): void {
     this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
-      this.doctors.data = doctors;
+      if (JSON.stringify(this.doctors.data) !== JSON.stringify(doctors)) {
+        this.doctors.data = doctors;
+      }
     })
   }
 
   removeDoctor(doctor: Doctor): void {
-    this.doctorService.removeDoctor(doctor).pipe(
-      switchMap(
-        () => this.doctorService.getDoctors())
-    ).subscribe((updatedDoctors) => {
-      this.doctors.data = updatedDoctors as Doctor[];
-    })
+    this.doctorService.removeDoctor(doctor).subscribe(() => { })
   }
 
   onRemove(e: Event): void {
@@ -205,11 +203,3 @@ export class AdminPageComponent implements OnInit {
     e.stopImmediatePropagation();
   }
 }
-
-
-
-
-
-
-
-
