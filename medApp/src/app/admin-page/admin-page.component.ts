@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { switchMap } from 'rxjs';
+import { last, lastValueFrom, Observable, switchMap } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
@@ -137,12 +137,13 @@ export class AdminPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().pipe(
-      switchMap(result => this.doctorService.addDoctor(result),
-
-      ))
-      .subscribe((result) => {
-        this.updateDoctors();
-      })
+      switchMap(
+        (newDoctor) => this.doctorService.addDoctor(newDoctor)),
+      switchMap(
+        () => this.doctorService.getDoctors())
+    ).subscribe((updatedDoctors) => {
+      this.doctors.data = updatedDoctors as Doctor[]
+    })
 
   }
 
@@ -157,13 +158,14 @@ export class AdminPageComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== null && result !== undefined) {
-        this.doctorService.editDoctor(result).subscribe((result) => {
-          this.updateDoctors();
-        });
-      }
-    });
+    dialogRef.afterClosed().pipe(
+      switchMap(
+        (updatedDoctor) => this.doctorService.editDoctor(updatedDoctor)),
+      switchMap(
+        () => this.doctorService.getDoctors())
+    ).subscribe((updatedDoctors) => {
+      this.doctors.data = updatedDoctors as Doctor[];
+    })
   }
 
   openSchedulesDialog(doctor: Doctor): void {
@@ -174,9 +176,13 @@ export class AdminPageComponent implements OnInit {
       data: { doctor: doctor, newSchedule: doctor.schedule, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0 }
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.updateDoctors();
-    });
+    dialogRef.afterClosed().pipe(
+      switchMap(
+        () => this.doctorService.getDoctors())
+    ).subscribe((updatedDoctors) => {
+      this.doctors.data = updatedDoctors as Doctor[]
+    })
+
   }
 
   updateDoctors(): void {
@@ -186,9 +192,12 @@ export class AdminPageComponent implements OnInit {
   }
 
   removeDoctor(doctor: Doctor): void {
-    this.doctorService.removeDoctor(doctor).subscribe(() => {
-      this.updateDoctors();
-    });
+    this.doctorService.removeDoctor(doctor).pipe(
+      switchMap(
+        () => this.doctorService.getDoctors())
+    ).subscribe((updatedDoctors) => {
+      this.doctors.data = updatedDoctors as Doctor[];
+    })
   }
 
   onRemove(e: Event): void {

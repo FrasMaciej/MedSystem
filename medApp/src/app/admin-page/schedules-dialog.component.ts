@@ -83,9 +83,7 @@ export class SchedulesDialog {
         const index = this.data.newSchedule.indexOf(schedule);
         this.data.newSchedule.splice(index, 1);
         this.data.doctor.schedule = this.data.newSchedule;
-        this.doctorService.editDoctor(this.data.doctor).subscribe(() => {
-
-        });
+        this.doctorService.editDoctor(this.data.doctor).subscribe(() => { });
     }
 
     onRemove(e: Event): void {

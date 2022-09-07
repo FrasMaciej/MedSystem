@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { switchMap } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
@@ -121,9 +122,14 @@ export class DoctorPageComponent implements OnInit {
       data: { doctor: this.doctor, newSchedule: this.schedules.data, newStartDate: new Date(), newFinishDate: new Date(), newVisitTime: 0 }
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.updateDoctor();
-    });
+    dialogRef.afterClosed().pipe(
+      switchMap(
+        () => this.doctorService.getDoctorByUserId(this.doctorId)),
+    ).subscribe((updatedDoctor) => {
+      this.doctor = updatedDoctor;
+      this.schedules.data = this.doctor.schedule;
+    })
+
   }
 
   updateDoctor(): void {
@@ -137,9 +143,15 @@ export class DoctorPageComponent implements OnInit {
     const index = this.schedules.data.indexOf(schedule);
     this.schedules.data.splice(index, 1);
     this.doctor.schedule = this.schedules.data;
-    this.doctorService.editDoctor(this.doctor).subscribe(() => {
-      this.updateDoctor();
-    });
+
+    this.doctorService.editDoctor(this.doctor).pipe(
+      switchMap(
+        () => this.doctorService.getDoctorByUserId(this.doctorId)),
+    ).subscribe((updatedDoctor) => {
+      this.doctor = updatedDoctor;
+      this.schedules.data = this.doctor.schedule;
+    })
+
   }
 
   onRemove(e: Event): void {

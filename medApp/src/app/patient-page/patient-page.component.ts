@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { switchMap } from 'rxjs';
 import { VisitInfo } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { VisitSignComponent } from './visit-sign.component';
@@ -205,13 +206,15 @@ export class PatientPageComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== null && result !== undefined) {
-        this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id, result.patientId).subscribe(() => {
-          this.getFilteredVisits();
-        })
-      }
-    });
+    dialogRef.afterClosed().pipe(
+      switchMap(
+        (result) => this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id, result.patientId)),
+      switchMap(
+        () => this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value as string[], this.range.value.start as Date, this.range.value.end as Date))
+    ).subscribe((matchingVisits: VisitInfo[]) => {
+      this.selectedVisits.data = matchingVisits;
+    })
+
   }
 
   selectSpec(event: Event): void {

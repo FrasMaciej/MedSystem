@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { switchMap } from 'rxjs';
 import { Visit, VisitInfo } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 
@@ -96,8 +97,12 @@ export class PatientDetailsComponent implements OnInit {
 
   cancelVisit(visit: Visit, doctor_id: string, schedule_id: string): void {
     visit.isFree = true;
-    this.doctorService.editVisit(visit, doctor_id, schedule_id, visit._id, '').subscribe(() => {
-      this.getFilteredVisits();
+    this.doctorService.editVisit(visit, doctor_id, schedule_id, visit._id, '').pipe(
+      switchMap(
+        () => this.doctorService.getVisitsByPatient(this.patientId)
+      )
+    ).subscribe((matchingVisits: VisitInfo[]) => {
+      this.selectedVisits.data = matchingVisits;
     })
   }
 }
