@@ -117,20 +117,20 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   doctors = new MatTableDataSource<Doctor>();
   displayedColumns: string[] = ['city', 'name', 'specs', 'buttons'];
-  subscription: Subscription = new Subscription;
-  interval!: any;
+  subscription$: Subscription = new Subscription;
+  interval$!: any;
 
   constructor(private doctorService: DoctorService, public dialog: MatDialog) { }
   ngOnInit(): void {
-    this.interval = setInterval(() => {
+    this.interval$ = setInterval(() => {
       this.updateDoctors();
     }, 500);
-    this.subscription = this.interval;
+    this.subscription$ = this.interval$;
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.interval);
-    this.subscription.unsubscribe;
+    clearInterval(this.interval$);
+    this.subscription$.unsubscribe;
   }
 
   ngAfterViewInit(): void {

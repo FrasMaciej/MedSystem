@@ -5,7 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
 import { Doctor } from '../models/doctor';
-import { Schedule } from '../models/schedule';
 import { Visit } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { EditVisitDialog } from './edit-visit-dialog.component';
@@ -115,8 +114,8 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
   visitsList = new MatTableDataSource<Visit>();
   displayedColumns: string[] = ['time', 'isFree', 'patientName', 'note', 'buttons']
   backRoute: string = '';
-  subscription: Subscription = new Subscription;
-  interval!: any;
+  subscription$: Subscription = new Subscription;
+  interval$!: any;
 
   constructor(
     private router: Router,
@@ -134,15 +133,15 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.interval = setInterval(() => {
+    this.interval$ = setInterval(() => {
       this.updateDoctor();
     }, 500);
-    this.subscription = this.interval;
+    this.subscription$ = this.interval$;
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.interval);
-    this.subscription.unsubscribe;
+    clearInterval(this.interval$);
+    this.subscription$.unsubscribe;
   }
 
   ngAfterViewInit(): void {

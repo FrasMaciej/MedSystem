@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { HttpClient } from '@angular/common/http';
 import { Schedule, Visit } from '../models/schedule';
-import config from './config';
+import { config } from './config';
 
 @Injectable({
   providedIn: 'root'

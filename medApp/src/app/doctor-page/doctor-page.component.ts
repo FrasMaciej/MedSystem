@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject, Subscription, switchMap } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { Doctor } from '../models/doctor';
 import { Schedule } from '../models/schedule';
 import { DoctorService } from '../services/doctor.service';
@@ -99,9 +99,8 @@ export class DoctorPageComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['date', 'hour', 'visitTime', 'buttons']
   doctorId: string;
   doctor = {} as Doctor;
-  subscription: Subscription = new Subscription;
-
-  interval!: any;
+  subscription$: Subscription = new Subscription;
+  interval$!: any;
 
   constructor(private doctorService: DoctorService, public dialog: MatDialog) {
     const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
@@ -109,15 +108,15 @@ export class DoctorPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.interval = setInterval(() => {
+    this.interval$ = setInterval(() => {
       this.updateDoctor();
     }, 500);
-    this.subscription = this.interval;
+    this.subscription$ = this.interval$;
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.interval);
-    this.subscription.unsubscribe;
+    clearInterval(this.interval$);
+    this.subscription$.unsubscribe;
   }
 
   ngAfterViewInit(): void {

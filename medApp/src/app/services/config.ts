@@ -3,4 +3,3 @@ export const config = {
     baseUrlUser: 'http://localhost:8080/api/user',
 }
 
-export default config;

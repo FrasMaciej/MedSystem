@@ -182,23 +182,23 @@ export class PatientPageComponent implements OnInit, OnDestroy {
   })
   selectedVisits = new MatTableDataSource<VisitInfo>();
   displayedColumns: string[] = ['city', 'name', 'spec', 'visitDate', 'buttons']
-  subscription: Subscription = new Subscription;
-  interval!: any;
+  subscription$: Subscription = new Subscription;
+  interval$!: any;
 
   constructor(
     private doctorService: DoctorService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.interval = setInterval(() => {
+    this.interval$ = setInterval(() => {
       this.updateMenuData();
     }, 500);
-    this.subscription = this.interval;
+    this.subscription$ = this.interval$;
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.interval);
-    this.subscription.unsubscribe;
+    clearInterval(this.interval$);
+    this.subscription$.unsubscribe;
   }
 
   ngAfterViewInit(): void {
