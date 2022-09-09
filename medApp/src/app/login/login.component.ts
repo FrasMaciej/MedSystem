@@ -7,23 +7,23 @@ import { AuthService } from './auth.service';
   selector: 'app-login',
   template: `
     <body scroll="no" style="overflow: hidden">
-    <div class="logging-form">
+    <div class="loginFormContainer">
       <button id="homeButton" mat-fab color="primary" [routerLink]="['/']">
         <mat-icon>home</mat-icon>
       </button>
-      <form [formGroup]="form" (ngSubmit)="submit()">
+      <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
         <p>
           <mat-form-field appearance="outline">
             <mat-label>Login</mat-label>
-            <input type="text" matInput placeholder="Wpisz login" formControlName="username">
+            <input type="text" class="form-control" matInput placeholder="Wpisz login" formControlName="username" required>
           </mat-form-field>
         </p>
 
         <p>
           <mat-form-field appearance="outline">
             <mat-label>Hasło</mat-label>
-            <input type="password" matInput placeholder="Wpisz hasło" formControlName="password">
-            <mat-hint>Podaj silne hasło (min 8 znaków)</mat-hint>
+            <input type="password" matInput placeholder="Wpisz hasło" formControlName="password" minlength="6" required>
+            <mat-hint>(min. 6 znaków)</mat-hint>
           </mat-form-field>
         </p>
 
@@ -32,13 +32,13 @@ import { AuthService } from './auth.service';
         </p>
 
         <p>
-          <button type="submit" mat-raised-button (click)="submit()">Zaloguj się</button>
+          <button type="submit" mat-raised-button [disabled]="!loginForm.valid" (click)="submitLoginForm()">Zaloguj się</button>
         </p>
       </form>
     </div>
   `,
   styles: [`
-    .logging-form {
+    .loginFormContainer {
         margin-top: 10%;
     }
 
@@ -61,7 +61,7 @@ export class LoginComponent {
   @Input() error!: string | null;
   @Output() submitEM = new EventEmitter();
   route: string = '';
-  form: FormGroup = new FormGroup({
+  loginForm: FormGroup = new FormGroup({
     username: new FormControl(''),
     password: new FormControl(''),
   });
@@ -75,9 +75,9 @@ export class LoginComponent {
       this.route = '/patientPage'
   }
 
-  public submit(): void {
+  public submitLoginForm(): void {
     if (this.router.url === '/login/patient' || this.router.url === '/login/doctor') {
-      this.authService.validate(this.form.get('username')?.value, this.form.get('password')?.value).then((response) => {
+      this.authService.validate(this.loginForm.get('username')?.value, this.loginForm.get('password')?.value).then((response) => {
         this.authService.setUserInfo({ 'user': response });
         this.router.navigate([this.route]);
       })
