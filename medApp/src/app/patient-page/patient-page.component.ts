@@ -192,7 +192,7 @@ export class PatientPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.interval$ = setInterval(() => {
       this.updateMenuData();
-    }, 500);
+    }, 250);
     this.subscription$ = this.interval$;
   }
 

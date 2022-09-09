@@ -135,7 +135,7 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.interval$ = setInterval(() => {
       this.updateDoctor();
-    }, 500);
+    }, 250);
     this.subscription$ = this.interval$;
   }
 

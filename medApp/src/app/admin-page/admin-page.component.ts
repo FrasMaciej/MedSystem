@@ -124,7 +124,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.interval$ = setInterval(() => {
       this.updateDoctors();
-    }, 500);
+    }, 250);
     this.subscription$ = this.interval$;
   }
 
