@@ -1,45 +1,6 @@
 import mongoose from "mongoose";
-
-export interface VisitI {
-    _id?: String;
-    startHour: Date;
-    finishHour: Date;
-    isFree: boolean;
-    patientInfo: {
-        name: string;
-        surname: string;
-        patientId: string;
-    },
-    visitNote: string;
-}
-
-export interface ScheduleI {
-    _id?: string;
-    scheduleDate: Date;
-    finishHour: Date;
-    singleVisitTime: number;
-    visits: VisitI[];
-}
-
-export interface DoctorI {
-    _id: string;
-    name: string;
-    surname: string;
-    city: string;
-    specializations: string[];
-    schedule: ScheduleI[];
-    userId: string;
-}
-
-export interface VisitInfoI {
-    doctorId: string;
-    scheduleId?: string;
-    visit: VisitI;
-    docSpecialization?: string;
-    docName: string;
-    docSurname: string;
-    docCity: string;
-}
+import { ScheduleI } from "../../shared/schedule";
+import { DoctorI } from "../../shared/doctor";
 
 const ScheduleSchema = new mongoose.Schema<ScheduleI>({
     scheduleDate: Date,

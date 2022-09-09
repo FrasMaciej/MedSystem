@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { switchMap } from 'rxjs';
-import { Visit, VisitInfo } from '../models/schedule';
+import { VisitInfoI, VisitI } from '@shared/schedule';
+
 import { DoctorService } from '../services/doctor.service';
 
 @Component({
@@ -70,7 +71,7 @@ export class PatientDetailsComponent implements OnInit {
   patientId: string;
   name: string;
   surname: string;
-  selectedVisits = new MatTableDataSource<VisitInfo>();
+  selectedVisits = new MatTableDataSource<VisitInfoI>();
   displayedColumns: string[] = ['city', 'name', 'visitDate', 'note', 'buttons']
 
   constructor(private doctorService: DoctorService) {
@@ -90,19 +91,21 @@ export class PatientDetailsComponent implements OnInit {
   }
 
   getFilteredVisits(): void {
-    this.doctorService.getVisitsByPatient(this.patientId).subscribe((matchingVisits: VisitInfo[]) => {
+    this.doctorService.getVisitsByPatient(this.patientId).subscribe((matchingVisits: VisitInfoI[]) => {
       this.selectedVisits.data = matchingVisits;
     })
   }
 
-  cancelVisit(visit: Visit, doctor_id: string, schedule_id: string): void {
+  cancelVisit(visit: VisitI, doctor_id: string, schedule_id: string): void {
     visit.isFree = true;
-    this.doctorService.editVisit(visit, doctor_id, schedule_id, visit._id, '').pipe(
-      switchMap(
-        () => this.doctorService.getVisitsByPatient(this.patientId)
-      )
-    ).subscribe((matchingVisits: VisitInfo[]) => {
-      this.selectedVisits.data = matchingVisits;
-    })
+    if (visit._id) {
+      this.doctorService.editVisit(visit, doctor_id, schedule_id, visit._id, '').pipe(
+        switchMap(
+          () => this.doctorService.getVisitsByPatient(this.patientId)
+        )
+      ).subscribe((matchingVisits: VisitInfoI[]) => {
+        this.selectedVisits.data = matchingVisits;
+      })
+    }
   }
 }

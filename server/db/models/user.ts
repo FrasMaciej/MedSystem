@@ -1,14 +1,6 @@
 import mongoose from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
-
-export interface UserI {
-    _id?: string;
-    username: string,
-    password?: string,
-    name: string,
-    surname: string,
-    role: string
-}
+import { UserI } from "../../shared/user";
 
 const UserSchema = new mongoose.Schema<UserI>({
     username: String,

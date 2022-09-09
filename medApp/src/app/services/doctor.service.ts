@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Doctor } from '../models/doctor';
 import { HttpClient } from '@angular/common/http';
-import { Schedule, Visit } from '../models/schedule';
 import { config } from './config';
+import { DoctorI } from '@shared/doctor';
+import { ScheduleI, VisitI } from '@shared/schedule';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DoctorService {
-  private doctorsList: Doctor[] | any = [];
+  private doctorsList: DoctorI[] | any = [];
 
   constructor(private httpClient: HttpClient) { }
 
@@ -28,27 +28,27 @@ export class DoctorService {
     return this.httpClient.get(getDoctorByUserIdUrl)
   }
 
-  removeDoctor(doctor: Doctor) {
+  removeDoctor(doctor: DoctorI) {
     const deleteUrl = config.baseUrlDoc + '/' + doctor._id;
     return this.httpClient.delete(deleteUrl);
   }
 
-  editDoctor(doctor: Doctor) {
+  editDoctor(doctor: DoctorI) {
     const editUrl = config.baseUrlDoc + '/' + doctor._id;
     return this.httpClient.put(editUrl, doctor);
   }
 
-  addDoctor(doctor: Doctor) {
+  addDoctor(doctor: DoctorI) {
     const addUrl = config.baseUrlDoc;
     return this.httpClient.post(addUrl, doctor);
   }
 
-  addTerminsSlots(schedule: Schedule, doctor: Doctor): Observable<any> {
+  addTerminsSlots(schedule: ScheduleI, doctor: DoctorI): Observable<any> {
     const addTerminsUrl = config.baseUrlDoc + '/' + 'addTerminsSlots' + '/' + doctor._id;
     return this.httpClient.post(addTerminsUrl, schedule);
   }
 
-  editVisit(visit: Visit, doctorId: string, scheduleId: string, visitId: string, patientId: string) {
+  editVisit(visit: VisitI, doctorId: string, scheduleId: string, visitId: string, patientId: string) {
     const editVisitUrl = config.baseUrlDoc + '/' + 'editVisit' + '/' + doctorId + '/' + scheduleId + '/' + visitId;
     const visitInfo = {
       visit: visit,

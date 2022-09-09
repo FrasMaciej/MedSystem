@@ -4,12 +4,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription, switchMap } from 'rxjs';
-import { VisitInfo } from '../models/schedule';
+import { VisitInfoI } from '@shared/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { VisitSignComponent } from './visit-sign.component';
 
 export interface VisitData {
-  visitInfo: VisitInfo;
+  visitInfo: VisitInfoI;
   note: string;
   name: string;
   surname: string;
@@ -180,7 +180,7 @@ export class PatientPageComponent implements OnInit, OnDestroy {
     start: new FormControl<Date>(new Date()),
     end: new FormControl<Date>(new Date())
   })
-  selectedVisits = new MatTableDataSource<VisitInfo>();
+  selectedVisits = new MatTableDataSource<VisitInfoI>();
   displayedColumns: string[] = ['city', 'name', 'spec', 'visitDate', 'buttons']
   subscription$: Subscription = new Subscription;
   interval$!: any;
@@ -205,7 +205,7 @@ export class PatientPageComponent implements OnInit, OnDestroy {
     this.selectedVisits.paginator = this.paginator;
   }
 
-  openVisitSignDialog(visitInfo: VisitInfo): void {
+  openVisitSignDialog(visitInfo: VisitInfoI): void {
     const dialogRef = this.dialog.open(VisitSignComponent, {
       width: '500px',
       height: '400px',
@@ -222,7 +222,7 @@ export class PatientPageComponent implements OnInit, OnDestroy {
       switchMap(
         () => this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value as string[], this.range.value.start as Date, this.range.value.end as Date)
       )
-    ).subscribe((matchingVisits: VisitInfo[]) => {
+    ).subscribe((matchingVisits: VisitInfoI[]) => {
       this.selectedVisits.data = matchingVisits;
     })
 
@@ -235,7 +235,7 @@ export class PatientPageComponent implements OnInit, OnDestroy {
   getFilteredVisits(): void {
     if (this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end) {
       const cities: string[] = this.selectedCities.value;
-      this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((matchingVisits: VisitInfo[]) => {
+      this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((matchingVisits: VisitInfoI[]) => {
         this.selectedVisits.data = matchingVisits;
       })
     }

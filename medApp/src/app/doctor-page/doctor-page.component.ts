@@ -3,14 +3,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription, switchMap } from 'rxjs';
-import { Doctor } from '../models/doctor';
-import { Schedule } from '../models/schedule';
+import { DoctorI } from '@shared/doctor';
+import { ScheduleI } from '@shared/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { ScheduleAddDialog } from './schedule-add-dialog.component';
 
 export interface DoctorData {
-  doctor: Doctor;
-  newSchedule: Schedule[];
+  doctor: DoctorI;
+  newSchedule: ScheduleI[];
   newVisitTime: number;
   newStartDate: Date;
   newFinishDate: Date;
@@ -95,10 +95,10 @@ export interface DoctorData {
 
 export class DoctorPageComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  schedules = new MatTableDataSource<Schedule>();
+  schedules = new MatTableDataSource<ScheduleI>();
   displayedColumns: string[] = ['date', 'hour', 'visitTime', 'buttons']
   doctorId: string;
-  doctor = {} as Doctor;
+  doctor = {} as DoctorI;
   subscription$: Subscription = new Subscription;
   interval$!: any;
 
@@ -139,7 +139,7 @@ export class DoctorPageComponent implements OnInit, OnDestroy {
   }
 
   updateDoctor(): void {
-    this.doctorService.getDoctorByUserId(this.doctorId).subscribe((updatedDoctor: Doctor) => {
+    this.doctorService.getDoctorByUserId(this.doctorId).subscribe((updatedDoctor: DoctorI) => {
       if (JSON.stringify(updatedDoctor) !== JSON.stringify(this.doctor)) {
         this.doctor = updatedDoctor;
         this.schedules.data = this.doctor.schedule;
@@ -147,7 +147,7 @@ export class DoctorPageComponent implements OnInit, OnDestroy {
     })
   }
 
-  removeSchedule(schedule: Schedule): void {
+  removeSchedule(schedule: ScheduleI): void {
     const index = this.schedules.data.indexOf(schedule);
     this.schedules.data.splice(index, 1);
     this.doctor.schedule = this.schedules.data;

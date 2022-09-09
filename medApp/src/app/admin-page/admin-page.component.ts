@@ -3,21 +3,21 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription, switchMap } from 'rxjs';
-import { Doctor } from '../models/doctor';
-import { Schedule } from '../models/schedule';
+import { DoctorI } from '@shared/doctor';
+import { ScheduleI } from '@shared/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { DoctorAddDialog } from './doctor-add-dialog.component';
 import { DoctorEditDialog } from './doctor-edit-dialog.component';
 import { SchedulesDialog } from './schedules-dialog.component';
 
 export interface DoctorData {
-  doctor: Doctor;
+  doctor: DoctorI;
   newName: string;
   newSurname: string;
   newCity: string;
   newSpecializations: string[];
   newSpec: string;
-  newSchedule: Schedule[];
+  newSchedule: ScheduleI[];
   newVisitTime: number;
   newStartDate: Date;
   newFinishDate: Date;
@@ -115,7 +115,7 @@ export interface DoctorData {
 
 export class AdminPageComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  doctors = new MatTableDataSource<Doctor>();
+  doctors = new MatTableDataSource<DoctorI>();
   displayedColumns: string[] = ['city', 'name', 'specs', 'buttons'];
   subscription$: Subscription = new Subscription;
   interval$!: any;
@@ -152,7 +152,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
 
   }
 
-  openEditDoctorDialog(doctor: Doctor): void {
+  openEditDoctorDialog(doctor: DoctorI): void {
     const dialogRef = this.dialog.open(DoctorEditDialog, {
       width: '500px',
       height: '600px',
@@ -169,7 +169,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
     ).subscribe(() => { })
   }
 
-  openSchedulesDialog(doctor: Doctor): void {
+  openSchedulesDialog(doctor: DoctorI): void {
     const dialogRef = this.dialog.open(SchedulesDialog, {
       width: '600px',
       height: '700px',
@@ -185,14 +185,14 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   }
 
   updateDoctors(): void {
-    this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
+    this.doctorService.getDoctors().subscribe((doctors: DoctorI[]) => {
       if (JSON.stringify(this.doctors.data) !== JSON.stringify(doctors)) {
         this.doctors.data = doctors;
       }
     })
   }
 
-  removeDoctor(doctor: Doctor): void {
+  removeDoctor(doctor: DoctorI): void {
     this.doctorService.removeDoctor(doctor).subscribe(() => { })
   }
 

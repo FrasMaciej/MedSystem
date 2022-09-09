@@ -1,7 +1,7 @@
 import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Doctor } from "../models/doctor";
-import { Schedule } from "../models/schedule";
+import { DoctorI } from '@shared/doctor';
+import { ScheduleI } from '@shared/schedule';
 import { DoctorService } from "../services/doctor.service";
 import { DoctorData } from "./admin-page.component";
 
@@ -69,17 +69,17 @@ export class SchedulesDialog {
         var finishDate: Date = new Date(this.data.newFinishDate);
         this.data.newStartDate = new Date(startDate.setHours(startDate.getHours() - (startDate.getUTCHours() - startDate.getHours())));
         this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
-        const schedule: Schedule = {
+        const schedule: ScheduleI = {
             scheduleDate: this.data.newStartDate, finishHour: this.data.newFinishDate,
             singleVisitTime: this.data.newVisitTime, _id: '', visits: []
         };
-        this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe((doctor: Doctor) => {
+        this.doctorService.addTerminsSlots(schedule, this.data.doctor).subscribe((doctor: DoctorI) => {
             this.data.doctor = doctor;
         })
         this.data.newSchedule.push(schedule);
     }
 
-    removeSchedule(schedule: Schedule): void {
+    removeSchedule(schedule: ScheduleI): void {
         const index = this.data.newSchedule.indexOf(schedule);
         this.data.newSchedule.splice(index, 1);
         this.data.doctor.schedule = this.data.newSchedule;

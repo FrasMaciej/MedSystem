@@ -1,4 +1,5 @@
-import { VisitI, DoctorI, ScheduleI, VisitInfoI } from '../../db/models/doctor';
+import { DoctorI } from '../../shared/doctor';
+import { VisitI, ScheduleI, VisitInfoI } from '../../shared/schedule'
 import { Request, Response } from 'express';
 import { pipe, flatmap, orderby, map, filter, toarray, distinct } from "powerseq";
 import { Doctor } from '../../db/models/doctor';
@@ -77,7 +78,7 @@ export const DoctorActions = {
             doctors.map(d => d.schedule
                 .map(s => s.visits
                     .filter(v => {
-                        if (v.patientInfo.patientId === patientId) {
+                        if (v.patientInfo.patientId === patientId && s._id) {
                             let visitInfo: VisitInfoI = {
                                 doctorId: d._id,
                                 scheduleId: s._id,

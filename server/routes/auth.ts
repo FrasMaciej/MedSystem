@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import express from "express";
 import passport from 'passport';
-import { UserI } from '../db/models/user';
+import { UserI } from '../shared/user';
 import User from '../db/models/user';
 import { Doctor } from '../db/models/doctor';
 

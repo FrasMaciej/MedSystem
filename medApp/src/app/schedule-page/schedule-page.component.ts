@@ -4,8 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
-import { Doctor } from '../models/doctor';
-import { Visit } from '../models/schedule';
+import { DoctorI } from '@shared/doctor';
+import { ScheduleI, VisitI } from '@shared/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { EditVisitDialog } from './edit-visit-dialog.component';
 
@@ -13,7 +13,7 @@ export interface ScheduleData {
   schedule_id: string;
   doctor_id: string;
   patient_id: string;
-  visit: Visit;
+  visit: VisitI;
   newName: string;
   newSurname: string;
   newVisitNote: string;
@@ -109,9 +109,9 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   schedule_id: string;
   doctor_id: string;
-  doctor: Doctor;
+  doctor: DoctorI;
   scheduleToDisplay: any;
-  visitsList = new MatTableDataSource<Visit>();
+  visitsList = new MatTableDataSource<VisitI>();
   displayedColumns: string[] = ['time', 'isFree', 'patientName', 'note', 'buttons']
   backRoute: string = '';
   subscription$: Subscription = new Subscription;
@@ -148,7 +148,7 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
     this.visitsList.paginator = this.paginator;
   }
 
-  openEditVisitDialog(visit: Visit): void {
+  openEditVisitDialog(visit: VisitI): void {
     const dialogRef = this.dialog.open(EditVisitDialog, {
       width: '500px',
       height: '450px',
@@ -168,7 +168,7 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
   }
 
   updateDoctor(): void {
-    this.doctorService.getDoctor(this.doctor_id).subscribe((doctor: Doctor) => {
+    this.doctorService.getDoctor(this.doctor_id).subscribe((doctor: DoctorI) => {
       if (JSON.stringify(this.doctor) !== JSON.stringify(doctor)) {
         this.doctor = doctor;
         this.getSchedule();
