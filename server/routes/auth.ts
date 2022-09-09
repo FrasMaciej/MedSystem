@@ -4,6 +4,7 @@ import passport from 'passport';
 import { UserI } from '../shared/user';
 import User from '../db/models/user';
 import { Doctor } from '../db/models/doctor';
+import { checkPrime } from 'crypto';
 
 const authApi = express.Router();
 
@@ -35,6 +36,9 @@ authApi.post('/user/login', auth(), (req: any, res: any) => {
 authApi.post('/user/register', (req: Request, res: Response) => {
     const { username, name, surname, password, role, city } = req.body;
     const newUser: UserI = { username, name, surname, role, };
+    if (password.length < 6) {
+        return res.redirect("/api");
+    }
     User.register(newUser, password, function (err: any, user: UserI) {
         if (err) { console.log(err); res.redirect("/api") }
         else {
