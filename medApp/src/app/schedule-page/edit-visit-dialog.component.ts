@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { ScheduleData } from "./schedule-page.component";
 
 @Component({
-  selector: 'edit-visit-dialog',
+  selector: 'app-edit-visit-dialog',
   template: `
     <h1 mat-dialog-title>Edytujesz Dane wizyty {{data.visit.startHour | date:'HH:mm':'+0000'}} — {{data.visit.finishHour | date:'HH:mm':'+0000'}}<br></h1>
     <div mat-dialog-content>
@@ -47,9 +47,9 @@ import { ScheduleData } from "./schedule-page.component";
   `]
 })
 
-export class EditVisitDialog {
+export class EditVisitDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<EditVisitDialog>,
+    public dialogRef: MatDialogRef<EditVisitDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ScheduleData) { }
 
   saveClick(): void {

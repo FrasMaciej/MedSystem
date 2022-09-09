@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { DoctorData } from "./admin-page.component";
 
 @Component({
-  selector: 'doctor-add-dialog',
+  selector: 'app-doctor-add-dialog',
   template: `
     <h1 mat-dialog-title>Dodajesz nowego lekarza<br></h1>
     <div mat-dialog-content>
@@ -31,9 +31,9 @@ import { DoctorData } from "./admin-page.component";
   `]
 })
 
-export class DoctorAddDialog {
+export class DoctorAddDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<DoctorAddDialog>,
+    public dialogRef: MatDialogRef<DoctorAddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
   saveClick(): void {

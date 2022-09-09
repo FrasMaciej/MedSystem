@@ -6,7 +6,7 @@ import { DoctorService } from "../services/doctor.service";
 import { DoctorData } from "./admin-page.component";
 
 @Component({
-    selector: 'schedules-dialog',
+    selector: 'app-schedules-dialog',
     template: `
         <div class="schedules"><h1>Grafiki dzienne - Dr. {{data.doctor.name}} {{data.doctor.surname}}</h1></div>
         <mat-selection-list #schedule [multiple]="false" class="custom-scroll-bar" underline="none" > 
@@ -58,9 +58,9 @@ import { DoctorData } from "./admin-page.component";
     `]
 })
 
-export class SchedulesDialog {
+export class SchedulesDialogComponent {
     constructor(
-        public dialogRef: MatDialogRef<SchedulesDialog>,
+        public dialogRef: MatDialogRef<SchedulesDialogComponent>,
         private doctorService: DoctorService,
         @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 

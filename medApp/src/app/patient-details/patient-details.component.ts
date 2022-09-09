@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { switchMap } from 'rxjs';
@@ -66,7 +66,7 @@ import { DoctorService } from '../services/doctor.service';
     } 
   `]
 })
-export class PatientDetailsComponent implements OnInit {
+export class PatientDetailsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   patientId: string;
   name: string;

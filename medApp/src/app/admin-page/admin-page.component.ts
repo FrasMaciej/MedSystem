@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,9 +6,9 @@ import { Subscription, switchMap } from 'rxjs';
 import { DoctorI } from '@shared/doctor';
 import { ScheduleI } from '@shared/schedule';
 import { DoctorService } from '../services/doctor.service';
-import { DoctorAddDialog } from './doctor-add-dialog.component';
-import { DoctorEditDialog } from './doctor-edit-dialog.component';
-import { SchedulesDialog } from './schedules-dialog.component';
+import { DoctorAddDialogComponent } from './doctor-add-dialog.component';
+import { DoctorEditDialogComponent } from './doctor-edit-dialog.component';
+import { SchedulesDialogComponent } from './schedules-dialog.component';
 
 export interface DoctorData {
   doctor: DoctorI;
@@ -113,7 +113,7 @@ export interface DoctorData {
   `]
 })
 
-export class AdminPageComponent implements OnInit, OnDestroy {
+export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   doctors = new MatTableDataSource<DoctorI>();
   displayedColumns: string[] = ['city', 'name', 'specs', 'buttons'];
@@ -128,17 +128,17 @@ export class AdminPageComponent implements OnInit, OnDestroy {
     this.subscription$ = this.interval$;
   }
 
+  ngAfterViewInit(): void {
+    this.doctors.paginator = this.paginator;
+  }
+
   ngOnDestroy(): void {
     clearInterval(this.interval$);
     this.subscription$.unsubscribe;
   }
 
-  ngAfterViewInit(): void {
-    this.doctors.paginator = this.paginator;
-  }
-
   openAddDoctorDialog(): void {
-    const dialogRef = this.dialog.open(DoctorAddDialog, {
+    const dialogRef = this.dialog.open(DoctorAddDialogComponent, {
       width: '500px',
       height: '325px',
       autoFocus: false,
@@ -153,7 +153,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   }
 
   openEditDoctorDialog(doctor: DoctorI): void {
-    const dialogRef = this.dialog.open(DoctorEditDialog, {
+    const dialogRef = this.dialog.open(DoctorEditDialogComponent, {
       width: '500px',
       height: '600px',
       autoFocus: false,
@@ -170,7 +170,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   }
 
   openSchedulesDialog(doctor: DoctorI): void {
-    const dialogRef = this.dialog.open(SchedulesDialog, {
+    const dialogRef = this.dialog.open(SchedulesDialogComponent, {
       width: '600px',
       height: '700px',
       autoFocus: false,

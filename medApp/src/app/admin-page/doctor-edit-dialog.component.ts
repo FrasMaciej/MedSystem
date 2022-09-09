@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { DoctorData } from "./admin-page.component";
 
 @Component({
-  selector: 'doctor-edit-dialog',
+  selector: 'app-doctor-edit-dialog',
   template: `
     <h1 mat-dialog-title>Edytujesz dane lekarza: <br> {{data.doctor.name}} {{data.doctor.surname}}</h1>
     <div mat-dialog-content>
@@ -93,9 +93,9 @@ import { DoctorData } from "./admin-page.component";
   `]
 })
 
-export class DoctorEditDialog {
+export class DoctorEditDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<DoctorEditDialog>,
+    public dialogRef: MatDialogRef<DoctorEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 
   addSpecialization(): void {

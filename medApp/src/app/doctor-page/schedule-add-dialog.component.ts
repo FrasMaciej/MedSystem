@@ -6,7 +6,7 @@ import { DoctorService } from "../services/doctor.service";
 import { DoctorData } from "./doctor-page.component";
 
 @Component({
-    selector: 'schedule-add-dialog',
+    selector: 'app-schedule-add-dialog',
     template: `
     <div mat-dialog-content align="center">
         <mat-form-field>
@@ -36,9 +36,9 @@ import { DoctorData } from "./doctor-page.component";
         }
     `]
 })
-export class ScheduleAddDialog {
+export class ScheduleAddDialogComponent {
     constructor(
-        public dialogRef: MatDialogRef<ScheduleAddDialog>,
+        public dialogRef: MatDialogRef<ScheduleAddDialogComponent>,
         private doctorService: DoctorService,
         @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
 

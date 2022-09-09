@@ -26,22 +26,22 @@ import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { DoctorService } from './services/doctor.service';
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
-import { EditVisitDialog } from './schedule-page/edit-visit-dialog.component';
-import { SchedulesDialog } from './admin-page/schedules-dialog.component';
-import { DoctorAddDialog } from './admin-page/doctor-add-dialog.component';
-import { DoctorEditDialog } from './admin-page/doctor-edit-dialog.component';
+import { EditVisitDialogComponent } from './schedule-page/edit-visit-dialog.component';
+import { SchedulesDialogComponent } from './admin-page/schedules-dialog.component';
+import { DoctorAddDialogComponent } from './admin-page/doctor-add-dialog.component';
+import { DoctorEditDialogComponent } from './admin-page/doctor-edit-dialog.component';
 import { PatientPageComponent } from './patient-page/patient-page.component';
 import { VisitSignComponent } from './patient-page/visit-sign.component';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
 import { DoctorPageComponent } from './doctor-page/doctor-page.component';
-import { ScheduleAddDialog } from './doctor-page/schedule-add-dialog.component';
+import { ScheduleAddDialogComponent } from './doctor-page/schedule-add-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent, MainPageComponent, LoginComponent, AdminPageComponent,
-    DoctorEditDialog, DoctorAddDialog, EditVisitDialog, SchedulesDialog,
+    DoctorEditDialogComponent, DoctorAddDialogComponent, EditVisitDialogComponent, SchedulesDialogComponent,
     SchedulePageComponent, PatientPageComponent, VisitSignComponent, PatientDetailsComponent,
-    DoctorPageComponent, ScheduleAddDialog
+    DoctorPageComponent, ScheduleAddDialogComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, MatRadioModule, BrowserAnimationsModule,

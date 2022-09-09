@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
 import { DoctorI } from '@shared/doctor';
-import { ScheduleI, VisitI } from '@shared/schedule';
+import { VisitI } from '@shared/schedule';
 import { DoctorService } from '../services/doctor.service';
-import { EditVisitDialog } from './edit-visit-dialog.component';
+import { EditVisitDialogComponent } from './edit-visit-dialog.component';
 
 export interface ScheduleData {
   schedule_id: string;
@@ -105,7 +105,7 @@ export interface ScheduleData {
   `]
 })
 
-export class SchedulePageComponent implements OnInit, OnDestroy {
+export class SchedulePageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   schedule_id: string;
   doctor_id: string;
@@ -139,17 +139,17 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
     this.subscription$ = this.interval$;
   }
 
+  ngAfterViewInit(): void {
+    this.visitsList.paginator = this.paginator;
+  }
+
   ngOnDestroy(): void {
     clearInterval(this.interval$);
     this.subscription$.unsubscribe;
   }
 
-  ngAfterViewInit(): void {
-    this.visitsList.paginator = this.paginator;
-  }
-
   openEditVisitDialog(visit: VisitI): void {
-    const dialogRef = this.dialog.open(EditVisitDialog, {
+    const dialogRef = this.dialog.open(EditVisitDialogComponent, {
       width: '500px',
       height: '450px',
       autoFocus: false,

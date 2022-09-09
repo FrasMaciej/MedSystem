@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,7 +6,7 @@ import { Subscription, switchMap } from 'rxjs';
 import { DoctorI } from '@shared/doctor';
 import { ScheduleI } from '@shared/schedule';
 import { DoctorService } from '../services/doctor.service';
-import { ScheduleAddDialog } from './schedule-add-dialog.component';
+import { ScheduleAddDialogComponent } from './schedule-add-dialog.component';
 
 export interface DoctorData {
   doctor: DoctorI;
@@ -93,7 +93,7 @@ export interface DoctorData {
   `]
 })
 
-export class DoctorPageComponent implements OnInit, OnDestroy {
+export class DoctorPageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   schedules = new MatTableDataSource<ScheduleI>();
   displayedColumns: string[] = ['date', 'hour', 'visitTime', 'buttons']
@@ -114,17 +114,17 @@ export class DoctorPageComponent implements OnInit, OnDestroy {
     this.subscription$ = this.interval$;
   }
 
+  ngAfterViewInit(): void {
+    this.schedules.paginator = this.paginator;
+  }
+
   ngOnDestroy(): void {
     clearInterval(this.interval$);
     this.subscription$.unsubscribe;
   }
 
-  ngAfterViewInit(): void {
-    this.schedules.paginator = this.paginator;
-  }
-
   openAddSheduleDialog(): void {
-    const dialogRef = this.dialog.open(ScheduleAddDialog, {
+    const dialogRef = this.dialog.open(ScheduleAddDialogComponent, {
       width: '400px',
       height: '350px',
       autoFocus: false,

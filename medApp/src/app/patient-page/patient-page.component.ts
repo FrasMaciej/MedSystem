@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -170,7 +170,7 @@ export interface VisitData {
   `]
 })
 
-export class PatientPageComponent implements OnInit, OnDestroy {
+export class PatientPageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   citiesList: string[] = [];
   specsList: string[] = [];
@@ -196,13 +196,13 @@ export class PatientPageComponent implements OnInit, OnDestroy {
     this.subscription$ = this.interval$;
   }
 
+  ngAfterViewInit(): void {
+    this.selectedVisits.paginator = this.paginator;
+  }
+
   ngOnDestroy(): void {
     clearInterval(this.interval$);
     this.subscription$.unsubscribe;
-  }
-
-  ngAfterViewInit(): void {
-    this.selectedVisits.paginator = this.paginator;
   }
 
   openVisitSignDialog(visitInfo: VisitInfoI): void {
