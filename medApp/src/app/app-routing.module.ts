@@ -8,9 +8,11 @@ import { PatientDetailsComponent } from './patient-details/patient-details.compo
 import { PatientPageComponent } from './patient-page/patient-page.component';
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { AuthGuardService as AuthGuard } from './login/auth-guard.service';
+import { RegistrationComponent } from './registration/registration.component';
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
+  { path: 'register', component: RegistrationComponent },
   { path: 'login/admin', component: LoginComponent },
   { path: 'login/doctor', component: LoginComponent },
   { path: 'login/patient', component: LoginComponent },

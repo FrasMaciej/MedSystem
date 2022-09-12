@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
       <button id="homeButton" mat-fab color="primary" [routerLink]="['/']">
         <mat-icon>home</mat-icon>
       </button>
-      <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
+      <form [formGroup]="loginForm">
         <p>
           <mat-form-field appearance="outline">
             <mat-label>Login</mat-label>

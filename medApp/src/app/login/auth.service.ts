@@ -32,6 +32,6 @@ export class AuthService {
 
   public register(user: UserI) {
     const registerUrl = config.baseUrlUser + '/' + 'register';
-    return this.httpClient.post(registerUrl, user)
+    return this.httpClient.post(registerUrl, user).toPromise();
   }
 }

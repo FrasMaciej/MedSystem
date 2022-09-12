@@ -28,13 +28,11 @@ const auth = () => {
     }
 }
 
-authApi.post('/user/login', auth(), (req: any, res: any) => {
+authApi.post('/user/login', auth(), async (req: any, res: any) => {
     res.status(200).json({ "statusCode": 200, "user": req.user });
 });
 
-authApi.post('/user/register', register);
-
-function register(req: Request, res: Response) {
+authApi.post('/user/register', async (req: Request, res: Response) => {
     const { username, name, surname, password, role, city } = req.body;
     const newUser: UserI = { username, name, surname, role, city };
     if (password.length < 6) {
@@ -53,7 +51,7 @@ function register(req: Request, res: Response) {
             passport.authenticate("local")(req, res, () => res.redirect("/api"));
         }
     });
-}
+});
 
 const isLoggedIn = (req: any, res: any, next: any) => {
     console.log('session ', req.session);

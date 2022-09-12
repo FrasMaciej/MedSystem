@@ -22,6 +22,8 @@ import { Router } from '@angular/router';
           <a [routerLink]="['/login/patient']"><button class="hover-class" id="patient-button" mat-stroked-button>Pacjent</button></a>
           <a [routerLink]="['/login/doctor']"><button class="hover-class" id="doctor-button" mat-stroked-button>Lekarz</button></a>
           <a [routerLink]="['/adminPage']"><button class="hover-class" id="admin-button" mat-stroked-button>Administrator</button></a>
+          <a [routerLink]="['/register']"><button class="hover-class" id="register-button" mat-stroked-button>Rejestracja Pacjenta</button></a>
+
         </mat-toolbar>
       </p>
     </body>
