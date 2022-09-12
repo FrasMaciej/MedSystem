@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UserI } from '@shared/user';
 import { config } from '../services/config';
 
 @Injectable({
@@ -29,14 +30,8 @@ export class AuthService {
     return this.httpClient.post(loginUrl, loginData).toPromise();
   }
 
-  public register(username: string, password: string, name: string, surname: string) {
+  public register(user: UserI) {
     const registerUrl = config.baseUrlUser + '/' + 'register';
-    const newUser = {
-      username: username,
-      password: password,
-      name: name,
-      surname: surname
-    }
-    return this.httpClient.post(registerUrl, newUser)
+    return this.httpClient.post(registerUrl, user)
   }
 }

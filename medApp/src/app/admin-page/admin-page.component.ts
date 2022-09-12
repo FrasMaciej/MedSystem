@@ -9,18 +9,21 @@ import { DoctorService } from '../services/doctor.service';
 import { DoctorAddDialogComponent } from './doctor-add-dialog.component';
 import { DoctorEditDialogComponent } from './doctor-edit-dialog.component';
 import { SchedulesDialogComponent } from './schedules-dialog.component';
+import { AuthService } from '../login/auth.service';
 
 export interface DoctorData {
-  doctor: DoctorI;
-  newName: string;
-  newSurname: string;
-  newCity: string;
-  newSpecializations: string[];
-  newSpec: string;
-  newSchedule: ScheduleI[];
-  newVisitTime: number;
-  newStartDate: Date;
-  newFinishDate: Date;
+  doctor: DoctorI,
+  newName: string,
+  newSurname: string,
+  newCity: string,
+  newSpecializations: string[],
+  newSpec: string,
+  newSchedule: ScheduleI[],
+  newVisitTime: number,
+  newStartDate: Date,
+  newFinishDate: Date,
+  username: string,
+  password: string
 }
 
 @Component({
@@ -120,7 +123,7 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
   subscription$: Subscription = new Subscription;
   interval$!: any;
 
-  constructor(private doctorService: DoctorService, public dialog: MatDialog) { }
+  constructor(private doctorService: DoctorService, private authService: AuthService, public dialog: MatDialog) { }
   ngOnInit(): void {
     this.interval$ = setInterval(() => {
       this.updateDoctors();
@@ -140,14 +143,14 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
   openAddDoctorDialog(): void {
     const dialogRef = this.dialog.open(DoctorAddDialogComponent, {
       width: '500px',
-      height: '325px',
+      height: '450px',
       autoFocus: false,
-      data: { newName: '', newSurname: '', newCity: '', doctor: {} }
     });
 
     dialogRef.afterClosed().pipe(
       switchMap(
-        (newDoctor) => this.doctorService.addDoctor(newDoctor)),
+        (newDoctor) => this.authService.register(newDoctor),
+        (newDoctor) => this.doctorService.addDoctor(newDoctor))
     ).subscribe(() => { })
 
   }
