@@ -1,9 +1,8 @@
 import { DoctorI } from '../../shared/doctor';
 import { VisitI, ScheduleI, VisitInfoI } from '../../shared/schedule'
 import { Request, Response } from 'express';
-import { pipe, flatmap, orderby, map, filter, toarray, distinct } from "powerseq";
+import { pipe, flatmap, orderby, map, filter, toarray, distinct, single } from "powerseq";
 import { Doctor } from '../../db/models/doctor';
-import * as functions from './functions';
 import { User } from '../../db/models/user';
 
 
@@ -169,7 +168,7 @@ export const DoctorActions = {
                 while (loop < end) {
                     const visit: VisitI = {
                         startHour: new Date(loop),
-                        finishHour: functions.addMinutes(loop, singleVisitTime),
+                        finishHour: new Date(loop.setMinutes(loop.getMinutes() + singleVisitTime)),
                         isFree: true,
                         patientInfo: {
                             name: '',
