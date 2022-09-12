@@ -2,9 +2,8 @@ import { Request, Response } from 'express';
 import express from "express";
 import passport from 'passport';
 import { UserI } from '../shared/user';
-import User from '../db/models/user';
+import { User } from '../db/models/user';
 import { Doctor } from '../db/models/doctor';
-import { checkPrime } from 'crypto';
 
 const authApi = express.Router();
 
@@ -33,9 +32,11 @@ authApi.post('/user/login', auth(), (req: any, res: any) => {
     res.status(200).json({ "statusCode": 200, "user": req.user });
 });
 
-authApi.post('/user/register', (req: Request, res: Response) => {
+authApi.post('/user/register', register);
+
+function register(req: Request, res: Response) {
     const { username, name, surname, password, role, city } = req.body;
-    const newUser: UserI = { username, name, surname, role, };
+    const newUser: UserI = { username, name, surname, role, city };
     if (password.length < 6) {
         return res.redirect("/api");
     }
@@ -52,7 +53,7 @@ authApi.post('/user/register', (req: Request, res: Response) => {
             passport.authenticate("local")(req, res, () => res.redirect("/api"));
         }
     });
-});
+}
 
 const isLoggedIn = (req: any, res: any, next: any) => {
     console.log('session ', req.session);

@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { pipe, flatmap, orderby, map, filter, toarray, distinct } from "powerseq";
 import { Doctor } from '../../db/models/doctor';
 import * as functions from './functions';
+import { User } from '../../db/models/user';
 
 
 export const DoctorActions = {
@@ -210,7 +211,10 @@ export const DoctorActions = {
     async deleteDoctor(req: Request, res: Response) {
         const id = req.params.id;
         try {
+            const doctor = await Doctor.findOne({ _id: id });
+            const userId = doctor?.userId;
             await Doctor.deleteOne({ _id: id });
+            await User.deleteOne({ _id: userId });
             res.sendStatus(204);
         } catch (err: any) {
             res.sendStatus(404).json({ message: err.message });

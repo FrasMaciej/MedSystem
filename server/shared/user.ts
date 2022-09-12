@@ -4,5 +4,6 @@ export interface UserI {
     password?: string,
     name: string,
     surname: string,
-    role: string
+    role: string,
+    city: string
 }
