@@ -69,7 +69,7 @@ import { Router } from '@angular/router';
     }
   `]
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent {
   registerForm: FormGroup = new FormGroup({
     name: new FormControl(''),
     surname: new FormControl(''),
@@ -79,9 +79,6 @@ export class RegistrationComponent implements OnInit {
   });
 
   constructor(private router: Router, private authService: AuthService) { }
-
-  ngOnInit(): void {
-  }
 
   submitRegisterForm() {
     const user: UserI = {
