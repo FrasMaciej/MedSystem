@@ -63,7 +63,6 @@ export class DoctorAddDialogComponent {
   }
   constructor(
     public dialogRef: MatDialogRef<DoctorAddDialogComponent>) { }
-  // @Inject(MAT_DIALOG_DATA) public doctor: UserI) { }
 
   saveClick(): void {
     this.doctor.name = this.addDoctorForm.get('name')?.value;

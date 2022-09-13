@@ -168,7 +168,7 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     dialogRef.afterClosed().pipe(
       switchMap(
-        (updatedDoctor) => this.doctorService.editDoctor(updatedDoctor)),
+        (updatedDoctor) => updatedDoctor ? this.doctorService.editDoctor(updatedDoctor) : 'not executed'),
     ).subscribe(() => { })
   }
 

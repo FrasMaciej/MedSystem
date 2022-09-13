@@ -32,7 +32,7 @@ authApi.post('/user/login', auth(), async (req: any, res: any) => {
     res.status(200).json({ "statusCode": 200, "user": req.user });
 });
 
-authApi.post('/user/register', async (req: Request, res: Response) => {
+authApi.post('/user/register', (req: Request, res: Response) => {
     const { username, name, surname, password, role, city } = req.body;
     const newUser: UserI = { username, name, surname, role, city };
     if (password.length < 6) {
@@ -48,7 +48,9 @@ authApi.post('/user/register', async (req: Request, res: Response) => {
                 }
                 doctor.save();
             }
-            passport.authenticate("local")(req, res, () => res.redirect("/api"));
+            passport.authenticate('local', { failureRedirect: '/api', failureMessage: true }, function (req, res) {
+                return res.status(201);
+            })
         }
     });
 });

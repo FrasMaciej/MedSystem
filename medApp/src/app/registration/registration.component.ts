@@ -92,7 +92,10 @@ export class RegistrationComponent implements OnInit {
       role: 'Patient',
       city: this.registerForm.get('city')?.value,
     }
-    this.authService.register(user).then(() => { });
+    this.authService.register(user).then((response) => {
+      const output = JSON.stringify(response);
+      console.log(output);
+    });
   }
 
 }

@@ -162,8 +162,7 @@ export class SchedulePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     dialogRef.afterClosed().pipe(
       switchMap(
-        (result) => this.doctorService.editVisit(result.visit, result.doctor_id, result.schedule_id, result.visit._id, '')
-      )
+        (result) => result ? this.doctorService.editVisit(result.visit, result.doctor_id, result.schedule_id, result.visit._id, '') : 'not executed')
     ).subscribe(() => { })
   }
 
