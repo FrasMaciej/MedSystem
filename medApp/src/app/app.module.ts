@@ -20,6 +20,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
@@ -49,7 +50,7 @@ import { RegistrationComponent } from './registration/registration.component';
     MatToolbarModule, MatIconModule, MatButtonModule, MatCardModule,
     MatDialogModule, MatInputModule, MatListModule, FormsModule,
     MatSelectModule, ReactiveFormsModule, HttpClientModule, MatDatepickerModule,
-    MatNativeDateModule, MatTableModule, MatPaginatorModule,
+    MatNativeDateModule, MatTableModule, MatPaginatorModule, MatSnackBarModule
   ],
   providers: [DoctorService],
   bootstrap: [AppComponent]

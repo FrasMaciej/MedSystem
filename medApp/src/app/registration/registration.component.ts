@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../login/auth.service';
 import { UserI } from '@shared/user';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-registration',
@@ -49,6 +51,9 @@ import { Router } from '@angular/router';
         </p> 
       </form>
     </div>
+
+    
+
   `,
   styles: [`
     .registerFormContainer {
@@ -67,6 +72,11 @@ import { Router } from '@angular/router';
         margin: auto;
         margin-bottom: 2%;
     }
+
+    .mat-simple-snackbar span {
+      margin:auto;
+      text-align: center;
+    }
   `]
 })
 export class RegistrationComponent {
@@ -78,7 +88,7 @@ export class RegistrationComponent {
     password: new FormControl(''),
   });
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private snackBar: MatSnackBar) { }
 
   submitRegisterForm() {
     const user: UserI = {
@@ -89,10 +99,12 @@ export class RegistrationComponent {
       role: 'Patient',
       city: this.registerForm.get('city')?.value,
     }
-    this.authService.register(user).then((response) => {
-      const output = JSON.stringify(response);
-      console.log(output);
+    this.authService.register(user).then(response => {
+      if (response?.statusCode === 201) {
+        this.snackBar.open('Pomyślnie zarejestrowanego nowego pacjenta w systemie', '', { duration: 4000 });
+        this.registerForm.reset();
+        this.router.navigate(['./']);
+      }
     });
   }
-
 }

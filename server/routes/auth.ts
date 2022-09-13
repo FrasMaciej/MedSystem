@@ -48,12 +48,10 @@ authApi.post('/user/register', (req: Request, res: Response) => {
                 }
                 doctor.save();
             }
-            passport.authenticate('local', { failureRedirect: '/api', failureMessage: true }, function (req, res) {
-                return res.status(201);
-            })
+            res.status(201).json({ "statusCode": 201 });
         }
     });
-});
+},);
 
 const isLoggedIn = (req: any, res: any, next: any) => {
     console.log('session ', req.session);
