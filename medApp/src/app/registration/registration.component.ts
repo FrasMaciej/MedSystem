@@ -34,7 +34,7 @@ import { Router } from '@angular/router';
         <p>
           <mat-form-field>
             <mat-label>Login</mat-label>
-            <input type="text" class="form-control" matInput placeholder="Wpisz login" formControlName="username" required>
+            <input type="text" class="form-control" matInput placeholder="Wpisz login" formControlName="username" minlength="6" required>
           </mat-form-field>
         </p>
         <p>
@@ -92,9 +92,7 @@ export class RegistrationComponent implements OnInit {
       role: 'Patient',
       city: this.registerForm.get('city')?.value,
     }
-    this.authService.register(user).then(() => {
-
-    });
+    this.authService.register(user).then(() => { });
   }
 
 }
