@@ -10,27 +10,28 @@ import { DoctorData } from "./admin-page.component";
     <h1 mat-dialog-title>Dodajesz nowego lekarza<br></h1>
 
     <form [formGroup]="addDoctorForm">
-      <div mat-dialog-content>
-        <mat-form-field>
-          <input matInput placeholder="Imię" formControlName="name" required>
-        </mat-form-field>    
-        <br>
-        <mat-form-field>
-          <input matInput placeholder="Nazwisko" formControlName="surname" required>
-        </mat-form-field>    
-        <br>
-        <mat-form-field>
-          <input matInput placeholder="Miasto" formControlName="city" required>
-        </mat-form-field>    
-        <br>
-        <mat-form-field>
-          <input matInput placeholder="Nazwa użytkownika" formControlName="username" minlength="6" required>
-        </mat-form-field>  
-        <br>
-        <mat-form-field>
-          <input type="password" matInput placeholder="Hasło" formControlName="password" minlength="6" required>
-        </mat-form-field>  
-      </div>
+
+      <mat-form-field>
+        <input matInput placeholder="Imię" formControlName="name" required>
+      </mat-form-field>    
+      <br>
+      <mat-form-field>
+        <input matInput placeholder="Nazwisko" formControlName="surname" required>
+      </mat-form-field>    
+      <br>
+      <mat-form-field>
+        <input matInput placeholder="Miasto" formControlName="city" required>
+      </mat-form-field>    
+      <br>
+      <mat-form-field>
+        <input matInput placeholder="Nazwa użytkownika" formControlName="username" minlength="6" required>
+        <mat-hint>(min. 6 znaków)</mat-hint>
+      </mat-form-field>  
+      <br>
+      <mat-form-field>
+        <input type="password" matInput placeholder="Hasło" formControlName="password" minlength="6" required >
+        <mat-hint>(min. 6 znaków)</mat-hint>
+      </mat-form-field>  
 
       <div mat-dialog-actions align="center">
         <button mat-button (click)="closeDialogRef()">Powrót</button>

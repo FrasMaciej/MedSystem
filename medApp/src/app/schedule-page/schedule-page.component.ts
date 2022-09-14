@@ -107,6 +107,7 @@ export interface ScheduleData {
 
 export class SchedulePageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   schedule_id: string;
   doctor_id: string;
   doctor: DoctorI;

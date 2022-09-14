@@ -252,7 +252,6 @@ export async function editVisit(req: Request, res: Response) {
                 matchingVisit.patientInfo.patientId = '';
             }
         }
-        console.log(matchingVisit);
         await doctor.save();
     }
     res.status(201).json(doctor);

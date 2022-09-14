@@ -1,4 +1,5 @@
 import { Component, Inject } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { DoctorData } from "./admin-page.component";
 
@@ -6,19 +7,20 @@ import { DoctorData } from "./admin-page.component";
   selector: 'app-doctor-edit-dialog',
   template: `
     <h1 mat-dialog-title>Edytujesz dane lekarza: <br> {{data.doctor.name}} {{data.doctor.surname}}</h1>
-    <div mat-dialog-content>
+
+    <form [formGroup]="editDoctorForm">
       <mat-form-field>
-        <input matInput placeholder="Imię" [(ngModel)]="data.newName">
+        <input matInput placeholder="Imię" formControlName="name" required>
       </mat-form-field>    
       <br>
       <mat-form-field>
-        <input matInput placeholder="Nazwisko" [(ngModel)]="data.newSurname">
+        <input matInput placeholder="Nazwisko" formControlName="surname" required>
       </mat-form-field>    
       <br>
       <mat-form-field>
-        <input matInput placeholder="Miasto" [(ngModel)]="data.newCity">
+        <input matInput placeholder="Miasto" formControlName="city" required>
       </mat-form-field>   
-    </div>
+    </form>
 
     <div class="specializations">Specjalizacje</div>
     <mat-selection-list #doctor [multiple]="false" class="scroll-bar"> 
@@ -46,7 +48,7 @@ import { DoctorData } from "./admin-page.component";
 
     <div mat-dialog-actions align="center">
       <button mat-button (click)="closeDialogRef()">Powrót</button>
-      <button mat-button (click)="saveClick()" [mat-dialog-close]="data.doctor">Zapisz</button>
+      <button mat-button (click)="saveClick()" [disabled]="!editDoctorForm.valid" [mat-dialog-close]="data.doctor">Zapisz</button>
     </div>
   `,
   styles: [`
@@ -94,6 +96,11 @@ import { DoctorData } from "./admin-page.component";
 })
 
 export class DoctorEditDialogComponent {
+  editDoctorForm: FormGroup = new FormGroup({
+    name: new FormControl(this.data.doctor.name),
+    surname: new FormControl(this.data.doctor.surname),
+    city: new FormControl(this.data.doctor.city)
+  });
   constructor(
     public dialogRef: MatDialogRef<DoctorEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DoctorData) { }
@@ -111,9 +118,9 @@ export class DoctorEditDialogComponent {
   }
 
   saveClick(): void {
-    this.data.doctor.name = this.data.newName;
-    this.data.doctor.surname = this.data.newSurname;
-    this.data.doctor.city = this.data.newCity;
+    this.data.doctor.name = this.editDoctorForm.get('name')?.value;
+    this.data.doctor.surname = this.editDoctorForm.get('surname')?.value;
+    this.data.doctor.city = this.editDoctorForm.get('city')?.value;
     this.data.doctor.specializations = this.data.newSpecializations;
   }
 

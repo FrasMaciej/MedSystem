@@ -37,6 +37,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
           <mat-form-field>
             <mat-label>Login</mat-label>
             <input type="text" class="form-control" matInput placeholder="Wpisz login" formControlName="username" minlength="6" required>
+            <mat-hint>(min. 6 znaków)</mat-hint>
           </mat-form-field>
         </p>
         <p>

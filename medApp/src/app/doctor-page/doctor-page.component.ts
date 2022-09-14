@@ -7,6 +7,7 @@ import { DoctorI } from '@shared/doctor';
 import { ScheduleI } from '@shared/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { ScheduleAddDialogComponent } from './schedule-add-dialog.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
 export interface DoctorData {
   doctor: DoctorI;
@@ -95,6 +96,9 @@ export interface DoctorData {
 
 export class DoctorPageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+
+
   schedules = new MatTableDataSource<ScheduleI>();
   displayedColumns: string[] = ['date', 'hour', 'visitTime', 'buttons']
   doctorId: string;
