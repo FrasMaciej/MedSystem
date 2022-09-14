@@ -70,7 +70,7 @@ export interface VisitData {
             <input matStartDate formControlName="start" placeholder="Start date">
             <input matEndDate formControlName="end" placeholder="End date">
           </mat-date-range-input>
-          <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+          <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> 
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
           <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
@@ -234,7 +234,6 @@ export class PatientPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getFilteredVisits(): void {
     if (this.selectedSpec && this.selectedCities.value && this.range.value.start && this.range.value.end) {
-      const cities: string[] = this.selectedCities.value;
       this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value, this.range.value.start, this.range.value.end).subscribe((matchingVisits: VisitInfoI[]) => {
         this.selectedVisits.data = matchingVisits;
       })

@@ -97,7 +97,7 @@ export class SchedulesDialogComponent {
             const startDate: Date = new Date(startDateStr);
             const finishDate: Date = new Date(endDateStr);
             this.data.newStartDate = new Date(startDate.setHours(startDate.getHours() - (startDate.getUTCHours() - startDate.getHours())));
-            this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
+            this.data.newFinishDate = this.data.newFinishDate = new Date(finishDate.setHours(finishDate.getHours() - (finishDate.getUTCHours() - finishDate.getHours())));
             const schedule: ScheduleI = {
                 scheduleDate: startDate, finishHour: finishDate,
                 singleVisitTime: Number.parseInt(singleVisitTime), _id: '', visits: []
