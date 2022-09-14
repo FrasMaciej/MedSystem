@@ -218,7 +218,7 @@ export class PatientPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     dialogRef.afterClosed().pipe(
       switchMap(
-        (result) => this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id, result.patientId)),
+        (result) => result ? this.doctorService.editVisit(result.visitInfo.visit, result.visitInfo.doctorId, result.visitInfo.scheduleId, result.visitInfo.visit._id, result.patientId) : 'not executed'),
       switchMap(
         () => this.doctorService.getFilteredVisits(this.selectedSpec, this.selectedCities.value as string[], this.range.value.start as Date, this.range.value.end as Date)
       )
