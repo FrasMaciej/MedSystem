@@ -95,11 +95,11 @@ export class LoginComponent {
       }).then(() => {
         if (userCreated) {
           this.snackBar.open('Użytkonik zalogowany pomyślnie do systemu', '', { duration: 4000 });
+          return;
         }
       })
-
-
-
+      this.snackBar.open('Nie odnaleziono takiego użytkownka w systemie!', '', { duration: 4000 });
+      return;
     }
     else if (this.router.url === '/login/admin') {
       this.router.navigate([this.route]);
