@@ -18,8 +18,12 @@ passport.deserializeUser(function (id: any, done: any) {
 
 const auth = () => {
     return (req: any, res: any, next: any) => {
+        const role: string = req.body.role;
         passport.authenticate('local', (error: any, user: any, info: any) => {
-            if (error) res.status(400).json({ "statusCode": 200, "message": error });
+            const expectedRole: string = user.role;
+
+            if (error || user.role != role) return res.status(404).json({ "statusCode": 404, "message": error });
+
             req.login(user, function (error: any) {
                 if (error) return next(error);
                 next();

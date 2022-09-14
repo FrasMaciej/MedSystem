@@ -22,13 +22,14 @@ export class AuthService {
     localStorage.setItem('userInfo', JSON.stringify(user));
   }
 
-  public validate(username: string, password: string) {
+  public validate(username: string, password: string, role: string) {
     const loginUrl = config.baseUrlUser + '/' + 'login';
     const loginData = {
       username: username,
       password: password,
+      role: role,
     }
-    return this.httpClient.post(loginUrl, loginData).toPromise();
+    return this.httpClient.post<ResponseJsonI>(loginUrl, loginData).toPromise();
   }
 
   public register(user: UserI) {
