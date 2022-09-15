@@ -10,6 +10,7 @@ import { DoctorAddDialogComponent } from './doctor-add-dialog.component';
 import { DoctorEditDialogComponent } from './doctor-edit-dialog.component';
 import { SchedulesDialogComponent } from './schedules-dialog.component';
 import { AuthService } from '../login/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface DoctorData {
   doctor: DoctorI,
@@ -123,8 +124,9 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
   subscription$: Subscription = new Subscription;
   interval$!: any;
 
-  constructor(private doctorService: DoctorService, private authService: AuthService, public dialog: MatDialog) { }
+  constructor(private doctorService: DoctorService, private authService: AuthService, public dialog: MatDialog, private snackBar: MatSnackBar) { }
   ngOnInit(): void {
+    this.updateDoctors();
     this.interval$ = setInterval(() => {
       this.updateDoctors();
     }, 250);
@@ -149,7 +151,11 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     dialogRef.afterClosed().pipe(
       switchMap(
-        (newDoctor) => newDoctor ? this.authService.register(newDoctor) : 'not executed',
+        (newDoctor) => newDoctor ? this.authService.register(newDoctor).then(() => {
+          this.snackBar.open('Pomyślnie zarejestrowano w systemie', 'Zamknij', { duration: 3000 });
+        }).catch(err => {
+          this.snackBar.open('Wystąpił nieoczekiwany błąd, bądź użytkownik o podanym loginie już istnieje!', 'Zamknij', { duration: 3000 });
+        }) : 'not executed',
         (newDoctor) => newDoctor ? this.doctorService.addDoctor(newDoctor) : 'not executed')
     ).subscribe(() => { })
 
@@ -158,7 +164,7 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
   openEditDoctorDialog(doctor: DoctorI): void {
     const dialogRef = this.dialog.open(DoctorEditDialogComponent, {
       width: '500px',
-      height: '600px',
+      height: '650px',
       autoFocus: false,
       data: {
         doctor: doctor, newName: doctor.name, newSurname: doctor.surname, newCity: doctor.city,

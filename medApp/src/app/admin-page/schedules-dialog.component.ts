@@ -57,9 +57,6 @@ import { DoctorData } from "./admin-page.component";
             overflow-x: hidden;
         }
 
-        .schedules{
-            text-align: center;
-        }
     `]
 })
 

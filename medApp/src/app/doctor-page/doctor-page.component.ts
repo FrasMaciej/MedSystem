@@ -7,7 +7,6 @@ import { DoctorI } from '@shared/doctor';
 import { ScheduleI } from '@shared/schedule';
 import { DoctorService } from '../services/doctor.service';
 import { ScheduleAddDialogComponent } from './schedule-add-dialog.component';
-import { FormControl, FormGroup } from '@angular/forms';
 
 export interface DoctorData {
   doctor: DoctorI;
@@ -30,7 +29,7 @@ export interface DoctorData {
             <mat-icon>exit_to_app</mat-icon>
           </button>
         </a>
-        <span>Panel Lekarza</span>
+        <span>Panel Lekarza - dr. {{doctor.name}} {{doctor.surname}}</span>
         <span class="spacer"></span>
         <button mat-raised-button color="newScheduleButton" (click)="openAddSheduleDialog()">Dodaj Grafik</button>
       </mat-toolbar>
@@ -96,9 +95,6 @@ export interface DoctorData {
 
 export class DoctorPageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-
-
   schedules = new MatTableDataSource<ScheduleI>();
   displayedColumns: string[] = ['date', 'hour', 'visitTime', 'buttons']
   doctorId: string;
@@ -112,6 +108,7 @@ export class DoctorPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.updateDoctor();
     this.interval$ = setInterval(() => {
       this.updateDoctor();
     }, 250);

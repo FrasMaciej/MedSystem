@@ -1,8 +1,7 @@
 import { Component, Inject } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatDialogRef } from "@angular/material/dialog";
 import { UserI } from "@shared/user";
-import { DoctorData } from "./admin-page.component";
 
 @Component({
   selector: 'app-doctor-add-dialog',

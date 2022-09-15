@@ -8,7 +8,7 @@ import { DoctorData } from "./admin-page.component";
   template: `
     <h1 mat-dialog-title>Edytujesz dane lekarza: <br> {{data.doctor.name}} {{data.doctor.surname}}</h1>
 
-    <form [formGroup]="editDoctorForm">
+    <form [formGroup]="editDoctorForm" align="center">
       <mat-form-field>
         <input matInput placeholder="Imię" formControlName="name" required>
       </mat-form-field>    
@@ -57,7 +57,7 @@ import { DoctorData } from "./admin-page.component";
       }
 
       .scroll-bar{
-        height:15vh;
+        height:20vh;
         overflow-x: hidden;
       }
 
