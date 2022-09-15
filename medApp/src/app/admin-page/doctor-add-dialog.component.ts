@@ -9,7 +9,7 @@ import { DoctorData } from "./admin-page.component";
   template: `
     <h1 mat-dialog-title>Dodajesz nowego lekarza<br></h1>
 
-    <form [formGroup]="addDoctorForm">
+    <form [formGroup]="addDoctorForm" align="center">
 
       <mat-form-field>
         <input matInput placeholder="Imię" formControlName="name" required>
@@ -44,6 +44,12 @@ import { DoctorData } from "./admin-page.component";
       h1{
           text-align: center;
       }
+
+      .xd {
+        text-align: center;
+        align-items: center;
+      }
+
   `]
 })
 

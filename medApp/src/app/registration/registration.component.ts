@@ -102,10 +102,14 @@ export class RegistrationComponent {
     }
     this.authService.register(user).then(response => {
       if (response?.statusCode === 201) {
-        this.snackBar.open('Pomyślnie zarejestrowanego nowego pacjenta w systemie', '', { duration: 4000 });
+        this.snackBar.open('Pomyślnie zarejestrowanego w systemie', 'Zamknij', { duration: 3000 });
         this.registerForm.reset();
         this.router.navigate(['./']);
       }
+    }).catch(err => {
+      this.snackBar.open('Wystąpił nieoczekiwany błąd, bądź użytkownik o podanym loginie już istnieje!', 'Zamknij', { duration: 3000 });
+      this.registerForm.get('username')?.reset();
+      this.registerForm.get('password')?.reset();
     });
   }
 }

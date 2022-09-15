@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
@@ -69,6 +69,7 @@ export class LoginComponent {
     password: new FormControl(''),
   });
 
+
   constructor(private router: Router, private authService: AuthService, private snackBar: MatSnackBar) {
     if (this.router.url === '/login/admin') {
       this.route = '/adminPage';
@@ -85,21 +86,16 @@ export class LoginComponent {
   }
 
   public submitLoginForm(): void {
-    let userCreated: boolean = false;
     if (this.router.url === '/login/patient' || this.router.url === '/login/doctor') {
-
       this.authService.validate(this.loginForm.get('username')?.value, this.loginForm.get('password')?.value, this.role).then((response) => {
         this.authService.setUserInfo({ 'user': response });
         this.router.navigate([this.route]);
-        userCreated = true;
-      }).then(() => {
-        if (userCreated) {
-          this.snackBar.open('Użytkonik zalogowany pomyślnie do systemu', '', { duration: 4000 });
-          return;
-        }
-      })
-      this.snackBar.open('Nie odnaleziono takiego użytkownka w systemie!', '', { duration: 4000 });
-      return;
+        this.snackBar.open('Użytkonik zalogowany pomyślnie do systemu', 'Zamknij', { duration: 3000 });
+        return;
+      }).catch(err => {
+        this.snackBar.open('Podano niewłaściwe dane logowania!', 'Zamknij', { duration: 3000 });
+        this.loginForm.reset();
+      });
     }
     else if (this.router.url === '/login/admin') {
       this.router.navigate([this.route]);
