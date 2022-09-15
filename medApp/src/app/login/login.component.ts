@@ -90,7 +90,7 @@ export class LoginComponent {
       this.authService.validate(this.loginForm.get('username')?.value, this.loginForm.get('password')?.value, this.role).then((response) => {
         this.authService.setUserInfo({ 'user': response });
         this.router.navigate([this.route]);
-        this.snackBar.open('Użytkonik zalogowany pomyślnie do systemu', 'Zamknij', { duration: 3000 });
+        this.snackBar.open('Użytkownik zalogowany pomyślnie do systemu', 'Zamknij', { duration: 3000 });
         return;
       }).catch(err => {
         this.snackBar.open('Podano niewłaściwe dane logowania!', 'Zamknij', { duration: 3000 });
