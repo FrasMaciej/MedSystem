@@ -19,7 +19,7 @@ import { DoctorService } from '../services/doctor.service';
             <mat-icon>exit_to_app</mat-icon>
           </button>
         </a>
-        <span>Dane pacjenta - moje wizyty</span>
+        <span>Panel Pacjenta - {{userInfo.user.user.name}} {{userInfo.user.user.surname}} - Moje Wizyty</span>
       </mat-toolbar>
     </p>
 
@@ -68,6 +68,7 @@ import { DoctorService } from '../services/doctor.service';
 })
 export class PatientDetailsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
   patientId: string;
   name: string;
   surname: string;

@@ -29,7 +29,7 @@ export interface VisitData {
             <mat-icon>exit_to_app</mat-icon>
           </button>
         </a>
-        <span>Panel Pacjenta</span>
+        <span>Panel Pacjenta - {{userInfo.user.user.name}} {{userInfo.user.user.surname}}</span>
         <span class="spacer"></span>
         <a [routerLink]="['/patientPage/details']">
           <button mat-raised-button color="patientDetails">Moje Wizyty</button>
@@ -172,6 +172,7 @@ export interface VisitData {
 
 export class PatientPageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
   citiesList: string[] = [];
   specsList: string[] = [];
   selectedCities = new FormControl(this.citiesList);
